@@ -1,7 +1,7 @@
 import * as urls from '../../api_variables'
 
 const state = {
-  Version: '0.4.8',
+  Version: '0.4.9',
   CurrentState: '',
   CurrentPage: '',
   PreviousPage: '',
@@ -12,10 +12,14 @@ const state = {
   testMode: false,
   // version number click counter
   VNCC: 0,
-  loginAsUser: true
+  loginAsUser: true,
+  showSlide: true
 }
 
 const getters = {
+  getShowSlide (state) {
+    return state.showSlide
+  },
   getLoginAsUser (state) {
     return state.loginAsUser
   },
@@ -43,6 +47,9 @@ const getters = {
 }
 
 const mutations = {
+  setShowSlides (state, context) {
+    state.showSlide = Boolean(context)
+  },
   setLoginAsUser (state, context) {
     state.loginAsUser = Boolean(context)
   },

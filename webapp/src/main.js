@@ -12,6 +12,8 @@ import VueEvents from 'vue-events'
 
 import Vodal from 'vodal'
 Vue.component(Vodal.name, Vodal)
+import VueCarousel from 'vue-carousel'
+Vue.use(VueCarousel)
 
 // import translations
 import Spanish from '../translations/locales/es'

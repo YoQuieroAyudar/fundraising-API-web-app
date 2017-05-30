@@ -1,97 +1,109 @@
 <template>
   <div class="">
-    <div :dir='currentLangDirection' id='wrapper' v-bind:class='getWidthClass'>
-      <div class='langs btn-group btn-group-xs' role='group'>
-        <button type='button' @click="setLang('en')" :class=" lang === 'en' || lang === '' ? 'btn btn-success' : 'btn btn-default'">English</button>
-        <button type='button' @click="setLang('es')" :class=" lang === 'es' ? 'btn btn-success' : 'btn btn-default'">Español</button>
-        <button type='button' @click="setLang('fr')" :class=" lang === 'fr' ? 'btn btn-success' : 'btn btn-default'">Français</button>
-        <button type='button' @click="setLang('ar')" :class=" lang === 'ar' ? 'btn btn-success' : 'btn btn-default'">العربية</button>
-        <span class='hidden'>{{currentState}}</span>
-      </div>
-      <div class='loading' v-if="$store.getters.getLoading">
-        <h1><i class='fa fa-spinner fa-spin fa-fw'></i> {{$t('Loading')}}...</h1>
-      </div>
-
-      <div class='content' v-else >
-        <message-items></message-items>
-        <div class='top-container'>
-          <div class='top-menu'>
-            <button v-if="($store.getters.getCurrentPage != 'login' && $store.getters.getCurrentPage != '' && $store.getters.getCurrentPage != 'home' && $store.getters.getCurrentState != '' && $store.getters.getCurrentPage != 'signup')" class='btn btn-plain btn-back' @click='goToPrevPage'>
-              <i v-if="langDirection == 'rtl'" class='fa fa-angle-right fa-fw'></i>
-              <i v-else class='fa fa-angle-left fa-fw'></i>
-            </button>
-          </div>
+    <div class="other">
+      <div :dir='currentLangDirection' id='wrapper' v-bind:class='getWidthClass'>
+        <div class='langs btn-group btn-group-xs' role='group'>
+          <button type='button' @click="setLang('en')" :class=" lang === 'en' || lang === '' ? 'btn btn-success' : 'btn btn-default'">English</button>
+          <button type='button' @click="setLang('es')" :class=" lang === 'es' ? 'btn btn-success' : 'btn btn-default'">Español</button>
+          <button type='button' @click="setLang('fr')" :class=" lang === 'fr' ? 'btn btn-success' : 'btn btn-default'">Français</button>
+          <button type='button' @click="setLang('ar')" :class=" lang === 'ar' ? 'btn btn-success' : 'btn btn-default'">العربية</button>
+          <span class='hidden'>{{currentState}}</span>
         </div>
 
-        <div class=''>
-          <div class='login-area' v-if="$store.getters.getCurrentState == 'login' || $store.getters.getCurrentState == ''">
-            <div  v-if="$store.getters.getCurrentPage == 'login' || $store.getters.getCurrentPage == ''">
-              <login-form></login-form>
-            </div>
-            <div v-if="$store.getters.getCurrentPage == 'signup'">
-              <signup-form></signup-form>
-            </div>
-            <div v-if="$store.getters.getCurrentPage == 'signupPOS'">
-              <signup-pos-form></signup-pos-form>
-            </div>
-            <div v-if="$store.getters.getCurrentPage == 'share'">
-              <share-page></share-page>
-            </div>
 
+        <div v-if="$store.getters.getShowSlide">
+          <slide-page></slide-page>
+        </div>
+
+        <div v-else>
+          <div class='loading' v-if="$store.getters.getLoading">
+            <h1><i class='fa fa-spinner fa-spin fa-fw'></i> {{$t('Loading')}}...</h1>
           </div>
 
-          <div class='loggedin-area' v-else >
-            <div class='logout-area'>
-              <span class='hidden'>{{getMyBalance}}</span>
-              <logout-button></logout-button>
+          <div class='content' v-else >
+            <message-items></message-items>
+            <div class='top-container'>
+              <div class='top-menu'>
+                <button v-if="($store.getters.getCurrentPage != 'login' && $store.getters.getCurrentPage != '' && $store.getters.getCurrentPage != 'home' && $store.getters.getCurrentState != '' && $store.getters.getCurrentPage != 'signup')" class='btn btn-plain btn-back' @click='goToPrevPage'>
+                  <i v-if="langDirection == 'rtl'" class='fa fa-angle-right fa-fw'></i>
+                  <i v-else class='fa fa-angle-left fa-fw'></i>
+                </button>
+              </div>
             </div>
 
             <div class=''>
-              <div v-if="$store.getters.getCurrentPage == 'home' || $store.getters.getCurrentPage == ''" >
-                <home-page></home-page>
+              <div class='login-area' v-if="$store.getters.getCurrentState == 'login' || $store.getters.getCurrentState == ''">
+                <div  v-if="$store.getters.getCurrentPage == 'login' || $store.getters.getCurrentPage == ''">
+                  <login-form></login-form>
+                </div>
+                <div v-if="$store.getters.getCurrentPage == 'signup'">
+                  <signup-form></signup-form>
+                </div>
+                <div v-if="$store.getters.getCurrentPage == 'signupPOS'">
+                  <signup-pos-form></signup-pos-form>
+                </div>
+                <div v-if="$store.getters.getCurrentPage == 'share'">
+                  <share-page></share-page>
+                </div>
+
               </div>
 
-              <div v-if="$store.getters.getCurrentPage == 'share'">
-                <share-page></share-page>
+              <div class='loggedin-area' v-else >
+                <div class='logout-area'>
+                  <span class='hidden'>{{getMyBalance}}</span>
+                  <logout-button></logout-button>
+                </div>
+
+                <div class=''>
+                  <div v-if="$store.getters.getCurrentPage == 'home' || $store.getters.getCurrentPage == ''" >
+                    <home-page></home-page>
+                  </div>
+
+                  <div v-if="$store.getters.getCurrentPage == 'share'">
+                    <share-page></share-page>
+                  </div>
+
+                  <div v-if="$store.getters.getCurrentPage == 'associations'">
+                    <associations-page></associations-page>
+                  </div>
+
+                  <div v-if="$store.getters.getCurrentPage == 'asso_details'">
+                    <association-page></association-page>
+                  </div>
+
+                  <div v-if="$store.getters.getCurrentPage == 'donations'">
+                    <donations-page></donations-page>
+                  </div>
+
+                  <div v-if="$store.getters.getCurrentPage == 'solidarity'">
+                    <solidarity-account-page></solidarity-account-page>
+                  </div>
+
+                  <div v-if="$store.getters.getCurrentPage == 'settings'">
+                    <settings-page></settings-page>
+                  </div>
+                </div>
+
               </div>
 
-              <div v-if="$store.getters.getCurrentPage == 'associations'">
-                <associations-page></associations-page>
-              </div>
-
-              <div v-if="$store.getters.getCurrentPage == 'asso_details'">
-                <association-page></association-page>
-              </div>
-
-              <div v-if="$store.getters.getCurrentPage == 'donations'">
-                <donations-page></donations-page>
-              </div>
-
-              <div v-if="$store.getters.getCurrentPage == 'solidarity'">
-                <solidarity-account-page></solidarity-account-page>
-              </div>
-
-              <div v-if="$store.getters.getCurrentPage == 'settings'">
-                <settings-page></settings-page>
-              </div>
             </div>
 
           </div>
 
+          <div class='bottom-menu'>
+            <label :class="$store.getters.getAppMode == 'test' ? 'test-mode version': 'version'">
+              <span @click="updateVNCC">Version: {{$store.getters.getVersion}}</span>
+              <span style="color: #EEE">{{$store.getters.getVNCC}}</span>
+              <a href="#" @click="$store.commit('setShowSlides', true); return false"><i class='fa fa-question-circle-o fa-fw'></i></a>
+              <a target='_blank' :href='helpLink'>
+                {{$t('Help')}}
+              </a>
+            </label>
+          </div>
         </div>
 
-      </div>
 
-      <div class='bottom-menu'>
-        <label :class="$store.getters.getAppMode == 'test' ? 'test-mode version': 'version'">
-          <span @click="updateVNCC">Version: {{$store.getters.getVersion}}</span>
-          <span style="color: #EEE">{{$store.getters.getVNCC}}</span>
-          <a target='_blank' :href='helpLink'> <i class='fa fa-question-circle-o fa-fw'></i>
-            {{$t('Help')}}
-          </a>
-        </label>
       </div>
-
     </div>
   </div>
 </template>
@@ -109,6 +121,7 @@ import Association from './components/Association.vue'
 import Donations from './components/Donations.vue'
 import SolidarityAccount from './components/SolidarityAccount.vue'
 import Settings from './components/Settings.vue'
+import Slides from './components/Slides.vue'
 
 import * as urls from './api_variables'
 import axios from 'axios'
@@ -122,6 +135,11 @@ export default {
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
     this.$events.emit('testEvent')
+    this.$events.listen('skipSlideEvent', eventData => {
+      console.log('got skipSlideEvent')
+      this.$store.commit('setShowSlides', false)
+    })
+
     this.$events.listen('logoutEvent', eventData => {
       console.log('LOGING OUT EVENT')
       console.log(eventData)
@@ -225,7 +243,8 @@ export default {
     return {
       langDirection: '',
       helpLink: 'https://github.com/YoQuieroAyudar/fundraising-API-web-app/wiki/Help',
-      lang: 'en'
+      lang: 'en',
+      showSlide: true
     }
   },
   methods: {
@@ -359,7 +378,8 @@ export default {
     'association-page': Association,
     'donations-page': Donations,
     'solidarity-account-page': SolidarityAccount,
-    'settings-page': Settings
+    'settings-page': Settings,
+    'slide-page': Slides
   }
 }
 
