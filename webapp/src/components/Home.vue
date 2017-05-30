@@ -31,17 +31,20 @@ export default {
   methods: {
     goToAssociations (e) {
       e.preventDefault()
-      this.$store.commit('setCurrentPage', 'associations')
+      // this.$store.commit('setCurrentPage', 'associations')
+      this.$events.emit('goToPageEvent', 'associations')
       this.$store.commit('resetMessages')
     },
     goToDonations (e) {
       e.preventDefault()
-      this.$store.commit('setCurrentPage', 'donations')
+      // this.$store.commit('setCurrentPage', 'donations')
+      this.$events.emit('goToPageEvent', 'donations')
       this.$store.commit('resetMessages')
     },
     goToSolidarityAccount (e) {
       e.preventDefault()
-      this.$store.commit('setCurrentPage', 'solidarity')
+      // this.$store.commit('setCurrentPage', 'solidarity')
+      this.$events.emit('goToPageEvent', 'solidarity')
       this.$store.commit('resetMessages')
     }
   },

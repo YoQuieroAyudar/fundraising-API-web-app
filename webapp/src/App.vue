@@ -109,6 +109,12 @@
 </template>
 
 <script>
+import ga from 'vue-ga'
+import VueRouter from 'vue-router'
+
+const router = new VueRouter()
+ga(router, 'UA-86334488-3')
+
 import Home from './components/Home.vue'
 import Logout from './components/Logout.vue'
 import Login from './components/Login.vue'
@@ -135,6 +141,33 @@ export default {
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
     this.$events.emit('testEvent')
+
+    this.$events.listen('sendEvent', eventData => {
+      console.log('got sendEvent')
+      console.log(eventData)
+      // eventData = { type: 'type', action: 'action', label: '', value: '' }
+      ga('send', 'event', eventData.type, eventData.action, eventData.label, eventData.value)
+    })
+
+    this.$events.listen('goToPageEvent', pageName => {
+      console.log('got goToPageEvent')
+      var slash = pageName.indexOf('/')
+      if (slash > 0) {
+        pageName = pageName.slice(0, slash)
+      }
+      // this.$store.commit('setCurrentPage', pageName)
+      this.$events.emit('goToPageEvent', 'home')
+      this.$events.emit('pageChangedEvent', pageName)
+    })
+
+    ga(collect => {
+      // when hash changes
+      this.$events.listen('pageChangedEvent', (name) => {
+        console.log('visitng ' + name)
+        collect(name)
+      })
+    }, 'UA-86334488-3')
+
     this.$events.listen('skipSlideEvent', eventData => {
       console.log('got skipSlideEvent')
       this.$store.commit('setShowSlides', false)
@@ -157,7 +190,8 @@ export default {
       this.$store.commit('setToken', eventData.token)
       localStorage.setItem('rememberMe', eventData.rememberMe)
       this.$store.commit('setCurrentState', 'loggedin')
-      this.$store.commit('setCurrentPage', 'home')
+      // this.$store.commit('setCurrentPage', 'home')
+      this.$events.emit('goToPageEvent', 'home')
     })
 
     this.$events.listen('acountUpdate', eventData => {
@@ -201,7 +235,8 @@ export default {
 
     if (!rememberMe) {
       this.$store.commit('setCurrentState', 'login')
-      this.$store.commit('setCurrentPage', 'login')
+      // this.$store.commit('setCurrentPage', 'login')
+      this.$events.emit('goToPageEvent', 'login')
       return 'login'
     }
     if (rememberMe != null) {
@@ -298,16 +333,19 @@ export default {
     // getWalletBalance () {},
     goSharePage (e) {
       e.preventDefault()
-      this.$store.commit('setCurrentPage', 'share')
+      // this.$store.commit('setCurrentPage', 'share')
+      this.$events.emit('goToPageEvent', 'share')
     },
     goToPrevPage (e) {
       e.preventDefault()
       // this.$store.commit('goToPreviousPage')
       if (!(this.$store.getters.getCurrentState === 'login' || this.$store.getters.getCurrentState === '')) {
-        this.$store.commit('setCurrentPage', 'home')
+        // this.$store.commit('setCurrentPage', 'home')
+        this.$events.emit('goToPageEvent', 'home')
         return
       }
-      this.$store.commit('setCurrentPage', '')
+      // this.$store.commit('setCurrentPage', '')
+      this.$events.emit('goToPageEvent', '')
     },
     goToNextPage (e) {
       e.preventDefault()

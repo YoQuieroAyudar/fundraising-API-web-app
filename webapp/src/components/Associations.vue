@@ -45,7 +45,8 @@ export default {
     selectAssociation (assocId) {
       console.log(assocId)
       this.$store.commit('selectAssoById', assocId)
-      this.$store.commit('setCurrentPage', 'asso_details')
+      // this.$store.commit('setCurrentPage', 'asso_details')
+      this.$events.emit('goToPageEvent', 'asso_details/' + assocId)
     },
     getAssociationsFromAPI () {
       // var jwtToken = localStorage.getItem('user_token')

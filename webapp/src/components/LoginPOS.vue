@@ -24,7 +24,7 @@
     </form>
 
     <video-frame></video-frame>
-    
+
   </div>
 </template>
 
@@ -93,7 +93,7 @@ export default {
   methods: {
     goToLoginPOSPage (e) {
       e.preventDefault()
-      this.$store.commit('setCurrentPage', 'loginPOS')
+      this.$events.emit('goToPageEvent', 'loginPOS')
       this.$store.commit('resetMessages')
     },
     setRememberMe () {
@@ -107,7 +107,8 @@ export default {
     goToSignupPage (e) {
       e.preventDefault()
       this.$store.commit('resetMessages')
-      this.$store.commit('setCurrentPage', 'signup')
+      // this.$store.commit('setCurrentPage', 'signup')
+      this.$events.emit('goToPageEvent', 'signup')
       this.$store.commit('setCurrentState', '')
     },
     updateEmail (e) {

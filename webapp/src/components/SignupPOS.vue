@@ -205,13 +205,15 @@ export default {
     },
     goToSignupPage (e) {
       e.preventDefault()
-      this.$store.commit('setCurrentPage', 'signup')
+      // this.$store.commit('setCurrentPage', 'signup')
+      this.$events.emit('goToPageEvent', 'signup')
       this.$store.commit('resetMessages')
     },
     goToLoginPOSPage (e) {
       e.preventDefault()
       this.$store.commit('setLoginAsUser', false)
-      this.$store.commit('setCurrentPage', 'login')
+      // this.$store.commit('setCurrentPage', 'login')
+      this.$events.emit('goToPageEvent', 'login')
       this.$store.commit('resetMessages')
     },
     updateNationality (e) {
@@ -263,8 +265,9 @@ export default {
       // var setMyToken = this.setUserToken
       var setReponseMessage = this.setMessage
       var goToLoginPOSPage = () => {
-        vm.$store.commit('setCurrentPage', 'loginPOS')
-        vm.$store.commit('setCurrentState', 'loginPOS')
+        vm.$store.commit('setLoginAsUser', 'loginPOS')
+        vm.$events.emit('goToPageEvent', 'login')
+        vm.$store.commit('setCurrentState', 'login')
         vm.$store.commit('resetMessages')
       }
       this.$store.commit('resetMessages')

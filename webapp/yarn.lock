@@ -5606,6 +5606,10 @@ void-elements@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
 
+vue-carousel@^0.6.4:
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/vue-carousel/-/vue-carousel-0.6.4.tgz#318eea38850134232494b4810e6ac5d09453d578"
+
 vue-events@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-events/-/vue-events-3.0.1.tgz#bdd9c9b66e004ec75ad9b4c7a8ea6667a59a79f7"
@@ -5641,7 +5645,7 @@ vue-resource@^1.2.0:
   dependencies:
     got "^6.7.1"
 
-vue-router@^2.2.0:
+vue-router@^2.5.3:
   version "2.5.3"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-2.5.3.tgz#073783f564b6aece6c8a59c63e298dc2aabfb51b"
 
