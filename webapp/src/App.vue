@@ -155,8 +155,7 @@ export default {
       if (slash > 0) {
         pageName = pageName.slice(0, slash)
       }
-      // this.$store.commit('setCurrentPage', pageName)
-      this.$events.emit('goToPageEvent', 'home')
+      this.$store.commit('setCurrentPage', pageName)
       this.$events.emit('pageChangedEvent', pageName)
     })
 
@@ -235,8 +234,8 @@ export default {
 
     if (!rememberMe) {
       this.$store.commit('setCurrentState', 'login')
-      // this.$store.commit('setCurrentPage', 'login')
-      this.$events.emit('goToPageEvent', 'login')
+      this.$store.commit('setCurrentPage', 'login')
+      // this.$events.emit('goToPageEvent', 'login')
       return 'login'
     }
     if (rememberMe != null) {
