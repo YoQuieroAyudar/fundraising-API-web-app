@@ -1,6 +1,6 @@
 <template>
   <div class="login-area-wrapper">
-    <h1>{{$t('Login')}} <span v-if="$store.getters.getLoginAsUser">{{$t('as user')}}</span><span v-else>{{$t('as Establishment')}}</span></h1>
+    <h1><span v-if="$store.getters.getLoginAsUser">{{$t('Login as User')}}</span><span v-else>{{$t('Login as Establishment')}}</span></h1>
     <div class="user-login" v-if="$store.getters.getLoginAsUser">
       <form class="form">
         <div dir="ltr" class="input-group">
