@@ -68,14 +68,14 @@ const localizations = {
   'CH': 'Suisse',
   'MA': 'Maroc',
   'TN': 'Tunisie',
-  'GB': '',
-  'US': '',
+  'GB': 'Royaume-Uni',
+  'US': 'Etats-Unis',
   'Help': 'Aide',
   'Terms and conditions': 'Termes et conditions',
-  'Login as Establishment': '',
-  'Login as User': '',
-  'Signup as Establishment': '',
-  'Signup as User': ''
+  'Login as Establishment': 'Accéder comme établissement',
+  'Login as User': 'Accéder',
+  'Signup as Establishment': 'Créer un compte comme établissement',
+  'Signup as User': 'Créer un compte'
 }
 
 export default localizations
