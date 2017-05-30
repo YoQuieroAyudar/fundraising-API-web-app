@@ -9,6 +9,7 @@ import store from './store'
 import VueResource from 'vue-resource'
 import vuexI18n from 'vuex-i18n'
 import VueEvents from 'vue-events'
+// import ga from 'vue-ga'
 
 import Vodal from 'vodal'
 Vue.component(Vodal.name, Vodal)

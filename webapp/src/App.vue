@@ -15,12 +15,12 @@
           <slide-page></slide-page>
         </div>
 
-        <div v-else>
+        <div class='content' v-else>
           <div class='loading' v-if="$store.getters.getLoading">
             <h1><i class='fa fa-spinner fa-spin fa-fw'></i> {{$t('Loading')}}...</h1>
           </div>
 
-          <div class='content' v-else >
+          <div v-else >
             <message-items></message-items>
             <div class='top-container'>
               <div class='top-menu'>
@@ -418,7 +418,7 @@ h4 {
 h5 {
   font-size: 1em;
 }
-#wrapper .content {
+.content {
   height: 90%;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -427,22 +427,22 @@ h5 {
 a {
   cursor: pointer;
 }
-#wrapper .top-container {
+.top-container {
   position: relative;
   box-shadow: 1px 2px 2px #CCC;
   padding: 0;
   margin: .2em;
 }
-#wrapper .top-menu {
+.top-menu {
   position: relative;
 }
-#wrapper .btn-plain {
+.btn-plain {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   color: #000;
   background-color: #fff;
 }
-#wrapper .bottom-menu {
+.bottom-menu {
   position: absolute;
   height: 1.5em;
   padding: .3em;
@@ -452,21 +452,21 @@ a {
   max-width: 290px;
   width: 92%;
 }
-#wrapper .bottom-menu .test-mode {
+.bottom-menu .test-mode {
   color: #FFF;
   background-color: darkgreen;
 }
-#wrapper .bottom-menu .version {
+.bottom-menu .version {
   text-align: center;
   margin: 0;
   padding: .1em;
   width: 100%;
 }
-#wrapper #title {
+#title {
   text-align: center;
   margin: auto;
 }
-#wrapper .page-title {
+.page-title {
   border: 1px solid #888;
 }
 .langs {
