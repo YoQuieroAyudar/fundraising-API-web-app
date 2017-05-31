@@ -140,7 +140,10 @@ const http = axios.create({
 export default {
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
-    this.$events.emit('testEvent')
+    this.$events.listen('sendLoginEvent', eventData => {
+      console.log('sendLoginEvent')
+      this.sendLogin(eventData)
+    })
 
     this.$events.listen('sendEvent', eventData => {
       console.log('got sendEvent')
@@ -175,6 +178,17 @@ export default {
     this.$events.listen('logoutEvent', eventData => {
       console.log('LOGING OUT EVENT')
       console.log(eventData)
+      this.$store.commit('logout')
+      this.$store.commit('setCurrentState', 'login')
+      // this.$store.commit('setCurrentPage', 'login')
+      this.$events.emit('goToPageEvent', 'login')
+      this.$store.commit('resetMessages')
+      this.$store.commit('resetAssoList')
+      // localStorage.removeItem('country')
+      // localStorage.removeItem('user_token')
+      // localStorage.removeItem('rememberMe')
+      localStorage.clear()
+      this.$store.commit('setAPI', 'mhs')
     })
 
     this.$events.listen('checkDonationMeterics', eventData => {
@@ -185,6 +199,7 @@ export default {
       console.log('LOGIN EVENT')
       console.log(eventData)
       localStorage.setItem('user_email', eventData.user)
+      localStorage.setItem('ss', eventData.ss)
       localStorage.setItem('user_token', eventData.token)
       this.$store.commit('setToken', eventData.token)
       localStorage.setItem('rememberMe', eventData.rememberMe)
@@ -203,11 +218,10 @@ export default {
       let url = urls.API_URL.CurrentUrl + urls.WALLET_BALANCE_URL
       console.log('http')
       console.log(http)
-      // axios({
-      //   url: url,
-      //   headers: { 'Authorization': 'Bearer ' + jwtToken }
-      // })
-      http.get(url).then(resp => {
+      axios({
+        url: url,
+        headers: { 'Authorization': 'Bearer ' + jwtToken }
+      }).then(resp => {
         if (!resp.data) {
           console.log('no response data')
           return
@@ -227,34 +241,40 @@ export default {
   },
   beforeCreate () {
     console.log('beforeCreate')
+
     var vm = this
     setTimeout(() => { vm.$store.commit('resetMessages') }, 5000)
 
     var rememberMe = localStorage.getItem('rememberMe')
 
-    if (!rememberMe) {
+    if (rememberMe == null) {
       this.$store.commit('setCurrentState', 'login')
-      this.$store.commit('setCurrentPage', 'login')
-      // this.$events.emit('goToPageEvent', 'login')
+      // this.$store.commit('setCurrentPage', 'login')
+      this.$events.emit('goToPageEvent', 'login')
       return 'login'
     }
-    if (rememberMe != null) {
+    if (rememberMe !== null) {
       // read the saved token from localStorage
       var jwtToken = localStorage.getItem('user_token')
       var email = localStorage.getItem('user_email')
+      var ss = localStorage.getItem('ss')
       // if found user is loggedin
-      if (jwtToken) {
-        // check if the currentState is empty
-        if (this.$store.getters.getCurrentState === '') {
-          if (email) {
-            this.$store.commit('updateEmail', email)
-          } else {
-            this.$store.commit('updateEmail', 'User')
-          }
-          this.$store.commit('setCurrentState', 'loggedin')
-          this.$store.commit('setToken', jwtToken)
-          return 'loggedin'
-        }
+      if (jwtToken !== null) {
+        var loginData = {mail: email, password: ss}
+        localStorage.clear()
+        this.$events.emit('sendLoginEvent', loginData)
+        // // check if the currentState is empty
+        // if (this.$store.getters.getCurrentState === '') {
+        //   if (email) {
+        //     this.$store.commit('updateEmail', email)
+        //     console.log('email: ' + email)
+        //   } else {
+        //     this.$store.commit('updateEmail', 'User')
+        //   }
+        //   this.$store.commit('setCurrentState', 'loggedin')
+        //   this.$store.commit('setToken', jwtToken)
+        //   return 'loggedin'
+        // }
       } else { // no token means not signed in
         this.$store.commit('setCurrentState', 'login')
         localStorage.setItem('country_code', 'ES')
@@ -265,6 +285,21 @@ export default {
     }
   },
   beforeMount () {
+    this.$events.listen('changeLanguage', eventData => {
+      console.log('changeLanguage')
+      var lang = String(eventData).toLowerCase()
+      if (lang === null || lang === 'null') {
+        return
+      }
+      this.setLang(lang)
+      console.log('changedLanguage to: ' + lang)
+      this.$events.emit('languageChanged', lang)
+    })
+
+    var langFromUrl = this.getQueryParam('lang')
+    this.$events.emit('changeLanguage', langFromUrl)
+    console.log('langFromUrl')
+    console.log(langFromUrl)
     this.$events.listen('testEvent', eventData => {
       console.log('testEvent')
       console.log(eventData)
@@ -282,6 +317,78 @@ export default {
     }
   },
   methods: {
+    getQueryParam (n) {
+      var half = location.search.split(n + '=')[1]
+      return half !== undefined ? decodeURIComponent(half.split('&')[0]) : null
+    },
+    setMessage (response) {
+      if (!response) {
+        return
+      }
+
+      var vm = this
+      setTimeout(() => { vm.$store.commit('resetMessages') }, 5000)
+
+      if (response.errors) {
+        this.$store.commit('setErrors', response.errors)
+      } else if (response.error) {
+        this.$store.commit('setError', response.error)
+      } else if (response.warning) {
+        this.$store.commit('setWarning', response.warning)
+      } else if (response.info) {
+        this.$store.commit('setInfo', response.info)
+      } else if (response.success) {
+        this.$store.commit('setSuccess', response.success)
+      }
+
+      this.$store.commit('setLoading', false)
+    },
+    sendLogin (loginData) {
+      var countryDb = localStorage.getItem('country_db')
+
+      if (this.$store.getters.getAppMode !== 'test') {
+        if (countryDb === null) {
+          this.$store.commit('setAPI', 'mhs')
+        } else {
+          this.$store.commit('setAPI', countryDb)
+        }
+      }
+      this.$store.commit('setLoading', true)
+      let country = localStorage.getItem('country')
+      if (!country) {
+        country = {name: 'Spain', db: 'mhs', code: 'ES'}
+        localStorage.setItem('country', JSON.stringify(country))
+      }
+      var creds = loginData
+      // var setMyToken = this.setUserToken
+      var setReponseMessage = this.setMessage
+      this.$store.commit('resetMessages')
+      let url = urls.API_URL.CurrentUrl + urls.LOGIN_URL
+      var vm = this
+      this.$http.post(url, creds)
+        .then((resp) => {
+          // return the success code
+          var data = {}
+
+          if (resp.status === 200) {
+            if (resp.data) {
+              data = resp.data
+              if (data.token) {
+                localStorage.setItem('user_token', data.token)
+                setReponseMessage({'success': 'Login successfully!'})
+                vm.$events.$emit('loginEvent', {token: data.token, user: creds.mail, ss: creds.password, rememberMe: vm.rememberMe})
+                vm.$store.commit('setToken', data.token)
+                vm.$events.$emit('acountUpdate', {})
+              }
+            }
+          }
+        }, (err) => {
+          setReponseMessage(err.data)
+
+          console.log('Error')
+          console.log(err)
+        })
+    },
     updateVNCC () {
       this.$store.commit('incrementVNCC')
     },
@@ -320,6 +427,7 @@ export default {
       // })
     },
     setLang (lang) {
+      console.log('LANGUAGE ' + lang)
       this.$i18n.set(lang)
       localStorage.setItem('user_locale', lang)
       this.langDirection = this.getLangDir()

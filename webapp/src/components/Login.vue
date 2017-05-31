@@ -81,8 +81,6 @@ import FBLogin from './FBLogin.vue'
 import VideoFrame from './Vids.vue'
 import LoginPOS from './LoginPOS.vue'
 
-import * as urls from '../api_variables'
-
 export default {
 
   data () {
@@ -108,12 +106,15 @@ export default {
       this.asUser = !this.asUser
     },
     setRememberMe () {
+      console.log('rememberMe: ' + this.rememberMe)
       localStorage.setItem('rememberMe', this.rememberMe)
+      console.log('rememberMe: ' + localStorage.getItem('rememberMe'))
     },
     updateAPI () {
       this.$store.commit('setAPI', this.country.db)
       localStorage.setItem('country', JSON.stringify(this.country))
       localStorage.setItem('country_code', this.country.code)
+      localStorage.setItem('country_db', this.country.db)
     },
     goToSignupPage (e) {
       e.preventDefault()
@@ -156,42 +157,7 @@ export default {
     loginUser (e) {
       e.preventDefault()
       console.log('COUNTRY: ' + this.country)
-      if (this.$store.getters.getAppMode !== 'test') {
-        this.$store.commit('setAPI', this.country.db)
-      }
-      this.$store.commit('setLoading', true)
-      let country = localStorage.getItem('country')
-      if (!country) {
-        localStorage.setItem('country', JSON.stringify({name: 'Spain', db: 'mhs', code: 'ES'}))
-      }
-      var creds = this.login
-      // var setMyToken = this.setUserToken
-      var setReponseMessage = this.setMessage
-      this.$store.commit('resetMessages')
-      let url = urls.API_URL.CurrentUrl + urls.LOGIN_URL
-      var vm = this
-      this.$http.post(url, creds)
-        .then((resp) => {
-          // return the success code
-          var data = {}
-
-          if (resp.status === 200) {
-            if (resp.data) {
-              data = resp.data
-              if (data.token) {
-                localStorage.setItem('user_token', data.token)
-                setReponseMessage({'success': 'Login successfully!'})
-                vm.$events.$emit('loginEvent', {token: data.token, user: creds.mail, rememberMe: vm.rememberMe})
-                vm.$events.$emit('acountUpdate', {})
-              }
-            }
-          }
-        }, (err) => {
-          setReponseMessage(err.data)
-
-          console.log('Error')
-          console.log(err)
-        })
+      this.$events.emit('sendLoginEvent', this.login)
     }
   },
   components: {

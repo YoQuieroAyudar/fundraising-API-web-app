@@ -11,8 +11,8 @@
       <button class="btn btn-default" @click="goToDonations" >{{ $t('My Donations') }}</button>
       <button class="btn btn-default" @click="goToSolidarityAccount"> {{ $t('Solidarity Account') }} </button>
     </div>
-    <p v-if="gettingDonationSum">
-      {{ $t('Total Donations') }}: <span class="">&euro {{getDonationSum}}</span>
+    <p v-if="$store.getters.getBalance">
+      {{ $t('Total Donations') }}: <span class="">&euro; {{$store.getters.getBalance}}</span>
     </p>
     <p v-else>
       <i class="fa fa-spinner fa-spin fa-fw"></i>
