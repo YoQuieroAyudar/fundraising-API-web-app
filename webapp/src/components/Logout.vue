@@ -23,17 +23,6 @@ export default {
     },
     logoutUser (e) {
       e.preventDefault()
-      this.$store.commit('logout')
-      this.$store.commit('setCurrentState', 'login')
-      // this.$store.commit('setCurrentPage', 'login')
-      this.$events.emit('goToPageEvent', 'login')
-      this.$store.commit('resetMessages')
-      this.$store.commit('resetAssoList')
-      // localStorage.removeItem('country')
-      // localStorage.removeItem('user_token')
-      // localStorage.removeItem('rememberMe')
-      localStorage.clear()
-      this.$store.commit('setAPI', 'mhs')
       this.$events.emit('logoutEvent')
     }
   },
