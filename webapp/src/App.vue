@@ -140,8 +140,6 @@ const http = axios.create({
 export default {
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
-    this.$events.emit('testEvent')
-
     this.$events.listen('sendLoginEvent', eventData => {
       console.log('sendLoginEvent')
       this.sendLogin(eventData)
@@ -243,6 +241,7 @@ export default {
   },
   beforeCreate () {
     console.log('beforeCreate')
+
     var vm = this
     setTimeout(() => { vm.$store.commit('resetMessages') }, 5000)
 
@@ -262,6 +261,7 @@ export default {
       // if found user is loggedin
       if (jwtToken !== null) {
         var loginData = {mail: email, password: ss}
+        localStorage.clear()
         this.$events.emit('sendLoginEvent', loginData)
         // // check if the currentState is empty
         // if (this.$store.getters.getCurrentState === '') {
@@ -285,6 +285,21 @@ export default {
     }
   },
   beforeMount () {
+    this.$events.listen('changeLanguage', eventData => {
+      console.log('changeLanguage')
+      var lang = String(eventData).toLowerCase()
+      if (lang === null || lang === 'null') {
+        return
+      }
+      this.setLang(lang)
+      console.log('changedLanguage to: ' + lang)
+      this.$events.emit('languageChanged', lang)
+    })
+
+    var langFromUrl = this.getQueryParam('lang')
+    this.$events.emit('changeLanguage', langFromUrl)
+    console.log('langFromUrl')
+    console.log(langFromUrl)
     this.$events.listen('testEvent', eventData => {
       console.log('testEvent')
       console.log(eventData)
@@ -302,6 +317,10 @@ export default {
     }
   },
   methods: {
+    getQueryParam (n) {
+      var half = location.search.split(n + '=')[1]
+      return half !== undefined ? decodeURIComponent(half.split('&')[0]) : null
+    },
     setMessage (response) {
       if (!response) {
         return
@@ -408,6 +427,7 @@ export default {
       // })
     },
     setLang (lang) {
+      console.log('LANGUAGE ' + lang)
       this.$i18n.set(lang)
       localStorage.setItem('user_locale', lang)
       this.langDirection = this.getLangDir()
