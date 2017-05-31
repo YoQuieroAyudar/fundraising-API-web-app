@@ -8,6 +8,7 @@ import countries from './modules/countries'
 import associations from './modules/associations'
 import donations from './modules/donations'
 import accounts from './modules/accounts'
+import slides from './modules/slides'
 
 Vue.use(Vuex)
 
@@ -19,7 +20,8 @@ export default new Vuex.Store({
     messages,
     associations,
     donations,
-    accounts
+    accounts,
+    slides
   },
   strict: true
 })
