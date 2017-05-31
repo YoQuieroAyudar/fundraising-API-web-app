@@ -23,11 +23,11 @@ const state = {
     'fr': {
       'slides': [
         {
-          'text': 'Je crée et je valide mon compte jevaisaider. je crédite mon compte solidaire  avec ma carte bancaire...',
+          'text': 'Je crée et je valide mon compte jevaisaider. Je crédite mon compte solidaire  avec ma carte bancaire...',
           'style': { backgroundColor: '#FF9933', width: '100%', height: '100%' }
         },
         {
-          'text': 'Je consulte l´ensemble des organismes présents et je décide de faire un don de 2 a 10 euros. je peux donner plusieurs fois...',
+          'text': 'Je consulte l´ensemble des organismes présents et je décide de faire un don de 2 a 10 euros. Je peux donner plusieurs fois...',
           'style': { backgroundColor: '#CC0066', width: '100%', height: '100%' }
         },
         {
@@ -43,11 +43,11 @@ const state = {
     'es': {
       'slides': [
         {
-          'text': 'Doy de alta y confirmo por email mi cuenta solidaria yoquieroayudar. credito mi cuenta con mi tarjeta bancaria...',
+          'text': 'Doy de alta y confirmo por email mi cuenta solidaria yoquieroayudar. Credito mi cuenta con mi tarjeta bancaria...',
           'style': { backgroundColor: '#FF9933', width: '100%', height: '100%' }
         },
         {
-          'text': 'Puedo consultar los organismos solidarios presentes y hacer un donativo desde 2 hasta 10 euros. puedo repetirlo tantas veces como quiera...',
+          'text': 'Puedo consultar los organismos solidarios presentes y hacer un donativo desde 2 hasta 10 euros. Puedo repetirlo tantas veces como quiera...',
           'style': { backgroundColor: '#CC0066', width: '100%', height: '100%' }
         },
         {
