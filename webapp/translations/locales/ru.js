@@ -1,5 +1,5 @@
 const localizations = {
-  'hi': '',
+  'hi': 'привет',
   'Thanks for your generous heart. You are changing the world for a lot of people who lost hope': '',
   'Login successfully!': '',
   'Loading': '',
