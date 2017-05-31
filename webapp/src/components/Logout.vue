@@ -12,18 +12,21 @@
 export default {
   methods: {
     goToSettingsPage (e) {
-      this.$store.commit('setCurrentPage', 'settings')
+      // this.$store.commit('setCurrentPage', 'settings')
+      this.$events.emit('goToPageEvent', 'settings')
     },
     goToSolidarityAccount (e) {
       e.preventDefault()
-      this.$store.commit('setCurrentPage', 'solidarity')
+      // this.$store.commit('setCurrentPage', 'solidarity')
+      this.$events.emit('goToPageEvent', 'solidarity')
       this.$store.commit('resetMessages')
     },
     logoutUser (e) {
       e.preventDefault()
       this.$store.commit('logout')
       this.$store.commit('setCurrentState', 'login')
-      this.$store.commit('setCurrentPage', 'login')
+      // this.$store.commit('setCurrentPage', 'login')
+      this.$events.emit('goToPageEvent', 'login')
       this.$store.commit('resetMessages')
       this.$store.commit('resetAssoList')
       // localStorage.removeItem('country')

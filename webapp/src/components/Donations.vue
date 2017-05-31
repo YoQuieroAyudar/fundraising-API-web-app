@@ -13,7 +13,8 @@ export default {
     goToRechargePage (e) {
       e.preventDefault()
       this.$store.commit('resetMessages')
-      this.$store.commit('setCurrentPage', 'recharge')
+      // this.$store.commit('setCurrentPage', 'recharge')
+      this.$events.emit('goToPageEvent', 'recharge')
     }
   }
 }

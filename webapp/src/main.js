@@ -2,14 +2,23 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-// import router from './router'
-// import Vuefire from 'vuefire'
+
+// Adding Google Analytics.
+import VueRouter from 'vue-router'
+Vue.use(VueRouter)
+
 import store from './store'
 // import firebase from './service/firebase'
 import VueResource from 'vue-resource'
 import vuexI18n from 'vuex-i18n'
 import VueEvents from 'vue-events'
 
+// ga(collect => {
+//   // when hash changes
+//   Vue.$events.listen('pageChangedEvent', (name) => {
+//     collect(name)
+//   })
+// }, 'UA-XXXXX-Y')
 import Vodal from 'vodal'
 Vue.component(Vodal.name, Vodal)
 import VueCarousel from 'vue-carousel'

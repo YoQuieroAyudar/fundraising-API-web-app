@@ -15,12 +15,12 @@
           <slide-page></slide-page>
         </div>
 
-        <div v-else>
+        <div class='content' v-else>
           <div class='loading' v-if="$store.getters.getLoading">
             <h1><i class='fa fa-spinner fa-spin fa-fw'></i> {{$t('Loading')}}...</h1>
           </div>
 
-          <div class='content' v-else >
+          <div v-else >
             <message-items></message-items>
             <div class='top-container'>
               <div class='top-menu'>
@@ -109,6 +109,12 @@
 </template>
 
 <script>
+import ga from 'vue-ga'
+import VueRouter from 'vue-router'
+
+const router = new VueRouter()
+ga(router, 'UA-86334488-3')
+
 import Home from './components/Home.vue'
 import Logout from './components/Logout.vue'
 import Login from './components/Login.vue'
@@ -135,6 +141,32 @@ export default {
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
     this.$events.emit('testEvent')
+
+    this.$events.listen('sendEvent', eventData => {
+      console.log('got sendEvent')
+      console.log(eventData)
+      // eventData = { type: 'type', action: 'action', label: '', value: '' }
+      ga('send', 'event', eventData.type, eventData.action, eventData.label, eventData.value)
+    })
+
+    this.$events.listen('goToPageEvent', pageName => {
+      console.log('got goToPageEvent')
+      var slash = pageName.indexOf('/')
+      if (slash > 0) {
+        pageName = pageName.slice(0, slash)
+      }
+      this.$store.commit('setCurrentPage', pageName)
+      this.$events.emit('pageChangedEvent', pageName)
+    })
+
+    ga(collect => {
+      // when hash changes
+      this.$events.listen('pageChangedEvent', (name) => {
+        console.log('visitng ' + name)
+        collect(name)
+      })
+    }, 'UA-86334488-3')
+
     this.$events.listen('skipSlideEvent', eventData => {
       console.log('got skipSlideEvent')
       this.$store.commit('setShowSlides', false)
@@ -157,7 +189,8 @@ export default {
       this.$store.commit('setToken', eventData.token)
       localStorage.setItem('rememberMe', eventData.rememberMe)
       this.$store.commit('setCurrentState', 'loggedin')
-      this.$store.commit('setCurrentPage', 'home')
+      // this.$store.commit('setCurrentPage', 'home')
+      this.$events.emit('goToPageEvent', 'home')
     })
 
     this.$events.listen('acountUpdate', eventData => {
@@ -202,6 +235,7 @@ export default {
     if (!rememberMe) {
       this.$store.commit('setCurrentState', 'login')
       this.$store.commit('setCurrentPage', 'login')
+      // this.$events.emit('goToPageEvent', 'login')
       return 'login'
     }
     if (rememberMe != null) {
@@ -298,16 +332,19 @@ export default {
     // getWalletBalance () {},
     goSharePage (e) {
       e.preventDefault()
-      this.$store.commit('setCurrentPage', 'share')
+      // this.$store.commit('setCurrentPage', 'share')
+      this.$events.emit('goToPageEvent', 'share')
     },
     goToPrevPage (e) {
       e.preventDefault()
       // this.$store.commit('goToPreviousPage')
       if (!(this.$store.getters.getCurrentState === 'login' || this.$store.getters.getCurrentState === '')) {
-        this.$store.commit('setCurrentPage', 'home')
+        // this.$store.commit('setCurrentPage', 'home')
+        this.$events.emit('goToPageEvent', 'home')
         return
       }
-      this.$store.commit('setCurrentPage', '')
+      // this.$store.commit('setCurrentPage', '')
+      this.$events.emit('goToPageEvent', '')
     },
     goToNextPage (e) {
       e.preventDefault()
@@ -418,7 +455,7 @@ h4 {
 h5 {
   font-size: 1em;
 }
-#wrapper .content {
+.content {
   height: 90%;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -427,22 +464,22 @@ h5 {
 a {
   cursor: pointer;
 }
-#wrapper .top-container {
+.top-container {
   position: relative;
   box-shadow: 1px 2px 2px #CCC;
   padding: 0;
   margin: .2em;
 }
-#wrapper .top-menu {
+.top-menu {
   position: relative;
 }
-#wrapper .btn-plain {
+.btn-plain {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   color: #000;
   background-color: #fff;
 }
-#wrapper .bottom-menu {
+.bottom-menu {
   position: absolute;
   height: 1.5em;
   padding: .3em;
@@ -452,21 +489,21 @@ a {
   max-width: 290px;
   width: 92%;
 }
-#wrapper .bottom-menu .test-mode {
+.bottom-menu .test-mode {
   color: #FFF;
   background-color: darkgreen;
 }
-#wrapper .bottom-menu .version {
+.bottom-menu .version {
   text-align: center;
   margin: 0;
   padding: .1em;
   width: 100%;
 }
-#wrapper #title {
+#title {
   text-align: center;
   margin: auto;
 }
-#wrapper .page-title {
+.page-title {
   border: 1px solid #888;
 }
 .langs {
