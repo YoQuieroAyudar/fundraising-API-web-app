@@ -34,6 +34,8 @@
       <button class="btn btn-primary btn-block recharge-btn" type="button" @click="registerCardAndRecharge">{{$t('Refill')}}</button>
     </form>
 
+    <img class="powered-by-mangopay-img" src="powered-by-mangopay.png" alt="Powered by Mangopay">
+
     <hr>
 
   </div>
@@ -63,6 +65,9 @@ h5 {
 }
 .month-input .form-control, .year-input .form-control {
   width: 5em;
+}
+.powered-by-mangopay-img {
+  width: 100%;
 }
 </style>
 

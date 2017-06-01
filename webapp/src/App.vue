@@ -76,6 +76,10 @@
                     <donations-page></donations-page>
                   </div>
 
+                  <div v-if="$store.getters.getCurrentPage == 'subscription'">
+                    <subscription-page></subscription-page>
+                  </div>
+
                   <div v-if="$store.getters.getCurrentPage == 'solidarity'">
                     <solidarity-account-page></solidarity-account-page>
                   </div>
@@ -110,6 +114,7 @@
 </template>
 
 <script>
+import jwtDecode from 'jwt-decode'
 import ga from 'vue-ga'
 import VueRouter from 'vue-router'
 
@@ -129,6 +134,7 @@ import Donations from './components/Donations.vue'
 import SolidarityAccount from './components/SolidarityAccount.vue'
 import Settings from './components/Settings.vue'
 import Slides from './components/Slides.vue'
+import Subscription from './components/Subscription'
 
 import * as urls from './api_variables'
 import axios from 'axios'
@@ -199,14 +205,20 @@ export default {
     this.$events.listen('loginEvent', eventData => {
       console.log('LOGIN EVENT')
       console.log(eventData)
-      localStorage.setItem('user_email', eventData.user)
-      localStorage.setItem('ss', eventData.ss)
+      localStorage.setItem('user_data', JSON.stringify(eventData.decoded))
+      // localStorage.setItem('ss', eventData.ss)
       localStorage.setItem('user_token', eventData.token)
       this.$store.commit('setToken', eventData.token)
       localStorage.setItem('rememberMe', eventData.rememberMe)
+      console.log('USER TYPE: ')
+      console.log(eventData.decoded)
+      this.$store.commit('setUserType', eventData.decoded.status)
       this.$store.commit('setCurrentState', 'loggedin')
       // this.$store.commit('setCurrentPage', 'home')
       this.$events.emit('goToPageEvent', 'home')
+      this.setMessage({'success': 'Login successfully!'})
+      var vm = this
+      setTimeout(() => { vm.$events.$emit('acountUpdate', {}) }, 1000)
     })
 
     this.$events.listen('acountUpdate', eventData => {
@@ -215,10 +227,13 @@ export default {
         console.log('not loggedin, returning')
         return
       }
+      if (this.$store.getters.getUserType === 'POS') {
+        console.log('POS has no access to solidarity account balance')
+        return
+      }
       var vm = this
       let url = urls.API_URL.CurrentUrl + urls.WALLET_BALANCE_URL
-      console.log('http')
-      console.log(http)
+      jwtToken = localStorage.getItem('user_token')
       axios({
         url: url,
         headers: { 'Authorization': 'Bearer ' + jwtToken }
@@ -257,13 +272,13 @@ export default {
     if (rememberMe !== null) {
       // read the saved token from localStorage
       var jwtToken = localStorage.getItem('user_token')
-      var email = localStorage.getItem('user_email')
-      var ss = localStorage.getItem('ss')
+      // var email = localStorage.getItem('user_email')
+      // var ss = localStorage.getItem('ss')
       // if found user is loggedin
       if (jwtToken !== null) {
-        var loginData = {mail: email, password: ss}
+        // var loginData = {mail: email, password: ss}
         localStorage.clear()
-        this.$events.emit('sendLoginEvent', loginData)
+        // this.$events.emit('sendLoginEvent', loginData)
         // // check if the currentState is empty
         // if (this.$store.getters.getCurrentState === '') {
         //   if (email) {
@@ -375,11 +390,27 @@ export default {
             if (resp.data) {
               data = resp.data
               if (data.token) {
-                localStorage.setItem('user_token', data.token)
-                setReponseMessage({'success': 'Login successfully!'})
-                vm.$events.$emit('loginEvent', {token: data.token, user: creds.mail, ss: creds.password, rememberMe: vm.rememberMe})
-                vm.$store.commit('setToken', data.token)
-                vm.$events.$emit('acountUpdate', {})
+                var decoded = jwtDecode(data.token)
+                console.log('JWT DECODED')
+                console.log(decoded)
+                console.log('STATUS: ' + decoded.status)
+                if (vm.$store.getters.getLoginAsUser) {
+                  console.log('You are loggin in as USER')
+                  if (!(decoded.status === 'USER' || decoded.status === 'ADMIN')) {
+                    console.log('But your current user type is ' + decoded.status)
+                    setReponseMessage({'error': 'Sorry, only users are allowed to login through this form'})
+                    return
+                  }
+                } else {
+                  console.log('You are loggin in as POS')
+                  if (decoded.status !== 'POS') {
+                    console.log('But your current user type is ' + decoded.status)
+                    setReponseMessage({'error': 'Sorry, only establishments are allowed to login through this form'})
+                    return
+                  }
+                }
+
+                vm.$events.$emit('loginEvent', {token: data.token, user: creds.mail, /* ss: creds.password, */ rememberMe: vm.rememberMe, 'decoded': decoded})
               }
             }
           }
@@ -512,6 +543,9 @@ export default {
       return this.$store.getters.getLogin
     }
   },
+  destroyed () {
+    localStorage.clear()
+  },
   components: {
     'home-page': Home,
     'share-page': Share,
@@ -525,7 +559,8 @@ export default {
     'donations-page': Donations,
     'solidarity-account-page': SolidarityAccount,
     'settings-page': Settings,
-    'slide-page': Slides
+    'slide-page': Slides,
+    'subscription-page': Subscription
   }
 }
 

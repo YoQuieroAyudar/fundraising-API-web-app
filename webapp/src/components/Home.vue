@@ -1,22 +1,41 @@
 <template>
   <div>
-    <h4>{{$t('hi')}}, {{getUsername}}</h4>
-    <p>
-      {{$t('Thanks for your generous heart. You are changing the world for a lot of people who lost hope')}}
-    </p>
+    <div class="user-home" v-if="$store.getters.getUserType === 'USER' || $store.getters.getUserType === 'ADMIN'">
+      <h4>{{$t('hi')}}, {{getUsername}}</h4>
+      <p>
+        {{$t('Thanks for your generous heart. You are changing the world for a lot of people who lost hope')}}
+      </p>
 
-    <div class="btn-group btn-group-vertical btn-block" role="group" aria-label="home-menu-items">
-      <button class="btn btn-default active">{{ $t('Home') }}</button>
-      <button class="btn btn-default" @click="goToAssociations">{{ $t('Charities') }}</button>
-      <button class="btn btn-default" @click="goToDonations" >{{ $t('My Donations') }}</button>
-      <button class="btn btn-default" @click="goToSolidarityAccount"> {{ $t('Solidarity Account') }} </button>
+      <div class="btn-group btn-group-vertical btn-block" role="group" aria-label="home-menu-items">
+        <button class="btn btn-default active">{{ $t('Home') }}</button>
+        <button class="btn btn-default" @click="goToAssociations">{{ $t('Charities') }}</button>
+        <button class="btn btn-default" @click="goToDonations" >{{ $t('My Donations') }}</button>
+        <button class="btn btn-default" @click="goToSolidarityAccount"> {{ $t('Solidarity Account') }} </button>
+      </div>
+      <p v-if="$store.getters.getBalance">
+        {{ $t('Total Donations') }}: <span class="">&euro; {{$store.getters.getBalance}}</span>
+      </p>
+      <p v-else>
+        <i class="fa fa-spinner fa-spin fa-fw"></i>
+      </p>
     </div>
-    <p v-if="$store.getters.getBalance">
-      {{ $t('Total Donations') }}: <span class="">&euro; {{$store.getters.getBalance}}</span>
-    </p>
-    <p v-else>
-      <i class="fa fa-spinner fa-spin fa-fw"></i>
-    </p>
+    <div class="pos-home" v-else-if="$store.getters.getUserType === 'POS'">
+      <h4>{{$t('hi')}}, {{getUsername}}</h4>
+      <p>
+        {{$t('Thanks for your generous heart. You are changing the world for a lot of people who lost hope')}}
+      </p>
+
+      <div class="btn-group btn-group-vertical btn-block" role="group" aria-label="home-menu-items">
+        <button class="btn btn-default active">{{ $t('Home') }}</button>
+        <button class="btn btn-default" @click="goToAssociations">{{ $t('Charities') }}</button>
+        <button class="btn btn-default" @click="gotToSubscription" >{{ $t('Subscription') }}</button>
+      </div>
+      
+    </div>
+    <div class="" v-else>
+      <p>Sorry! this page don't support your user type</p>
+      <p>Type: {{$store.getters.getUserType}}</p>
+    </div>
   </div>
 </template>
 
@@ -46,19 +65,16 @@ export default {
       // this.$store.commit('setCurrentPage', 'solidarity')
       this.$events.emit('goToPageEvent', 'solidarity')
       this.$store.commit('resetMessages')
+    },
+    gotToSubscription (e) {
+      this.$events.emit('goToPageEvent', 'subscription')
+      this.$store.commit('resetMessages')
     }
   },
   computed: {
     getUsername () {
-      var email = this.$store.getters.getEmail
-      if (!email) {
-        return 'user'
-      }
-      var parts = email.split('@')
-      if (parts > 1) {
-        return parts[0]
-      }
-      return parts[0]
+      var userData = JSON.parse(localStorage.getItem('user_data'))
+      return userData.first_name + ' ' + userData.last_name
     },
     gettingDonationSum () {
       return this.loadingDonationMetrics

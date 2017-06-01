@@ -3,10 +3,14 @@ const state = {
     email: '',
     password: ''
   },
-  jwt_token: ''
+  jwt_token: '',
+  userType: ''
 }
 
 const getters = {
+  getUserType (state) {
+    return state.userType
+  },
   getLogin (state) {
     return state.jwt_token !== ''
   },
@@ -19,6 +23,9 @@ const getters = {
 }
 
 const mutations = {
+  setUserType (state, type) {
+    state.userType = type.toUpperCase()
+  },
   setToken (state, token) {
     state.jwt_token = token
   },
