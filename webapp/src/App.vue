@@ -2,12 +2,13 @@
   <div class="">
     <div class="other">
       <div :dir='currentLangDirection' id='wrapper' v-bind:class='getWidthClass'>
+        <span class='hidden'>{{currentState}}</span>
         <div class='langs btn-group btn-group-xs' role='group'>
           <button type='button' @click="setLang('en')" :class=" lang === 'en' || lang === '' ? 'btn btn-success' : 'btn btn-default'">English</button>
           <button type='button' @click="setLang('es')" :class=" lang === 'es' ? 'btn btn-success' : 'btn btn-default'">Español</button>
           <button type='button' @click="setLang('fr')" :class=" lang === 'fr' ? 'btn btn-success' : 'btn btn-default'">Français</button>
           <button type='button' @click="setLang('ar')" :class=" lang === 'ar' ? 'btn btn-success' : 'btn btn-default'">العربية</button>
-          <span class='hidden'>{{currentState}}</span>
+          <button type='button' @click="setLang('ru')" :class=" lang === 'ru' ? 'btn btn-success' : 'btn btn-default'">русский</button>
         </div>
 
 

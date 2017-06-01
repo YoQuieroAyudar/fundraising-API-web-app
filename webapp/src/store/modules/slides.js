@@ -3,7 +3,7 @@ const state = {
     'en': {
       'slides': [
         {
-          'text': `I create and validate my account. I credit my account with my credit card...`,
+          'text': 'I create and validate my account. I credit my account with my credit card...',
           'style': { backgroundColor: '#FF9933', width: '100%', height: '100%' }
         },
         {
@@ -85,7 +85,7 @@ const getters = {
     if (lang === '' || lang === null) {
       return state.list.en
     }
-    if (state.list[lang] !== null) {
+    if (state.list[lang] !== undefined) {
       return state.list[lang]
     }
     return state.list.en

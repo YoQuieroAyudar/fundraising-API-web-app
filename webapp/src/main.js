@@ -28,6 +28,7 @@ Vue.use(VueCarousel)
 import Spanish from '../translations/locales/es'
 import French from '../translations/locales/fr'
 import Arabic from '../translations/locales/ar'
+import Russian from '../translations/locales/ru'
 
 require('expose-loader?$!expose-loader?jQuery!jquery')
 require('bootstrap-webpack')
@@ -40,6 +41,7 @@ Vue.use(vuexI18n.plugin, store)
 Vue.i18n.add('es', Spanish)
 Vue.i18n.add('fr', French)
 Vue.i18n.add('ar', Arabic)
+Vue.i18n.add('ru', Russian)
 
 Vue.use(VueResource)
 // Vue.use(Vuefire)
