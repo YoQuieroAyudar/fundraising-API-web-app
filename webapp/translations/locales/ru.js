@@ -75,7 +75,11 @@ const localizations = {
   'Login as Establishment': 'Вход для организации',
   'Login as User': 'Вход для пользователя',
   'Signup as Establishment': 'Регистрация для организации',
-  'Signup as User': 'Регистрация для пользователя'
+  'Signup as User': 'Регистрация для пользователя',
+  'I create and validate my account. I credit my account with my credit card...': '',
+  'I can browse non-profit charities and I decide to donate from 2 to 10 euros. I can give as many times as I want...': '',
+  'my donation is transmitted to the charity with 0 comission...': '',
+  'I can ask the charity for my tax certificate.': ''
 }
 
 export default localizations
