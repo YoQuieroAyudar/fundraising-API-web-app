@@ -120,6 +120,24 @@ export default {
   methods: {
     calculateFees () {
       var amount = 10 * this.months * 100
+    },
+    getFees (amount, country) {
+      var vm = this
+      // get fees from API
+      axios({
+        method: 'POST',
+        url: urls.API_URL.CurrentUrl + '/fees',
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') },
+        data: {
+          amount: amount,
+          country: country
+        }
+      }).then(resp => {
+        console.log('fees response')
+        console.log(resp)
+
+        vm.feesData = resp        
+      })
     }
   }
 }
