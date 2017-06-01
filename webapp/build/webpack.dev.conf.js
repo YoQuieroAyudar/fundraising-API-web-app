@@ -28,6 +28,7 @@ module.exports = merge(baseWebpackConfig, {
       { from: 'src/assets/launcher-icon-144.png', to: 'launcher-icon-144.png' },
       { from: 'src/assets/launcher-icon-192.png', to: 'launcher-icon-192.png' },
       { from: 'src/assets/launcher-icon-256.png', to: 'launcher-icon-256.png' },
+      { from: 'src/assets/powered-by-mangopay.png', to: 'powered-by-mangopay.png' },
     ]),
     new webpack.DefinePlugin({
       'process.env': config.dev.env
