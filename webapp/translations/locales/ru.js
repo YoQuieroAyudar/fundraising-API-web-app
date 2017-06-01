@@ -76,10 +76,10 @@ const localizations = {
   'Login as User': 'Вход для пользователя',
   'Signup as Establishment': 'Регистрация для организации',
   'Signup as User': 'Регистрация для пользователя',
-  'I create and validate my account. I credit my account with my credit card...': '',
-  'I can browse non-profit charities and I decide to donate from 2 to 10 euros. I can give as many times as I want...': '',
-  'my donation is transmitted to the charity with 0 comission...': '',
-  'I can ask the charity for my tax certificate.': ''
+  'I create and validate my account. I credit my account with my credit card...': 'Я создаю и подтверждаю аккаунт. Я кредитую аккаунт своей кредитной картой...',
+  'I can browse non-profit charities and I decide to donate from 2 to 10 euros. I can give as many times as I want...': 'Я могу просматривать некоммерческие благотворительные организации и пожертвовать от 2 до 10 евро. Могу жертвовать столько раз, сколько хочу...',
+  'my donation is transmitted to the charity with 0 comission...': 'Моё пожертвование передаётся благотворительной организации с 0 комиссией.',
+  'I can ask the charity for my tax certificate.': 'Я могу запросить в благотворительной организации бумагу для налоговой.'
 }
 
 export default localizations
