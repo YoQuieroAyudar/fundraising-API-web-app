@@ -75,6 +75,10 @@
                     <donations-page></donations-page>
                   </div>
 
+                  <div v-if="$store.getters.getCurrentPage == 'subscription'">
+                    <subscription-page></subscription-page>
+                  </div>
+
                   <div v-if="$store.getters.getCurrentPage == 'solidarity'">
                     <solidarity-account-page></solidarity-account-page>
                   </div>
@@ -129,6 +133,7 @@ import Donations from './components/Donations.vue'
 import SolidarityAccount from './components/SolidarityAccount.vue'
 import Settings from './components/Settings.vue'
 import Slides from './components/Slides.vue'
+import Subscription from './components/Subscription'
 
 import * as urls from './api_variables'
 import axios from 'axios'
@@ -219,6 +224,10 @@ export default {
       console.log('acountUpdate EVENT')
       if (!this.$store.getters.getLogin) {
         console.log('not loggedin, returning')
+        return
+      }
+      if (this.$store.getters.getUserType === 'POS') {
+        console.log('POS has no access to solidarity account balance')
         return
       }
       var vm = this
@@ -549,7 +558,8 @@ export default {
     'donations-page': Donations,
     'solidarity-account-page': SolidarityAccount,
     'settings-page': Settings,
-    'slide-page': Slides
+    'slide-page': Slides,
+    'subscription-page': Subscription
   }
 }
 
