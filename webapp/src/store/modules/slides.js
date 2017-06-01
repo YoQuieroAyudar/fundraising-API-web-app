@@ -85,7 +85,7 @@ const getters = {
     if (lang === '' || lang === null) {
       return state.list.en
     }
-    if (state.list[lang] !== null) {
+    if (state.list[lang] !== undefined) {
       return state.list[lang]
     }
     return state.list.en
