@@ -8,7 +8,7 @@
           <button type='button' @click="setLang('es')" :class=" lang === 'es' ? 'btn btn-success' : 'btn btn-default'">Español</button>
           <button type='button' @click="setLang('fr')" :class=" lang === 'fr' ? 'btn btn-success' : 'btn btn-default'">Français</button>
           <button type='button' @click="setLang('ar')" :class=" lang === 'ar' ? 'btn btn-success' : 'btn btn-default'">العربية</button>
-          <button type='button' @click="setLang('es')" :class=" lang === 'ru' ? 'btn btn-success' : 'btn btn-default'">русский</button>
+          <button type='button' @click="setLang('ru')" :class=" lang === 'ru' ? 'btn btn-success' : 'btn btn-default'">русский</button>
         </div>
 
 
