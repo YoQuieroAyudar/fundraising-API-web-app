@@ -32,7 +32,9 @@
     <div class="POS-login" v-else>
       <login-pos-form></login-pos-form>
     </div>
-    <button class="btn btn-default btn-xs btn-block" @click="gotToLoginPOS">{{$t('Login as Establishment')}}</button>
+    <button class="btn btn-default btn-xs btn-block" @click="gotToLoginPOS">
+      <span v-if="!$store.getters.getLoginAsUser">{{$t('Login as User')}}</span><span v-else>{{$t('Login as Establishment')}}</span>
+    </button>
   </div>
 </template>
 
