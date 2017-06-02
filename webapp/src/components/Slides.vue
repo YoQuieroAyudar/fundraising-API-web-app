@@ -6,7 +6,9 @@
 
       <carousel :autoplay="true" :autoplayTimeout="autoplayTimout" :autoplayHoverPause="true" :navigationEnabled="true" :perPage="1">
         <slide :style="slide.style" :key="index" v-for="(slide, index) in $store.getters.getCurrentSlides.slides">
-          <p class="label" v-html="slide.text"></p>
+          <p class="label"  dir="ltr">
+            <p class="sentence" dir="ltr" v-for="text in seperatedSentences($t(slide.text))">{{text}}</p>
+          </p>
         </slide>
       </carousel>
 
@@ -35,6 +37,15 @@ export default {
     }, autoTimeout)
   },
   methods: {
+    seperatedSentences (value) {
+      console.log('seperatedSentences')
+      if (!value) {
+        return ''
+      }
+      value = value.toString().split('<br>')
+      console.log('length: ' + value.length)
+      return value
+    },
     skipSlide (e) {
       e.preventDefault()
       console.log('skipping slide show')
@@ -72,6 +83,7 @@ export default {
   top: 50%;
   left: 50%;
   padding: 0;
+  padding-top: 10em;
   transform: translate(-50%, -50%);
   width: 100%;
   overflow: hidden;
@@ -92,5 +104,8 @@ export default {
 }
 .slides-area {
 
+}
+.sentence {
+  clear: both;
 }
 </style>
