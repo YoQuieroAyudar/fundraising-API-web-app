@@ -76,9 +76,9 @@ const localizations = {
   'Login as User': 'Acceder',
   'Signup as Establishment': 'Regístrate como establecimiento',
   'Signup as User': 'Regístrate',
-  'I create and validate my account.<br>I credit my account with my credit card...': 'Doy de alta y confirmo por email mi cuenta solidaria yoquieroayudar.<br>Credito mi cuenta con mi tarjeta bancaria...',
-  'I can browse non-profit charities and I decide to donate from 2 to 10 euros. I can give as many times as I want...': 'Puedo consultar los organismos solidarios presentes y hacer un donativo desde 2 hasta 10 euros.<br>Puedo repetirlo tantas veces como quiera...',
-  'my donation is transmitted to the charity with 0 comission...': 'Mi donativo llega a l´organismo solidario sin comisiones...',
+  'I create and validate my account.<br>I credit my account with my credit card...': 'Me doy de alta y confirmo por email mi cuenta solidaria yoquieroayudar.<br>Añado saldo a mi cuenta con mi tarjeta de credito...',
+  'I can browse non-profit charities and I decide to donate from 2 to 10 euros. I can give as many times as I want...': 'Puedo consultar los organismos solidarios registrados y hacer un donativo desde 2 hasta 10 euros.<br>Puedo repetirlo tantas veces como quiera...',
+  'my donation is transmitted to the charity with 0 comission...': 'Mi donativo llega al organismo solidario sin comisiones...',
   'I can ask the charity for my tax certificate.': 'Puedo pedir mi certificado fiscal de donativos.'
 }
 
