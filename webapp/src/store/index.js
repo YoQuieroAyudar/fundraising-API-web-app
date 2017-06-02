@@ -9,6 +9,7 @@ import associations from './modules/associations'
 import donations from './modules/donations'
 import accounts from './modules/accounts'
 import slides from './modules/slides'
+import establishment from './modules/establishment'
 
 Vue.use(Vuex)
 
@@ -21,7 +22,8 @@ export default new Vuex.Store({
     associations,
     donations,
     accounts,
-    slides
+    slides,
+    establishment
   },
   strict: true
 })
