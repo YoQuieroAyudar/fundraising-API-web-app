@@ -3,7 +3,8 @@
     <div class="nav navbar-default">
       <button class="btn btn-danger btn-xs pull-right" :title="$t('Logout')" @click="logoutUser">{{$t('Logout')}}</button>
       <button class="btn btn-default btn-xs pull-right" :title="$t('Settings')" @click="goToSettingsPage"> <i class="fa fa-cog fa-fw"></i> </button>
-      <label :class="balanceLabelClasses" :title="$t('Wallet Balance')" @click="goToSolidarityAccount"> {{$store.getters.getBalance}} {{$t($store.getters.getCurrency)}} </label>
+      <label v-if="$store.getters.getLoginAsUser" :class="balanceLabelClasses" :title="$t('Wallet Balance')" @click="goToSolidarityAccount"> {{$store.getters.getBalance}} {{$t($store.getters.getCurrency)}} </label>
+      <label v-else :class="daysLeftLabelClasses" :title="$t('Days left from subscription')" @click="gotToSubscription"> {{$t('{x} day ::: {x} days', {x: $store.getters.getPosSubscriptionEnd}, $store.getters.getPosSubscriptionEnd)}} </label>
     </div>
   </div>
 </template>
@@ -14,6 +15,10 @@ export default {
     goToSettingsPage (e) {
       // this.$store.commit('setCurrentPage', 'settings')
       this.$events.emit('goToPageEvent', 'settings')
+    },
+    gotToSubscription (e) {
+      this.$events.emit('goToPageEvent', 'subscription')
+      this.$store.commit('resetMessages')
     },
     goToSolidarityAccount (e) {
       e.preventDefault()
@@ -29,6 +34,17 @@ export default {
   computed: {
     walletBalance () {
       return this.$store.getters.getBalance
+    },
+    daysLeftLabelClasses () {
+      var cs = 'label pull-right balance-label label-'
+      if (this.$store.getters.getPosSubscriptionEnd > 15) {
+        cs += 'success'
+      } else if (this.$store.getters.getPosSubscriptionEnd > 7) {
+        cs += 'warning'
+      } else {
+        cs += 'danger'
+      }
+      return cs
     },
     balanceLabelClasses () {
       var cs = 'label pull-right balance-label label-'
