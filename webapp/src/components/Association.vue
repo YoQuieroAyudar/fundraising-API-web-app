@@ -96,8 +96,8 @@ export default {
 .assoc-logo-large {
   float: left;
   margin: .3em;
-  width: 100%;
-  box-shadow: 1px 1px 1px #000;
+  width: 97%;
+  box-shadow: 0 0 1px #000;
 }
 .assoc-labels {
   font-weight: bolder;
@@ -105,8 +105,8 @@ export default {
   margin-left: .5em;
 }
 .donation-section button {
-  padding-left: .5em;
-  padding-right: .5em;
+  padding-left: .25em;
+  padding-right: .25em;
 }
 .donation-section button .donate-btn {
   padding-left: 2em;
