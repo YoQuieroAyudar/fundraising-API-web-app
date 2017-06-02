@@ -1,28 +1,29 @@
 <template>
   <div>
 
-    <p>{{ $t('Your subscription will end in {days} day ::: Your subscription will end in {days} days', {days: getSubscriptionEnd}, 2) }}</p>
 
-    <p>{{$t('You can subscribe to the service for 1 upto 6 months')}}</p>
 
     <form class="form">
+      <p style="margin:.3em;">{{ $t('Your subscription ends in {days} day ::: Your subscription ends in {days} days', {days: getSubscriptionEnd}, getSubscriptionEnd) }}</p>
+
       <div dir="ltr" class="input-group">
         <span class="input-group-addon" :title="$t('Duration')" id="months-addon1"> {{$t('Duration')}}</span>
         <select class="form-control" aria-describedby="nationality-addon1" @change="calculateFees" v-model="months">
           <option selected :value="1">{{$t('1 month')}}</option>
           <option :value="3">{{$t('3 month')}}</option>
           <option :value="6">{{$t('6 month')}}</option>
+          <option :value="12">{{$t('12 month')}}</option>
         </select>
       </div>
-      <div class="input-group" :title="$t('Card Number')">
+      <div dir="ltr" class="input-group" :title="$t('Card Number')">
         <span class="input-group-addon" id="cardNo-addon1"> <i class="fa fa-credit-card fa-fw" aria-hidden="true"></i> </span>
         <input name="cardNo" class="form-control" v-model="cardNo" aria-describedby="cardNo-addon1" type="number" min="1" step=1 :placeholder="$t('Card Number')" :value="cardNo" />
       </div>
-      <div class="input-group" :title="$t('CVV Code')">
+      <div dir="ltr" class="input-group" :title="$t('CVV Code')">
         <span class="input-group-addon" id="CVV-addon1"> <i class="fa fa-key fa-fw" aria-hidden="true"></i> </span>
         <input name="CVV" class="form-control" v-model="CVV" aria-describedby="CVV-addon1" type="number" min="1" step=1 :placeholder="$t('CVV Code')" :value="CVV" />
       </div>
-      <div class="input-group" :title="$t('Expiration Date')">
+      <div dir="ltr" class="input-group" :title="$t('Expiration Date')">
         <span class="input-group-addon" id="expirationDate-addon1"> <i class="fa fa-calendar-times-o fa-fw" aria-hidden="true"></i> </span>
         <div class="">
           <div class="month-input">
@@ -33,24 +34,22 @@
           </div>
         </div>
       </div>
-      <div class="input-group" :title="$t('TAX %')">
+      <div dir="ltr"class="input-group" :title="$t('TAX %')">
         <span class="input-group-addon" id="TAX-addon1"> {{$t('TAX')}} {{taxRate}}%</span>
         <input name="tax" class="form-control" v-model="tax" disabled aria-describedby="TAX-addon1" type="number" min="1" step=1 :placeholder="$t('TAX %')"/>
       </div>
-      <div class="input-group" :title="$t('Fee')">
+      <div dir="ltr" class="input-group" :title="$t('Fee')">
         <span class="input-group-addon" id="Fee-addon1"> {{$t('Fee')}} </span>
         <input name="fee" class="form-control" v-model="fee" disabled aria-describedby="Fee-addon1" type="number" min="1" step=1 :placeholder="$t('Fee')" />
       </div>
-      <div class="input-group" :title="$t('Total Amount Charged')">
+      <div dir="ltr" class="input-group" :title="$t('Total Amount Charged')">
         <span class="input-group-addon" id="ChargedAmount-addon1"> {{$t('Total Amount Charged')}} </span>
         <input name="ChargedAmount" class="form-control" v-model="amount" disabled aria-describedby="ChargedAmount-addon1" type="number" min="1" step=1 :placeholder="$t('Total Amount Charged')" />
       </div>
       <button class="btn btn-primary btn-block recharge-btn" type="button" >{{$t('Pay Subscription')}}</button>
     </form>
 
-    <img class="powered-by-mangopay-img" src="powered-by-mangopay.png" alt="Powered by Mangopay">
-
-    <hr>
+    <img class="powered-by-mangopay-img" src="powered-by-mangopay.png" :alt="$t('Powered by Mangopay')">
 
   </div>
 </template>
@@ -124,7 +123,7 @@ export default {
   computed: {
     getSubscriptionEnd () {
       console.log('getSubscriptionEnd')
-      return parseInt(this.getPosSubscriptionEnd())
+      return parseInt(this.$store.getters.getPosSubscriptionEnd)
     },
     feesValue () {
       let fee = this.feesData.fee
@@ -225,31 +224,7 @@ export default {
         console.log(err)
       })
     },
-    getPosSubscriptionEnd () {
-      console.log('getPosSubscriptionEnd')
-      if (this.Establishment.end_subscription === '') {
-        return 0
-      }
-      var end = new Date(this.Establishment.end_subscription)
-      var now = new Date()
-      var days = Math.floor((end - now) / (3600000 * 24))
-      return days
-    },
     getEstablishment () {
-      // console.log('getEstablishment')
-      // axios({
-      //   method: 'GET',
-      //   url: urls.API_URL.CurrentUrl + '/pos',
-      //   headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
-      // }).then(resp => {
-      //   console.log('POS response')
-      //   console.log(resp.data)
-      //   if (resp.data) {
-      //     if (resp.data.list) {
-      //       this.Establishment = resp.data.list[0]
-      //     }
-      //   }
-      // })
       this.Establishment = this.$store.getters.getEstablishment
     },
     calculateFees () {
