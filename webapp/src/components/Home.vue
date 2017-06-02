@@ -29,8 +29,9 @@
         <button class="btn btn-default active">{{ $t('Home') }}</button>
         <button class="btn btn-default" @click="goToAssociations">{{ $t('Charities') }}</button>
         <button class="btn btn-default" @click="gotToSubscription" >{{ $t('Subscription') }}</button>
+        <button class="btn btn-default" @click="gotToQRCode" >{{ $t('Get QR Code') }}</button>
       </div>
-      
+
     </div>
     <div class="" v-else>
       <p>Sorry! this page don't support your user type</p>
@@ -48,21 +49,23 @@ export default {
     }
   },
   methods: {
+    gotToQRCode (e) {
+      e.preventDefault()
+      this.$events.emit('goToPageEvent', 'qrCode')
+      this.$store.commit('resetMessages')
+    },
     goToAssociations (e) {
       e.preventDefault()
-      // this.$store.commit('setCurrentPage', 'associations')
       this.$events.emit('goToPageEvent', 'associations')
       this.$store.commit('resetMessages')
     },
     goToDonations (e) {
       e.preventDefault()
-      // this.$store.commit('setCurrentPage', 'donations')
       this.$events.emit('goToPageEvent', 'donations')
       this.$store.commit('resetMessages')
     },
     goToSolidarityAccount (e) {
       e.preventDefault()
-      // this.$store.commit('setCurrentPage', 'solidarity')
       this.$events.emit('goToPageEvent', 'solidarity')
       this.$store.commit('resetMessages')
     },
