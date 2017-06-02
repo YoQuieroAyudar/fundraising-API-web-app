@@ -236,20 +236,21 @@ export default {
       return days
     },
     getEstablishment () {
-      console.log('getEstablishment')
-      axios({
-        method: 'GET',
-        url: urls.API_URL.CurrentUrl + '/pos',
-        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
-      }).then(resp => {
-        console.log('POS response')
-        console.log(resp.data)
-        if (resp.data) {
-          if (resp.data.list) {
-            this.Establishment = resp.data.list[0]
-          }
-        }
-      })
+      // console.log('getEstablishment')
+      // axios({
+      //   method: 'GET',
+      //   url: urls.API_URL.CurrentUrl + '/pos',
+      //   headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+      // }).then(resp => {
+      //   console.log('POS response')
+      //   console.log(resp.data)
+      //   if (resp.data) {
+      //     if (resp.data.list) {
+      //       this.Establishment = resp.data.list[0]
+      //     }
+      //   }
+      // })
+      this.Establishment = this.$store.getters.getEstablishment
     },
     calculateFees () {
       console.log('calculateFees:')

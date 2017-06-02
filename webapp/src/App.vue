@@ -80,6 +80,10 @@
                     <subscription-page></subscription-page>
                   </div>
 
+                  <div v-if="$store.getters.getCurrentPage == 'qrCode'">
+                    <qr-code-page></qr-code-page>
+                  </div>
+
                   <div v-if="$store.getters.getCurrentPage == 'solidarity'">
                     <solidarity-account-page></solidarity-account-page>
                   </div>
@@ -135,6 +139,7 @@ import SolidarityAccount from './components/SolidarityAccount.vue'
 import Settings from './components/Settings.vue'
 import Slides from './components/Slides.vue'
 import Subscription from './components/Subscription'
+import QRCode from './components/QRCode.vue'
 
 import * as urls from './api_variables'
 import axios from 'axios'
@@ -147,6 +152,12 @@ const http = axios.create({
 export default {
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
+    this.$events.listen('fetchEstablishmentEvent', eventData => {
+      console.log('fetchEstablishmentEvent')
+      setTimeout(() => {
+        this.fetchEstablishment()
+      }, 1000)
+    })
     this.$events.listen('sendLoginEvent', eventData => {
       console.log('sendLoginEvent')
       this.sendLogin(eventData)
@@ -206,7 +217,10 @@ export default {
       console.log('LOGIN EVENT')
       console.log(eventData)
       localStorage.setItem('user_data', JSON.stringify(eventData.decoded))
-      // localStorage.setItem('ss', eventData.ss)
+      var userType = (eventData.decoded.status || 'USER')
+      if (userType === 'POS') {
+        this.$events.emit('fetchEstablishmentEvent')
+      }
       localStorage.setItem('user_token', eventData.token)
       this.$store.commit('setToken', eventData.token)
       localStorage.setItem('rememberMe', eventData.rememberMe)
@@ -333,6 +347,34 @@ export default {
     }
   },
   methods: {
+    fetchEstablishment () {
+      console.log('getEstablishment')
+      // continue only if the user is loggedin
+      var token = localStorage.getItem('user_token')
+      console.log(token)
+      if (token.length < 1) {
+        return
+      }
+      // only continue if the user is POS
+      if (this.$store.getters.getLoginAsUser) {
+        return
+      }
+      var vm = this
+      axios({
+        method: 'GET',
+        url: urls.API_URL.CurrentUrl + '/pos',
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+      }).then(resp => {
+        console.log('POS response')
+        console.log(resp.data)
+        if (resp.data) {
+          if (resp.data.list) {
+            // this.Establishment = resp.data.list[0]
+            vm.$store.commit('setEstablishment', resp.data.list[0])
+          }
+        }
+      })
+    },
     getQueryParam (n) {
       var half = location.search.split(n + '=')[1]
       return half !== undefined ? decodeURIComponent(half.split('&')[0]) : null
@@ -560,7 +602,8 @@ export default {
     'solidarity-account-page': SolidarityAccount,
     'settings-page': Settings,
     'slide-page': Slides,
-    'subscription-page': Subscription
+    'subscription-page': Subscription,
+    'qr-code-page': QRCode
   }
 }
 
