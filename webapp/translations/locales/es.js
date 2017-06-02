@@ -79,7 +79,22 @@ const localizations = {
   'I create and validate my account.<br>I credit my account with my credit card...': 'Doy de alta y confirmo por email mi cuenta solidaria yoquieroayudar.<br>Credito mi cuenta con mi tarjeta bancaria...',
   'I can browse non-profit charities and I decide to donate from 2 to 10 euros. I can give as many times as I want...': 'Puedo consultar los organismos solidarios presentes y hacer un donativo desde 2 hasta 10 euros.<br>Puedo repetirlo tantas veces como quiera...',
   'my donation is transmitted to the charity with 0 comission...': 'Mi donativo llega a l´organismo solidario sin comisiones...',
-  'I can ask the charity for my tax certificate.': 'Puedo pedir mi certificado fiscal de donativos.'
+  'I can ask the charity for my tax certificate.': 'Puedo pedir mi certificado fiscal de donativos.',
+
+  'Your subscription ends in {days} day ::: Your subscription ends in {days} days': '',
+  'Duration': '',
+  '1 month': '',
+  '3 month': '',
+  '6 month': '',
+  '12 month': '',
+  'Your QR Code': '',
+  'VAT': '',
+  'Total Amount Charged': '',
+  'Pay Subscription': '',
+  'Powered by Mangopay': '',
+  'Sorry, only users are allowed to login through this form': '',
+  'Sorry, only establishments are allowed to login through this form': '',
+  '{x} day ::: {x} days': ''
 }
 
 export default localizations
