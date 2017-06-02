@@ -27,6 +27,16 @@ const getters = {
   },
   getEstablishment (state) {
     return state.Establishment
+  },
+  getPosSubscriptionEnd (state) {
+    console.log('getPosSubscriptionEnd')
+    if (state.Establishment.end_subscription === '') {
+      return 0
+    }
+    var end = new Date(state.Establishment.end_subscription)
+    var now = new Date()
+    var days = Math.floor((end - now) / (3600000 * 24))
+    return days
   }
 }
 
