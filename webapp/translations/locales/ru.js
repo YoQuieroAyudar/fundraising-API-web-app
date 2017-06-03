@@ -81,20 +81,20 @@ const localizations = {
   'my donation is transmitted to the charity with 0 comission...': 'Моё пожертвование передаётся благотворительной организации с 0 комиссией.',
   'I can ask the charity for my tax certificate.': 'Я могу запросить в благотворительной организации бумагу для налоговой.',
 
-  'Your subscription ends in {days} day ::: Your subscription ends in {days} days': '',
-  'Duration': '',
-  '1 month': '',
-  '3 month': '',
-  '6 month': '',
-  '12 month': '',
-  'Your QR Code': '',
-  'VAT': '',
-  'Total Amount Charged': '',
-  'Pay Subscription': '',
-  'Powered by Mangopay': '',
-  'Sorry, only users are allowed to login through this form': '',
-  'Sorry, only establishments are allowed to login through this form': '',
-  '{x} day ::: {x} days': ''
+  'Your subscription ends in {days} day ::: Your subscription ends in {days} days': 'Подписка заканчивается через {days} день ::: Подписка заканчивается через {days} дней',
+  'Duration': 'Длительность',
+  '1 month': '1 месяц',
+  '3 month': '3 месяца',
+  '6 month': '6 месяцев',
+  '12 month': '12 месяцев',
+  'Your QR Code': 'Ваш QR-код',
+  'VAT': 'НДС',
+  'Total Amount Charged': 'Общая начисленная сумма',
+  'Pay Subscription': 'Оплатить подписку',
+  'Powered by Mangopay': 'Работает на Mangopay',
+  'Sorry, only users are allowed to login through this form': 'Извините, только пользователи могут входить через эту форму',
+  'Sorry, only establishments are allowed to login through this form': 'Извините, только организации могут входить через эту форму',
+  '{x} day ::: {x} days': '{x} день ::: {x} дней'
 }
 
 export default localizations
