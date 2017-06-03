@@ -81,20 +81,20 @@ const localizations = {
   'my donation is transmitted to the charity with 0 comission...': 'Je demande à l´organisme d\'intérêt général mon certificat fiscal.',
   'I can ask the charity for my tax certificate.': 'Mon don est transmis à l\'organisme solidaire sans comissions...',
 
-  'Your subscription ends in {days} day ::: Your subscription ends in {days} days': '',
-  'Duration': '',
-  '1 month': '',
-  '3 month': '',
-  '6 month': '',
-  '12 month': '',
-  'Your QR Code': '',
-  'VAT': '',
-  'Total Amount Charged': '',
-  'Pay Subscription': '',
-  'Powered by Mangopay': '',
-  'Sorry, only users are allowed to login through this form': '',
-  'Sorry, only establishments are allowed to login through this form': '',
-  '{x} day ::: {x} days': ''
+  'Your subscription ends in {days} day ::: Your subscription ends in {days} days': 'Votre abonnement se termine dans {jours} jour ::: Votre abonnement se termine en {jours} jours',
+  'Duration': 'Durée',
+  '1 month': '1 mois',
+  '3 month': '3 mois',
+  '6 month': '6 mois',
+  '12 month': '12 mois',
+  'Your QR Code': 'Votre code QR',
+  'VAT': 'TVA',
+  'Total Amount Charged': 'Montant total facturé',
+  'Pay Subscription': 'Payer l´abonnement',
+  'Powered by Mangopay': 'Propulsé par Mangopay',
+  'Sorry, only users are allowed to login through this form': 'Désolé, seuls les utilisateurs peuvent se connecter via ce formulaire',
+  'Sorry, only establishments are allowed to login through this form': 'Désolé, seuls les établissements peuvent se connecter via ce formulaire '',
+  '{x} day ::: {x} days': '{X} jour ::: {x} jours'
 }
 
 export default localizations
