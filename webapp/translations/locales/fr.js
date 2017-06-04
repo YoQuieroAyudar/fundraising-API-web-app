@@ -81,7 +81,7 @@ const localizations = {
   'my donation is transmitted to the charity with 0 comission...': 'Je demande à l´organisme d\'intérêt général mon certificat fiscal.',
   'I can ask the charity for my tax certificate.': 'Mon don est transmis à l\'organisme solidaire sans comissions...',
 
-  'Your subscription ends in {days} day ::: Your subscription ends in {days} days': 'Votre abonnement se termine dans {jours} jour ::: Votre abonnement se termine en {jours} jours',
+  'Your subscription ends in {days} day ::: Your subscription ends in {days} days': 'Votre abonnement se termine dans {days} jour ::: Votre abonnement se termine en {days} jours',
   'Duration': 'Durée',
   '1 month': '1 mois',
   '3 month': '3 mois',
@@ -93,8 +93,11 @@ const localizations = {
   'Pay Subscription': 'Payer l´abonnement',
   'Powered by Mangopay': 'Propulsé par Mangopay',
   'Sorry, only users are allowed to login through this form': 'Désolé, seuls les utilisateurs peuvent se connecter via ce formulaire',
-  'Sorry, only establishments are allowed to login through this form': 'Désolé, seuls les établissements peuvent se connecter via ce formulaire '',
-  '{x} day ::: {x} days': '{X} jour ::: {x} jours'
+  'Sorry, only establishments are allowed to login through this form': 'Désolé, seuls les établissements peuvent se connecter via ce formulaire ',
+  '{x} day ::: {x} days': '{x} jour ::: {x} jours',
+  'Subscription': '',
+  'My QR Code': '',
+  'TAX': ''
 }
 
 export default localizations
