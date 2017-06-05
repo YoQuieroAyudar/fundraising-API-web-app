@@ -4,7 +4,7 @@
     <div class="modal-wrapper">
       <div class="modal-inner">
         <vodal :show="showTerms" :width="250" :height="300" animation="rotate" @hide="showTerms = false">
-            <terms-modal :selected_country="signup.POS_country"></terms-modal>
+            <terms-modal :selected_country="signup.country"></terms-modal>
         </vodal>
       </div>
     </div>
@@ -69,9 +69,9 @@
       </div>
 
       <div dir="ltr" class="input-group">
-        <span class="input-group-addon" :title="$t('Country')" id="POS_country-addon1"> <i class="fa fa-globe fa-fw" aria-hidden="true"></i> </span>
-        <select class="form-control" aria-describedby="POS_country-addon1" v-model="signup.POS_country">
-          <option v-for="country in $store.getters.getAllCountries" :disabled="country.code == '_'" :selected="country.code == 'ES'" @changed="signup.POS_country = country.code" :value="country.code">{{$t(country.name)}}</option>
+        <span class="input-group-addon" :title="$t('Country')" id="country-addon1"> <i class="fa fa-globe fa-fw" aria-hidden="true"></i> </span>
+        <select class="form-control" aria-describedby="country-addon1" v-model="signup.country">
+          <option v-for="country in $store.getters.getAllCountries" :disabled="country.code == '_'" :selected="country.code == 'ES'" @changed="signup.country = country.code" :value="country.code">{{$t(country.name)}}</option>
         </select>
       </div>
 
