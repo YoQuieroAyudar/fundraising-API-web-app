@@ -81,7 +81,7 @@ const localizations = {
   'my donation is transmitted to the charity with 0 comission...': 'Je demande à l´organisme d\'intérêt général mon certificat fiscal.',
   'I can ask the charity for my tax certificate.': 'Mon don est transmis à l\'organisme solidaire sans comissions...',
 
-  'Your subscription ends in {days} day ::: Your subscription ends in {days} days': 'Votre abonnement se termine dans {days} jour ::: Votre abonnement se termine en {days} jours',
+  'Your subscription ends in {days} day ::: Your subscription ends in {days} days': 'Votre abonnement se termine dans {days} jour ::: Votre abonnement se termine dans {days} jours',
   'Duration': 'Durée',
   '1 month': '1 mois',
   '3 month': '3 mois',
