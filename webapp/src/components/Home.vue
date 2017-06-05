@@ -30,6 +30,7 @@
         <button class="btn btn-default" @click="goToAssociations">{{ $t('Charities') }}</button>
         <button class="btn btn-default" @click="gotToSubscription" >{{ $t('Subscription') }}</button>
         <button class="btn btn-default" @click="gotToQRCode" >{{ $t('My QR Code') }}</button>
+        <button class="btn btn-default" @click="gotToMap" >{{ $t('Map') }}</button>
       </div>
 
     </div>
@@ -49,6 +50,11 @@ export default {
     }
   },
   methods: {
+    gotToMap (e) {
+      e.preventDefault()
+      this.$events.emit('goToPageEvent', 'map')
+      this.$store.commit('resetMessages')
+    },
     gotToQRCode (e) {
       e.preventDefault()
       this.$events.emit('goToPageEvent', 'qrCode')
