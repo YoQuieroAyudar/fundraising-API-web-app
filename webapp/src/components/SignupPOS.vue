@@ -4,7 +4,7 @@
     <div class="modal-wrapper">
       <div class="modal-inner">
         <vodal :show="showTerms" :width="250" :height="300" animation="rotate" @hide="showTerms = false">
-            <terms-modal :selected_country="signup.POS_country"></terms-modal>
+            <terms-modal :selected_country="signup.country"></terms-modal>
         </vodal>
       </div>
     </div>
@@ -69,25 +69,25 @@
       </div>
 
       <div dir="ltr" class="input-group">
-        <span class="input-group-addon" :title="$t('Country')" id="POS_country-addon1"> <i class="fa fa-globe fa-fw" aria-hidden="true"></i> </span>
-        <select class="form-control" aria-describedby="POS_country-addon1" v-model="signup.POS_country">
-          <option v-for="country in $store.getters.getAllCountries" :disabled="country.code == '_'" :selected="country.code == 'ES'" @changed="signup.POS_country = country.code" :value="country.code">{{$t(country.name)}}</option>
+        <span class="input-group-addon" :title="$t('Country')" id="country-addon1"> <i class="fa fa-globe fa-fw" aria-hidden="true"></i> </span>
+        <select class="form-control" aria-describedby="country-addon1" v-model="signup.country">
+          <option v-for="country in $store.getters.getAllCountries" :disabled="country.code == '_'" :selected="country.code == 'ES'" @changed="signup.country = country.code" :value="country.code">{{$t(country.name)}}</option>
         </select>
       </div>
 
       <div dir="ltr" class="input-group">
-        <span class="input-group-addon" :title="$t('City')" id="citry-addon1"> <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> </span>
-        <input name="city" class="form-control" v-model="signup.citry" aria-describedby="citry-addon1" type="text" :placeholder="$t('City')" :value="signup.citry" />
+        <span class="input-group-addon" :title="$t('City')" id="city-addon1"> <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> </span>
+        <input name="city" class="form-control" v-model="signup.city" @input="updateAddress" aria-describedby="city-addon1" type="text" :placeholder="$t('City')" :value="signup.city" />
       </div>
 
       <div dir="ltr" class="input-group">
-        <span class="input-group-addon" :title="$t('Zip Code')" id="POS_zip-addon1"> <i class="fa fa-map-pin fa-fw" aria-hidden="true"></i> </span>
-        <input name="first_name" class="form-control" v-model="signup.POS_zip" aria-describedby="POS_zip-addon1" type="number" :placeholder="$t('Zip Code')" :value="signup.POS_zip" />
+        <span class="input-group-addon" :title="$t('Zip Code')" id="zip_code-addon1"> <i class="fa fa-map-pin fa-fw" aria-hidden="true"></i> </span>
+        <input name="first_name" class="form-control" v-model="signup.zip_code"  @input="updateAddress" aria-describedby="zip_code-addon1" type="number" :placeholder="$t('Zip Code')" :value="signup.zip_code" />
       </div>
 
       <div dir="ltr" class="input-group">
-        <span class="input-group-addon" :title="$t('Address')" id="POS_address-addon1"> <i class="fa fa-map-signs fa-fw" aria-hidden="true"></i> </span>
-        <input name="first_name" class="form-control" v-model="signup.POS_address" aria-describedby="POS_address-addon1" type="text" :placeholder="$t('Address')" :value="signup.POS_address" />
+        <span class="input-group-addon" :title="$t('Address')" id="address-addon1"> <i class="fa fa-map-signs fa-fw" aria-hidden="true"></i> </span>
+        <input name="first_name" class="form-control" v-model="signup.address"  @input="updateAddress" aria-describedby="address-addon1" type="text" :placeholder="$t('Address')" :value="signup.address" />
       </div>
 
 
@@ -113,7 +113,7 @@
 
     </form>
 
-    <button class="btn btn-default btn-xs btn-block" @click="goToSignupPage">{{$t('Signup as User')}}</button>
+    <button class="btn btn-default btn-xs btn-block" :disabled="addressIsValid" @click="goToSignupPage">{{$t('Signup as User')}}</button>
 
   </div>
 </template>
@@ -165,6 +165,7 @@ a {
 </style>
 
 <script>
+import axios from 'axios'
 import * as urls from '../api_variables'
 import Terms from './Terms.vue'
 
@@ -183,22 +184,54 @@ export default {
 
         POS_name: '',
         cif: '',
-        POS_zip: '',
-        country: '',
-        POS_address: '',
+        zip_code: 0,
+        country: 'ES',
+        address: '',
+        city: 'Madrid',
+
+        geo_x: 0,
+        geo_y: 0,
 
         mail: '',
         password: ''
       },
       readTerms: false,
       acceptTerms: false,
-      showTerms: false
+      showTerms: false,
+      addressIsValid: false,
+      updateAddressTimer: 0
     }
   },
   computed: {
 
   },
   methods: {
+    getLocationFromGoogle (address) {
+      var vm = this
+      var key = 'AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es'
+      var url = `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${key}`
+      axios({
+        method: 'GET',
+        url: url
+      }).then(resp => {
+        console.log('Geocode response')
+        console.log(resp)
+        if (resp.data && resp.data.results.length > 0 && resp.data.results[0].geometry.location) {
+          var location = resp.data.results[0].geometry.location
+          console.log(location)
+          vm.signup.geo_x = location.lng
+          vm.signup.geo_y = location.lat
+        }
+      })
+    },
+    updateAddress () {
+      clearTimeout(this.updateAddressTimer)
+      this.updateAddressTimer = setTimeout(() => {
+        var address = (this.signup.address + ', ' + this.signup.zip_code + ' ' + this.signup.city).replace(' ', '+')
+        console.log('updateAddress: ' + address)
+        this.getLocationFromGoogle(address)
+      }, 1000)
+    },
     toggleTermsModal (e) {
       e.preventDefault()
       this.showTerms = !this.showTerms
@@ -262,6 +295,8 @@ export default {
       // to solve the API date parsing problem I've to append this
       creds.birthday += 'T15:04:05+00:00'
       console.log(creds.birthday)
+      // to solve "json: cannot unmarshal string into Go struct field SignupRequest.zip_code of type int"
+      creds.zip_code = parseInt(creds.zip_code)
       // var setMyToken = this.setUserToken
       var setReponseMessage = this.setMessage
       var goToLoginPOSPage = () => {
@@ -282,7 +317,7 @@ export default {
             if (resp.data) {
               data = resp.data
               if (data.message) {
-                setReponseMessage({'success': 'Signed up successfully!'})
+                vm.setMessage({'success': 'Signed up successfully!'})
                 goToLoginPOSPage()
               }
             }
