@@ -54,7 +54,7 @@ const localizations = {
   'Error recharging account': 'Erreur de recharge du compte',
   'Recharge successful': 'Recharge réussie',
   'Login': 'Connectez-vous',
-  'Logout': 'Fermer la session',
+  'Logout': 'Fermer',
   'EURO': 'Euro',
   'Donation Destination': 'Destinataire du don',
   'Sorry, your donation to this charity failed': 'Son don n\'a pu aboutir',
