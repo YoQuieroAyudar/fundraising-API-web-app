@@ -18,10 +18,14 @@ const state = {
     cif: '0',
     end_subscription: '',
     Subscriptions: null
-  }
+  },
+  UserEstablishments: []
 }
 
 const getters = {
+  getUserEstablishments (state) {
+    return state.UserEstablishments
+  },
   getPOSQRCode (state) {
     return state.Establishment.qr_code
   },
@@ -41,6 +45,9 @@ const getters = {
 }
 
 const mutations = {
+  setUserEstablishments (state, list) {
+    state.UserEstablishments = list
+  },
   setEstablishment (state, pos) {
     state.Establishment = pos
   }
