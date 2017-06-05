@@ -84,6 +84,10 @@
                     <qr-code-page></qr-code-page>
                   </div>
 
+                  <div v-if="$store.getters.getCurrentPage == 'map'">
+                    <map-page></map-page>
+                  </div>
+
                   <div v-if="$store.getters.getCurrentPage == 'solidarity'">
                     <solidarity-account-page></solidarity-account-page>
                   </div>
@@ -140,6 +144,7 @@ import Settings from './components/Settings.vue'
 import Slides from './components/Slides.vue'
 import Subscription from './components/Subscription'
 import QRCode from './components/QRCode.vue'
+import Map from './components/Map.vue'
 
 import * as urls from './api_variables'
 import axios from 'axios'
@@ -603,7 +608,8 @@ export default {
     'settings-page': Settings,
     'slide-page': Slides,
     'subscription-page': Subscription,
-    'qr-code-page': QRCode
+    'qr-code-page': QRCode,
+    'map-page': Map
   }
 }
 
