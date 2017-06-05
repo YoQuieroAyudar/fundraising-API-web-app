@@ -1,5 +1,5 @@
 <template>
-  <div class="logout-area">
+  <div v-if="$store.getters.getCurrentState !== 'login' && $store.getters.getCurrentState !== ''" class="logout-area">
     <div class="nav navbar-default">
       <button class="btn btn-danger btn-xs pull-right" :title="$t('Logout')" @click="logoutUser">{{$t('Logout')}}</button>
       <button class="btn btn-default btn-xs pull-right" :title="$t('Settings')" @click="goToSettingsPage"> <i class="fa fa-cog fa-fw"></i> </button>
@@ -86,6 +86,7 @@ h5 {
 }
 .logout-area {
   height: 2em;
+  float: right;
 }
 .logout-area .nav {
   height: 2.2em;
