@@ -11,6 +11,7 @@
         <button class="btn btn-default" @click="goToAssociations">{{ $t('Charities') }}</button>
         <button class="btn btn-default" @click="goToDonations" >{{ $t('My Donations') }}</button>
         <button class="btn btn-default" @click="goToSolidarityAccount"> {{ $t('Solidarity Account') }} </button>
+        <button class="btn btn-default" @click="gotToSupportivePOSMap" >{{ $t('Supportive Establishments') }}</button>
       </div>
       <p v-if="$store.getters.getBalance">
         {{ $t('Total Donations') }}: <span class="">&euro; {{$store.getters.getBalance}}</span>
@@ -53,6 +54,11 @@ export default {
     gotToMap (e) {
       e.preventDefault()
       this.$events.emit('goToPageEvent', 'map')
+      this.$store.commit('resetMessages')
+    },
+    gotToSupportivePOSMap (e) {
+      e.preventDefault()
+      this.$events.emit('goToPageEvent', 'supportive-pos')
       this.$store.commit('resetMessages')
     },
     gotToQRCode (e) {
