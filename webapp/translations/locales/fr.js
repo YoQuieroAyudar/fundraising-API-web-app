@@ -95,9 +95,9 @@ const localizations = {
   'Sorry, only users are allowed to login through this form': 'Désolé, seuls les utilisateurs peuvent se connecter via ce formulaire',
   'Sorry, only establishments are allowed to login through this form': 'Désolé, seuls les établissements peuvent se connecter via ce formulaire ',
   '{x} day ::: {x} days': '{x} jour ::: {x} jours',
-  'Subscription': '',
-  'My QR Code': '',
-  'TAX': ''
+  'Subscription': 'Abonnement',
+  'My QR Code': 'Mon code QR',
+  'TAX': 'TVA'
 }
 
 export default localizations
