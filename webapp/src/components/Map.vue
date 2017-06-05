@@ -7,7 +7,7 @@
     <div v-if="markers.length > 0" class="map1">
       <gmap-map
         :center="center"
-        :zoom="7"
+        :zoom="12"
         style="width: 500px; height: 300px"
       >
         <gmap-marker
@@ -16,7 +16,7 @@
           :position="m.position"
           :clickable="true"
           :draggable="true"
-          
+
         ></gmap-marker>
       </gmap-map>
     </div>

@@ -6,7 +6,7 @@
     <div class="map1">
       <gmap-map
         :center="center"
-        :zoom="6"
+        :zoom="12"
         style="width: 500px; height: 300px"
       >
         <gmap-marker
