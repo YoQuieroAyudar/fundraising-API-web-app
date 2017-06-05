@@ -80,7 +80,7 @@ const localizations = {
   'I can browse non-profit charities and I decide to donate from 2 to 10 euros. I can give as many times as I want...': 'Puedo consultar los organismos solidarios registrados y hacer un donativo desde 2 hasta 10 euros.<br>Puedo repetirlo tantas veces como quiera...',
   'my donation is transmitted to the charity with 0 comission...': 'Mi donativo llega al organismo solidario sin comisiones...',
   'I can ask the charity for my tax certificate.': 'Puedo pedir mi certificado fiscal de donativos.',
-  'Your subscription ends in {days} day ::: Your subscription ends in {days} days': 'Su suscripción termina en {days} día :: Su suscripción termina en {days} días',
+  'Your subscription ends in {days} day ::: Your subscription ends in {days} days': 'Su suscripción termina en {days} día ::: Su suscripción termina en {days} días',
   'Duration': 'Duración',
   '1 month': '1 mes',
   '3 month': '3 meses',
