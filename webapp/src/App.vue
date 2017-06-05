@@ -343,12 +343,17 @@ export default {
     console.log('langFromUrl')
     console.log(langFromUrl)
 
-    var singupAsPOS = this.getQueryParam('pos-signup')
-    console.log('SIGNUP POST VALUE:', singupAsPOS)
-    if (singupAsPOS) {
-      this.$store.commit('setLoginAsUser', false)
-      this.$events.emit('goToPageEvent', 'signup')
-    }
+    var vm = this
+
+    setTimeout(() => {
+      var singupAsPOS = this.getQueryParams('pos-signup')
+      console.log('SIGNUP POST VALUE:', singupAsPOS)
+      if (singupAsPOS) {
+        vm.showSlide = false
+        vm.$store.commit('setLoginAsUser', false)
+        vm.$events.emit('goToPageEvent', 'signup')
+      }
+    }, 1000)
     this.$events.listen('testEvent', eventData => {
       console.log('testEvent')
       console.log(eventData)
@@ -408,6 +413,13 @@ export default {
     },
     getQueryParam (n) {
       var half = location.search.split(n + '=')[1]
+      return half !== undefined ? decodeURIComponent(half.split('&')[0]) : null
+    },
+    getQueryParams (n) {
+      console.log('getQueryParams')
+      console.log(location.search)
+      var half = location.search.split(n + '=')[1]
+      console.log(half)
       return half !== undefined ? decodeURIComponent(half.split('&')[0]) : null
     },
     setMessage (response) {
