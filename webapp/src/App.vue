@@ -351,7 +351,7 @@ export default {
       if (singupAsPOS) {
         vm.showSlide = false
         vm.$store.commit('setLoginAsUser', false)
-        vm.$events.emit('goToPageEvent', 'signup')
+        vm.$events.emit('goToPageEvent', 'signupPOS')
       }
     }, 1000)
     this.$events.listen('testEvent', eventData => {
