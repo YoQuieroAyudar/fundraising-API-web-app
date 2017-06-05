@@ -88,6 +88,10 @@
                     <map-page></map-page>
                   </div>
 
+                  <div v-if="$store.getters.getCurrentPage == 'supportive-pos'">
+                    <supportive-pos-page></supportive-pos-page>
+                  </div>
+
                   <div v-if="$store.getters.getCurrentPage == 'solidarity'">
                     <solidarity-account-page></solidarity-account-page>
                   </div>
@@ -145,6 +149,7 @@ import Slides from './components/Slides.vue'
 import Subscription from './components/Subscription'
 import QRCode from './components/QRCode.vue'
 import Map from './components/Map.vue'
+import SupportivePOS from './components/SupportivePOS.vue'
 
 import * as urls from './api_variables'
 import axios from 'axios'
@@ -352,6 +357,18 @@ export default {
     }
   },
   methods: {
+    fetchUserEstablishments () {
+      var vm = this
+      axios({
+        method: 'GET',
+        url: urls.API_URL.CurrentUrl + '/pos',
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+      }).then(resp => {
+        console.log(resp)
+        console.log(resp.data.list)
+        vm.$store.commit('setUserEstablishments', resp.data.list)
+      })
+    },
     fetchEstablishment () {
       console.log('getEstablishment')
       // continue only if the user is loggedin
@@ -368,7 +385,7 @@ export default {
       axios({
         method: 'GET',
         url: urls.API_URL.CurrentUrl + '/pos',
-        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+        headers: { 'Authorization': 'Bearer ' + token }
       }).then(resp => {
         console.log('POS response')
         console.log(resp.data)
@@ -609,7 +626,8 @@ export default {
     'slide-page': Slides,
     'subscription-page': Subscription,
     'qr-code-page': QRCode,
-    'map-page': Map
+    'map-page': Map,
+    'supportive-pos-page': SupportivePOS
   }
 }
 
