@@ -25,10 +25,16 @@
             <message-items></message-items>
             <div class='top-container'>
               <div class='top-menu'>
-                <button v-if="($store.getters.getCurrentPage != 'login' && $store.getters.getCurrentPage != '' && $store.getters.getCurrentPage != 'home' && $store.getters.getCurrentState != '' && $store.getters.getCurrentPage != 'signup')" class='btn btn-plain btn-back' @click='goToPrevPage'>
-                  <i v-if="langDirection == 'rtl'" class='fa fa-angle-right fa-fw'></i>
-                  <i v-else class='fa fa-angle-left fa-fw'></i>
-                </button>
+
+                <div class='logout-area'>
+                  <button v-if="($store.getters.getCurrentPage != 'login' && $store.getters.getCurrentPage != '' && $store.getters.getCurrentPage != 'home' && $store.getters.getCurrentState != '' && $store.getters.getCurrentPage != 'signup')" class='btn btn-plain btn-back' @click='goToPrevPage'>
+                    <i v-if="langDirection == 'rtl'" class='fa fa-angle-right fa-fw'></i>
+                    <i v-else class='fa fa-angle-left fa-fw'></i>
+                  </button>
+
+                  <span class='hidden'>{{getMyBalance}}</span>
+                  <logout-button></logout-button>
+                </div>
               </div>
             </div>
 
@@ -50,10 +56,6 @@
               </div>
 
               <div class='loggedin-area' v-else >
-                <div class='logout-area'>
-                  <span class='hidden'>{{getMyBalance}}</span>
-                  <logout-button></logout-button>
-                </div>
 
                 <div class=''>
                   <div v-if="$store.getters.getCurrentPage == 'home' || $store.getters.getCurrentPage == ''" >
@@ -340,6 +342,13 @@ export default {
     this.$events.emit('changeLanguage', langFromUrl)
     console.log('langFromUrl')
     console.log(langFromUrl)
+
+    var singupAsPOS = this.getQueryParam('pos-signup')
+    console.log('SIGNUP POST VALUE:', singupAsPOS)
+    if (singupAsPOS) {
+      this.$store.commit('setLoginAsUser', false)
+      this.$events.emit('goToPageEvent', 'signup')
+    }
     this.$events.listen('testEvent', eventData => {
       console.log('testEvent')
       console.log(eventData)
