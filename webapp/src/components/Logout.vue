@@ -86,12 +86,13 @@ h5 {
 }
 .logout-area {
   height: 2em;
-  float: right;
 }
 .logout-area .nav {
   height: 2.2em;
   padding: .3em;
-  margin:.3em;
+  margin:0;
+  margin-top: .3em;
+  margin-right: .1em;
   border-radius: .3em;
   box-shadow: inset 0 0 .3em #AAA;
 }
