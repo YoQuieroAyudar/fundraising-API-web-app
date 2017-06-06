@@ -343,17 +343,19 @@ export default {
     console.log('langFromUrl')
     console.log(langFromUrl)
 
-    var vm = this
+    var singupAsPOS = Boolean(this.getQueryParams('pos-signup'))
+    console.log('SIGNUP POST VALUE:', singupAsPOS)
+    var singupAsUser = Boolean(this.getQueryParams('user-signup'))
+    var loginAsPOS = Boolean(this.getQueryParams('pos-login'))
 
-    setTimeout(() => {
-      var singupAsPOS = this.getQueryParams('pos-signup')
-      console.log('SIGNUP POST VALUE:', singupAsPOS)
-      if (singupAsPOS) {
-        vm.showSlide = false
-        vm.$store.commit('setLoginAsUser', false)
-        vm.$events.emit('goToPageEvent', 'signupPOS')
-      }
-    }, 1000)
+    if (singupAsPOS) {
+      this.goDirectlyTo('signupPOS')
+    } else if (singupAsUser) {
+      this.goDirectlyTo('signup')
+    } else if (loginAsPOS) {
+      this.goDirectlyTo('loginPOS')
+    }
+
     this.$events.listen('testEvent', eventData => {
       console.log('testEvent')
       console.log(eventData)
@@ -371,6 +373,25 @@ export default {
     }
   },
   methods: {
+    goDirectlyTo (pageName) {
+      var vm = this
+      vm.$store.commit('setLoading', true)
+      vm.$store.commit('setShowSlides', false)
+
+      // signupPOS or loginPOS set the loginAsUser to false
+      var loginAsUser = !((pageName === 'signupPOS') || (pageName === 'loginPOS'))
+
+      // there is no page named loginPOS, only login with loginAsUser set to false
+      pageName = pageName === 'loginPOS' ? 'login' : pageName
+
+      console.log('goDirectlyTo: ' + pageName + ' loginAsUser: ' + loginAsUser)
+
+      setTimeout(() => {
+        vm.$store.commit('setLoginAsUser', loginAsUser)
+        vm.$events.emit('goToPageEvent', pageName)
+        vm.$store.commit('setLoading', false)
+      }, 500)
+    },
     fetchUserEstablishments () {
       var vm = this
       axios({
