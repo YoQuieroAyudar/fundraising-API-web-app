@@ -6,9 +6,12 @@
 
       <carousel :autoplay="true" :autoplayTimeout="autoplayTimout" :autoplayHoverPause="true" :navigationEnabled="true" :perPage="1">
         <slide :style="slide.style" :key="index" v-for="(slide, index) in $store.getters.getCurrentSlides.slides">
-          <p class="label"  dir="ltr">
+          <div v-if="index === 0" class="slider-image">
+            <img :src="$store.getters.getSlideImage.img" alt="">
+          </div>
+          <div v-else class="label"  dir="ltr">
             <p class="sentence" dir="ltr" v-for="text in seperatedSentences($t(slide.text))">{{text}}</p>
-          </p>
+          </div>
         </slide>
       </carousel>
 
@@ -58,7 +61,14 @@ export default {
     }
   },
   computed: {
-
+    getSlideImage () {
+      var lang = localStorage.getItem('user_locale')
+      if (lang === 'es') {
+        return 'slide-img-es.png'
+      } else {
+        return 'slide-img-fr.png'
+      }
+    }
   },
   components: {
     Carousel,
@@ -83,7 +93,7 @@ export default {
   top: 50%;
   left: 50%;
   padding: 0;
-  padding-top: 10em;
+  /*padding-top: 10em;*/
   transform: translate(-50%, -50%);
   width: 100%;
   overflow: hidden;
@@ -97,6 +107,8 @@ export default {
   // word-break: break-all;
   white-space: normal;
   line-height: 1.5em;
+  margin-top: 0;
+  margin-bottom: -3em;
 }
 .wrapword{
 
@@ -105,7 +117,13 @@ export default {
 .slides-area {
 
 }
-.sentence {
+/*.sentence {
   clear: both;
+}*/
+.slider-image img {
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  border: 1px solid #000;
 }
 </style>

@@ -36,6 +36,9 @@ var webpackConfig = merge(baseWebpackConfig, {
       { from: 'src/assets/launcher-icon-144.png', to: 'launcher-icon-144.png' },
       { from: 'src/assets/launcher-icon-192.png', to: 'launcher-icon-192.png' },
       { from: 'src/assets/launcher-icon-256.png', to: 'launcher-icon-256.png' },
+      { from: 'src/assets/powered-by-mangopay.png', to: 'powered-by-mangopay.png' },
+      { from: 'src/assets/slide-img-es.png', to: 'slide-img-es.png' },
+      { from: 'src/assets/slide-img-fr.png', to: 'slide-img-fr.png' },
     ]),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({

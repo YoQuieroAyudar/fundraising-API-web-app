@@ -91,7 +91,7 @@ import axios from 'axios'
 // var jwtToken = localStorage.getItem('user_token')
 
 // const http = axios.create({
-//   headers: { 'Authorization': 'Bearer ' + jwtToken }
+//   headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
 // })
 
 export default {
@@ -154,11 +154,10 @@ export default {
       if (!this.rechargeFormIsValid()) {
         return
       }
-      var jwtToken = localStorage.getItem('user_token')
       var vm = this
 
-      // this.$http.headers.common['Authorization'] = 'Bearer ' + jwtToken
-      var authorizationHeader = 'Bearer ' + jwtToken
+      // this.$http.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('user_token')
+      var authorizationHeader = 'Bearer ' + localStorage.getItem('user_token')
       var options = {
         url: urls.API_URL.CurrentUrl + urls.REGISTER_CARD_URL,
         method: 'POST',
@@ -211,7 +210,6 @@ export default {
         mangoParameters += (mangoParameters.length > 0 ? '&' : '') + key + '=' + encodeURIComponent(mangopayData[key])
       }
 
-      // var jwtToken = localStorage.getItem('user_token')
       var vm = this
       var instance = axios.create({
         headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }

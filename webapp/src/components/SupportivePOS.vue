@@ -2,6 +2,8 @@
   <div>
     <h1>{{currentPOS.name}}</h1>
 
+    <pre>{{$data}}</pre>
+
     <span class="hidden">{{getMapCenter}}:{{getMarkers}}</span>
     <div class="map1">
       <gmap-map
@@ -61,18 +63,29 @@ export default {
     },
     getMapCenter () {
       // retuns long and lat of the POS
+      console.log('getMapCenter')
+      console.log(this.currentPOS.geo_x)
+      console.log(this.currentPOS.geo_y)
       var long, lat
       if (this.currentPOS.geo_x === 0 && this.currentPOS.geo_y === 0) {
+        console.log('NO geo_x or geo_y')
         var countryLocation = this.getCountryLocation(this.currentPOS.country)
         long = countryLocation.long
         lat = countryLocation.lat
+        console.log('LONG: ' + long)
+        console.log('LAT: ' + lat)
       } else {
+        console.log('THERE is geo_x and geo_y')
         long = this.currentPOS.geo_x
         lat = this.currentPOS.geo_y
+        console.log('LONG: ' + long)
+        console.log('LAT: ' + lat)
       }
+
       this.center.lat = lat
       this.center.lng = long // {lng: long, lat: lat}
-      this.markers = {position: this.center}
+      this.markers = []
+      this.markers.push({position: this.center})
       return this.center
     },
     getMarkers () {
