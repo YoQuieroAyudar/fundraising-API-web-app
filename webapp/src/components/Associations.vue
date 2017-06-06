@@ -19,11 +19,6 @@
 import * as urls from '../api_variables'
 
 import axios from 'axios'
-var jwtToken = localStorage.getItem('user_token')
-
-const http = axios.create({
-  headers: { 'Authorization': `Bearer ${jwtToken}` }
-})
 
 export default {
   beforeMount () {
@@ -58,7 +53,14 @@ export default {
       console.log('Searching for ' + country)
       let url = urls.API_URL.CurrentUrl + urls.ASSO_SEARCH_URL + '?country=' + country
 
-      http.post(url, {POS_id: 1, country: country}).then(resp => {
+      var jwtToken = localStorage.getItem('user_token')
+
+      axios({
+        method: 'POST',
+        url: url,
+        data: {POS_id: 1, country: country},
+        headers: { 'Authorization': `Bearer ${jwtToken}` }
+      }).then(resp => {
         console.log(resp.status)
         console.log(resp.statusText)
         console.log(resp)

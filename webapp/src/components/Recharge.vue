@@ -75,10 +75,9 @@ h5 {
 import * as urls from '../api_variables'
 
 import axios from 'axios'
-var jwtToken = localStorage.getItem('user_token')
 
 // const http = axios.create({
-//   headers: { 'Authorization': 'Bearer ' + jwtToken }
+//   headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
 // })
 
 export default {
@@ -110,11 +109,10 @@ export default {
       if (!this.rechargeFormIsValid()) {
         return
       }
-      var jwtToken = localStorage.getItem('user_token')
       var vm = this
 
-      // this.$http.headers.common['Authorization'] = 'Bearer ' + jwtToken
-      var authorizationHeader = 'Bearer ' + jwtToken
+      // this.$http.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('user_token')
+      var authorizationHeader = 'Bearer ' + localStorage.getItem('user_token')
       var options = {
         url: urls.API_URL.CurrentUrl + urls.REGISTER_CARD_URL,
         method: 'POST',
@@ -161,10 +159,9 @@ export default {
         mangoParameters += (mangoParameters.length > 0 ? '&' : '') + key + '=' + encodeURIComponent(mangopayData[key])
       }
 
-      // var jwtToken = localStorage.getItem('user_token')
       var vm = this
 
-      // this.$http.headers.common['Authorization'] = 'Bearer ' + jwtToken
+      // this.$http.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('user_token')
       // delete this.$http.headers.common['Authorization']
       // console.log('headers:')
       // console.log(this.$http.headers)
@@ -192,7 +189,6 @@ export default {
     },
     rechargeAccount (token) {
       token = 'data=' + token
-      // var jwtToken = localStorage.getItem('user_token')
       var vm = this
       var rechargeData = { amount: parseFloat(this.amount) * 100, token: token }
 
@@ -201,7 +197,7 @@ export default {
         method: 'post',
         url: url,
         data: rechargeData,
-        headers: { 'Authorization': 'Bearer ' + jwtToken }
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
       }).then(resp => {
         vm.$store.commit('setLoading', false)
         vm.$events.$emit('acountUpdate', {})
@@ -224,7 +220,7 @@ export default {
         vm.$store.commit('setLoading', false)
       })
 
-      // this.$http.headers.common['Authorization'] = 'Bearer ' + jwtToken
+      // this.$http.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('user_token')
       //
       // this.$http.post(url, rechargeData)
       //   .then(resp => {
