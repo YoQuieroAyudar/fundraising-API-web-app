@@ -23,11 +23,11 @@
 
           <div v-else >
             <message-items></message-items>
-            <div class='top-container'>
+            <div class='top-container'  v-if="($store.getters.getCurrentPage != 'login' && $store.getters.getCurrentPage != '' && $store.getters.getCurrentState != '' && $store.getters.getCurrentPage != 'signup')">
               <div class='top-menu'>
 
                 <div class='logout-area'>
-                  <button :style="langDirection == 'rtl' ? 'float:right' : 'float:left'" v-if="($store.getters.getCurrentPage != 'login' && $store.getters.getCurrentPage != '' && $store.getters.getCurrentPage != 'home' && $store.getters.getCurrentState != '' && $store.getters.getCurrentPage != 'signup')" class='btn btn-plain btn-back' @click='goToPrevPage'>
+                  <button :style="langDirection == 'rtl' ? 'float:right' : 'float:left'" class='btn btn-plain btn-back' @click='goToPrevPage'>
                     <i v-if="langDirection == 'rtl'" class='fa fa-angle-right fa-fw'></i>
                     <i v-else class='fa fa-angle-left fa-fw'></i>
                   </button>
