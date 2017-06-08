@@ -219,6 +219,21 @@ export default {
         console.log('status = ', resp.status)
         console.log('is 3DS = ', rechargeData.mount >= 10)
         console.log(resp.data)
+        if (resp.data && resp.data.transtion_type === '3DS') {
+          if (resp.data.verification_url === '') {
+            vm.$store.commit('setError', 'Sorry, no 3DS link to complete the transacion')
+            return
+          }
+          localStorage.setItem('lastBalance', this.$store.getters.getBalance)
+          var win = window.open(resp.data.verification_url)
+          if (window.focus) {
+            win.focus()
+          }
+          vm.$store.commit('setLoading', false)
+          vm.$events.$emit('acountUpdate', {loop: true, timeOut: 5000})
+          vm.$store.commit('setSuccess', 'Started secure transacion please complete process in the new window. If your browser does not allow popups please try to give this app do that.')
+          return
+        }
         vm.$store.commit('setLoading', false)
         vm.$events.$emit('acountUpdate', {})
         vm.$store.commit('setSuccess', 'Recharge successful')

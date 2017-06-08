@@ -1,22 +1,44 @@
 import * as urls from '../../api_variables'
 
 const state = {
-  Version: '0.6.41',
+  Version: '0.6.5',
   CurrentState: '',
   CurrentPage: '',
   PreviousPage: '',
   NexPage: '',
   PageHistory: [],
   loading: false,
+  notLoading: true,
+  loadingStartedAt: null,
+  loadingNormalSeconds: 5,
   api_url: 'http://localhost:8080',
   testMode: false,
   // version number click counter
   VNCC: 0,
   loginAsUser: true,
-  showSlide: true
+  showSlide: true,
+  waitingFor: {}
 }
 
 const getters = {
+  waitingForEstablishment (state) {
+    return state.waitingFor.POS
+  },
+  waitingForBalance (state) {
+    return state.waitingFor.balance
+  },
+  getStillLoading (state) {
+    if (state.notLoading) {
+      console.log('notLoading = ' + state.notLoading)
+      return false
+    }
+    var now = new Date()
+    var diff = now - state.loadingStartedAt
+    var normal = state.loadingNormalSeconds * 1000
+    console.log('diff = ' + diff + ' normal = ' + normal)
+    console.log('stillLoading = ' + (diff > normal))
+    return diff > normal
+  },
   getShowSlide (state) {
     return state.showSlide
   },
@@ -47,6 +69,12 @@ const getters = {
 }
 
 const mutations = {
+  setWaitingForEstablishment (state, context) {
+    state.waitingFor.POS = Boolean(context)
+  },
+  setWaitingForBalance (state, context) {
+    state.waitingFor.balance = Boolean(context)
+  },
   setShowSlides (state, context) {
     state.showSlide = Boolean(context)
   },
@@ -86,7 +114,11 @@ const mutations = {
     state.CurrentPage = newPage
   },
   setLoading (state, newValue) {
+    if (newValue) {
+      state.loadingStartedAt = new Date()
+    }
     state.loading = newValue
+    state.notLoading = !state.loading
   },
   goToPreviousPage (state) {
     if (state.PreviousPage) {

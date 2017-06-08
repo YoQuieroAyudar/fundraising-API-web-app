@@ -171,10 +171,23 @@ export default {
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
     this.$events.listen('fetchEstablishmentEvent', eventData => {
+      if (this.$store.getters.waitingForEstablishment) {
+        return
+      }
+      var tOut = 1000
+      if (eventData && eventData.timeOut !== undefined) {
+        tOut = eventData.timeOut
+      }
+      this.$store.commit('setWaitingForEstablishment', true)
       console.log('fetchEstablishmentEvent')
       setTimeout(() => {
         this.fetchEstablishment()
-      }, 1000)
+        if (eventData.loop && !this.$store.getters.waitingForEstablishment) {
+          setTimeout(() => {
+            this.$events.emit('fetchEstablishmentEvent', {loop: eventData.loop, timeOut: eventData.timeOut})
+          })
+        }
+      }, tOut)
     })
     this.$events.listen('sendLoginEvent', eventData => {
       console.log('sendLoginEvent')
@@ -254,6 +267,7 @@ export default {
     })
 
     this.$events.listen('acountUpdate', eventData => {
+      this.$store.commit('setWaitingForBalance', true)
       console.log('acountUpdate EVENT')
       if (!this.$store.getters.getLogin) {
         console.log('not loggedin, returning')
@@ -270,6 +284,7 @@ export default {
         url: url,
         headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
       }).then(resp => {
+        this.$store.commit('setWaitingForBalance', false)
         if (!resp.data) {
           console.log('no response data')
           return
@@ -278,12 +293,27 @@ export default {
         console.log(resp.data)
         if (resp.data.balance) {
           console.log('no balance data')
+          if (eventData.loop && !vm.$store.getters.waitingForBalance) {
+            setTimeout(function () {
+              vm.$events.$emit('acountUpdate', {loop: eventData.loop, timeOut: eventData.timeOut})
+            }, eventData.timeOut)
+          }
           vm.$store.commit('setCurrency', resp.data.balance.Currency)
           vm.$store.commit('setBalance', resp.data.balance.Amount)
+          if (localStorage.getItem('lastBalance') < resp.data.balance.Amount) {
+            localStorage.setItem('lastBalance', null)
+            vm.$store.commit('setSuccess', 'Your balance increased!')
+          }
         }
       }).catch(err => {
+        this.$store.commit('setWaitingForBalance', false)
         console.log('axios failed')
         console.log(err.data)
+        if (eventData.loop && !vm.$store.getters.waitingForBalance) {
+          setTimeout(function () {
+            vm.$events.$emit('acountUpdate', {loop: eventData.loop, timeOut: eventData.timeOut})
+          }, eventData.timeOut)
+        }
       })
     })
   },
@@ -428,14 +458,21 @@ export default {
         url: urls.API_URL.CurrentUrl + '/pos',
         headers: { 'Authorization': 'Bearer ' + token }
       }).then(resp => {
+        vm.$store.commit('setWaitingForEstablishment', false)
         console.log('POS response')
         console.log(resp.data)
         if (resp.data) {
           if (resp.data.list) {
             // this.Establishment = resp.data.list[0]
-            vm.$store.commit('setEstablishment', resp.data.list[0])
+            if (resp.data.list.length) {
+              vm.$store.commit('setEstablishment', resp.data.list[0])
+            }
           }
         }
+      }).catch(err => {
+        vm.$store.commit('setWaitingForEstablishment', false)
+        console.log('fetchEstablishment error')
+        console.log(err)
       })
     },
     getQueryParam (n) {

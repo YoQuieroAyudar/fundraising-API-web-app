@@ -214,30 +214,38 @@ export default {
       console.log('paySubscription')
       console.log(months)
       console.log(data)
-      // this.$store.commit('setSuccess', 'Subscription successful')
+      var vm = this
 
-      this.$events.emit('openWindowEvent', {
-        url: '',
-        title: 'Pay Subscription',
-        loadCallback: function (e) {
-          console.log('Pay Subscription page is loading')
-          console.log(e)
-          axios({
-            url: urls.API_URL.CurrentUrl + '/pay_subscription',
-            data: {months: months, token: data},
-            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
-          }).then(resp => {
-            console.log('child window response')
-            console.log(resp)
-          }).catch(err => {
-            console.log('child window error')
-            console.log(err)
-          })
-        },
-        closeCallback: function (e) {
-          console.log('closing child window')
-          console.log(e)
+      axios({
+        method: 'POST',
+        url: urls.API_URL.CurrentUrl + '/pay_subscription',
+        data: {months: months, token: data},
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+      }).then(resp => {
+        console.log('paySubscription response')
+        console.log(resp)
+        console.log('status = ', resp.status)
+        console.log(resp.data)
+        if (resp.data && resp.data.transtion_type === '3DS') {
+          if (resp.data.verification_url === '') {
+            vm.$store.commit('setError', 'Sorry, no 3DS link to complete the transacion')
+            return
+          }
+          localStorage.setItem('lastSubscriptionDays', this.$store.getters.getBalance)
+          var win = window.open(resp.data.verification_url)
+          if (window.focus) {
+            win.focus()
+          }
+          vm.$store.commit('setLoading', false)
+          vm.$events.$emit('acountUpdate', {loop: true, timeOut: 5000})
+          vm.$store.commit('setSuccess', 'Started secure transacion please complete process in the new window. If your browser does not allow popups please try to give this app do that.')
+          return
         }
+        vm.$store.commit('setLoading', false)
+        vm.$store.commit('setSuccess', 'Subscription successful')
+      }).catch(err => {
+        console.log('paySubscription error')
+        console.log(err)
       })
     },
     sendToMangopay (accessKeyRef, cardRegistrationURL, data, cardNo, expirationDate, CVV, paySubscriptionCallback) {
