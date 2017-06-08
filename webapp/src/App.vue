@@ -157,15 +157,19 @@ import SupportivePOS from './components/SupportivePOS.vue'
 
 import * as urls from './api_variables'
 import axios from 'axios'
-var jwtToken = localStorage.getItem('user_token')
+// var jwtToken = localStorage.getItem('user_token')
 
-const http = axios.create({
-  headers: { 'Authorization': 'Bearer ' + jwtToken }
-})
+// const http = axios.create({
+//   headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+// })
 
 export default {
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
+    this.$events.listen('openWindowEvent', eventData => {
+      console.log('openWindowEvent')
+      this.openWindow(eventData)
+    })
     this.$events.listen('fetchEstablishmentEvent', eventData => {
       console.log('fetchEstablishmentEvent')
       setTimeout(() => {
@@ -261,10 +265,10 @@ export default {
       }
       var vm = this
       let url = urls.API_URL.CurrentUrl + urls.WALLET_BALANCE_URL
-      jwtToken = localStorage.getItem('user_token')
+      // jwtToken = localStorage.getItem('user_token')
       axios({
         url: url,
-        headers: { 'Authorization': 'Bearer ' + jwtToken }
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
       }).then(resp => {
         if (!resp.data) {
           console.log('no response data')
@@ -375,6 +379,20 @@ export default {
     }
   },
   methods: {
+    openWindow (data) {
+      var win = window.open(data.url, data.title)
+      if (window.focus) {
+        win.focus()
+      }
+
+      if (typeof data.loadCallback === 'function') {
+        win.onload = data.loadCallback
+      }
+      if (typeof data.closeCallback === 'function') {
+        win.onunload = data.closeCallback
+      }
+      console.log('Opened new window for url:' + data.url)
+    },
     goDirectlyTo (pageName) {
       var vm = this
       vm.$store.commit('setLoading', true)
@@ -539,7 +557,10 @@ export default {
       var vm = this
       let url = urls.API_URL.CurrentUrl + urls.DONATION_URL
 
-      http.get(url).then(resp => {
+      axios({
+        url: url,
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+      }).then(resp => {
         console.log('call success')
         console.log(resp.data)
         if (resp.data) {

@@ -46,7 +46,7 @@
         <span class="input-group-addon" id="ChargedAmount-addon1"> {{$t('Total Amount Charged')}} </span>
         <input name="ChargedAmount" class="form-control" v-model="amount" disabled aria-describedby="ChargedAmount-addon1" type="number" min="1" step=1 :placeholder="$t('Total Amount Charged')" />
       </div>
-      <button class="btn btn-primary btn-block recharge-btn" type="button" >{{$t('Pay Subscription')}}</button>
+      <button class="btn btn-primary btn-block recharge-btn" type="button" @click="sendSubscription" >{{$t('Pay Subscription')}}</button>
     </form>
 
     <img class="powered-by-mangopay-img" src="powered-by-mangopay.png" :alt="$t('Powered by Mangopay')">
@@ -144,6 +144,24 @@ export default {
     }
   },
   methods: {
+    rechargeFormIsValid () {
+      var isValid = true
+      // if (this.amount > parseFloat(this.$store.getters.getBalance)) {
+      //   this.$store.commit('setError', 'Amount you want to recharge is greater than your balance')
+      // }
+      if (this.cardNo.length < 16) {
+        this.$store.commit('setError', 'The card number is too short')
+        isValid = false
+      }
+      var thisYear = new Date().getFullYear()
+      var y = thisYear - 2000
+      if (this.expirationDate.month < 1 && this.expirationDate.month > 12 || this.expirationDate.year < y) {
+        this.$store.commit('setError', 'The expiration date is either invalid or already expired')
+        isValid = false
+      }
+
+      return isValid
+    },
     sendSubscription () {
       // this starts a chain of processes that call one another.
       console.log('sendSubscription')
@@ -192,9 +210,35 @@ export default {
       // resp.data.accessKeyRef, resp.data.cardRegistrationURL, resp.data.data
       this.sendToMangopay(data.accessKeyRef, data.cardRegistrationURL, data.data, this.cardNo, this.expirationDate, this.CVV, this.paySubscription)
     },
-    paySubscription (month, data) {
+    paySubscription (months, data) {
       console.log('paySubscription')
-      this.$store.commit('setSuccess', 'Subscription successful')
+      console.log(months)
+      console.log(data)
+      // this.$store.commit('setSuccess', 'Subscription successful')
+
+      this.$events.emit('openWindowEvent', {
+        url: '',
+        title: 'Pay Subscription',
+        loadCallback: function (e) {
+          console.log('Pay Subscription page is loading')
+          console.log(e)
+          axios({
+            url: urls.API_URL.CurrentUrl + '/pay_subscription',
+            data: {months: months, token: data},
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+          }).then(resp => {
+            console.log('child window response')
+            console.log(resp)
+          }).catch(err => {
+            console.log('child window error')
+            console.log(err)
+          })
+        },
+        closeCallback: function (e) {
+          console.log('closing child window')
+          console.log(e)
+        }
+      })
     },
     sendToMangopay (accessKeyRef, cardRegistrationURL, data, cardNo, expirationDate, CVV, paySubscriptionCallback) {
       console.log('sendToMangopay')
@@ -214,7 +258,9 @@ export default {
       var instance = axios.create({
         headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
       })
-      instance.post(cardRegistrationURL, mangopayData).then(resp => {
+      instance.post(cardRegistrationURL + '?' + mangoParameters, mangopayData).then(resp => {
+        console.log('sendToMangopay response')
+        console.log(JSON.stringify(resp))
         paySubscriptionCallback(vm.months, resp.data)
       }).catch(err => {
         vm.$store.commit('setLoading', false)
