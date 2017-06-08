@@ -19,6 +19,10 @@
         <div class='content' v-else>
           <div class='loading' v-if="$store.getters.getLoading">
             <h1><i class='fa fa-spinner fa-spin fa-fw'></i> {{$t('Loading')}}...</h1>
+            <div class="loading-takes-long" v-if="$store.getters.getStillLoading">
+              {{$t('Loading is taking longer than normal')}}
+              <a class="" type="button" @click="$store.commit('setLoading', false);$events.emit('goToPageEvent', '')" name="button">Go home</a>
+            </div>
           </div>
 
           <div v-else >
@@ -166,10 +170,6 @@ import axios from 'axios'
 export default {
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
-    this.$events.listen('openWindowEvent', eventData => {
-      console.log('openWindowEvent')
-      this.openWindow(eventData)
-    })
     this.$events.listen('fetchEstablishmentEvent', eventData => {
       console.log('fetchEstablishmentEvent')
       setTimeout(() => {
@@ -379,20 +379,6 @@ export default {
     }
   },
   methods: {
-    openWindow (data) {
-      var win = window.open(data.url, data.title)
-      if (window.focus) {
-        win.focus()
-      }
-
-      if (typeof data.loadCallback === 'function') {
-        win.onload = data.loadCallback
-      }
-      if (typeof data.closeCallback === 'function') {
-        win.onunload = data.closeCallback
-      }
-      console.log('Opened new window for url:' + data.url)
-    },
     goDirectlyTo (pageName) {
       var vm = this
       vm.$store.commit('setLoading', true)
