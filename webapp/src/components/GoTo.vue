@@ -4,7 +4,7 @@
       <h3>{{$t(title)}}</h3>
       <p>{{message}}</p>
       <a class="btn btn-success btn-block" :href="url" target="_blank">{{$t(buttonText)}}</a>
-      <a class="btn btn-danger btn-block" target="_blank" @click="$store.commit('setShowGoTo', false)">{{$t('Close')}}</a>
+      <a class="btn btn-danger btn-block" target="_blank" @click="closeMe">{{$t('Close')}}</a>
 
 
   </div>
@@ -21,9 +21,9 @@ export default {
       type: String,
       default: 'Click below'
     },
-    url: {
+    targetUrl: {
       type: String,
-      default: '#'
+      required: true
     },
     buttonText: {
       type: String,
@@ -32,14 +32,18 @@ export default {
   },
   data () {
     return {
-
+      url: this.targetUrl
     }
   },
   watch: {
 
   },
   methods: {
-
+    closeMe () {
+      this.$events.$emit('acountUpdate', {})
+      this.$events.$emit('fetchEstablishmentEvent', {})
+      this.$store.commit('setShowGoTo', false)
+    }
   },
   computed: {
 
