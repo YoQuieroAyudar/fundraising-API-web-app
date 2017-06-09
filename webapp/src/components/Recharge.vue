@@ -1,14 +1,6 @@
 <template>
   <div>
 
-    <div class="modal-wrapper">
-      <div class="modal-inner">
-        <vodal :show="$store.getters.getShowGoTo" :width="250" :height="300" animation="rotate" @hide="$store.commit('setShowGoTo', false)">
-            <go-to-box title="3DS Transaction" message="You are redirected to complete the 3DS secure transacion. If you want the transacion to complete continue to the following page and come back when done" :url="secureUrl"></go-to-box>
-        </vodal>
-      </div>
-    </div>
-
     <p>{{ $t('Account balance') }}: {{$store.getters.getBalance}} {{ $t($store.getters.getCurrency) }} </p>
 
     <form class="form">
@@ -77,10 +69,15 @@ h5 {
 .powered-by-mangopay-img {
   width: 100%;
 }
+.modal-wrapper {
+  position: relative;
+  z-index: 1001;
+}
 </style>
 
 <script>
 import * as urls from '../api_variables'
+import GoTo from './GoTo.vue'
 
 import axios from 'axios'
 
@@ -226,22 +223,35 @@ export default {
         // if code is 200, it means normal recharge if the code is 301 it means the payment is 3DS, which returns the
         console.log(resp)
         console.log('status = ', resp.status)
-        console.log('is 3DS = ', rechargeData.mount >= 10)
+        console.log('is 3DS = ', resp.data.transtion_type === '3DS')
         console.log(resp.data)
-        if (resp.data && resp.data.transtion_type === '3DS') {
-          if (resp.data.verification_url === '') {
+        console.log('resp.data.transtion_type = ' + resp.data.transtion_type)
+        if (resp.data.transtion_type === '3DS') {
+          console.log('initiating 3DS transacion')
+          var link = resp.data.verification_url
+          if (link.length < 5) {
+            console.log('link is too short')
             vm.$store.commit('setError', 'Sorry, no 3DS link to complete the transacion')
             return
           }
+          console.log('setting last balance')
           localStorage.setItem('lastBalance', this.$store.getters.getBalance)
-          this.secureUrl = resp.data.verification_url
-          this.$store.commit('setShowGoTo', true)
+          console.log('link = ' + link)
+          vm.secureUrl = link
+          console.log('secureUrl = ' + vm.secureUrl)
+          // vm.$store.commit('setShowGoTo', true)
+          vm.$events.emit('showGoToModalEvent', {
+            url: link,
+            message: 'You are redirected to complete the 3DS secure transacion. If you want the transacion to complete continue to the following page and come back when done',
+            title: '3DS Transaction',
+            buttonText: 'Continue'
+          })
           // var win = window.open(resp.data.verification_url)
           // if (window.focus) {
           //   win.focus()
           // }
           vm.$store.commit('setLoading', false)
-          vm.$events.$emit('acountUpdate', {loop: true, timeOut: 5000})
+          vm.$events.$emit('acountUpdate', {})
           vm.$store.commit('setSuccess', 'Started secure transacion please complete process in the new window after you click continue')
           return
         }
@@ -320,6 +330,9 @@ export default {
       // start the process that calls other calls until the recharge is complete
       this.registerCard()
     }
+  },
+  components: {
+    'go-to-box': GoTo
   }
 }
 </script>

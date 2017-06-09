@@ -27,6 +27,15 @@
 
           <div v-else >
             <message-items></message-items>
+
+            <div class="modal-wrapper">
+              <div class="modal-inner">
+                <vodal :show="$store.getters.getShowGoTo" :width="250" :height="300" animation="rotate" @hide="$store.commit('setShowGoTo', false)">
+                    <go-to-box :title="goToModalData.title" :message="goToModalData.message" :targetUrl="goToModalData.url"></go-to-box>
+                </vodal>
+              </div>
+            </div>
+
             <div class='top-container'  v-if="($store.getters.getCurrentPage != 'login' && $store.getters.getCurrentPage != '' && $store.getters.getCurrentState != '' && $store.getters.getCurrentPage != 'signup')">
               <div class='top-menu'>
 
@@ -158,6 +167,7 @@ import Subscription from './components/Subscription'
 import QRCode from './components/QRCode.vue'
 import Map from './components/Map.vue'
 import SupportivePOS from './components/SupportivePOS.vue'
+import GoTo from './components/GoTo.vue'
 
 import * as urls from './api_variables'
 import axios from 'axios'
@@ -170,8 +180,13 @@ import axios from 'axios'
 export default {
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
+    this.$events.listen('showGoToModalEvent', eventData => {
+      this.goToModalData = eventData
+      this.$store.commit('setShowGoTo', true)
+    })
     this.$events.listen('fetchEstablishmentEvent', eventData => {
       if (this.$store.getters.waitingForEstablishment) {
+        console.log('already waiting for the last requested Establishment')
         return
       }
       var tOut = 1000
@@ -182,7 +197,7 @@ export default {
       console.log('fetchEstablishmentEvent')
       setTimeout(() => {
         this.fetchEstablishment()
-        if (eventData && eventData.loop && !this.$store.getters.waitingForEstablishment) {
+        if (eventData && eventData.loop) {
           setTimeout(() => {
             this.$events.emit('fetchEstablishmentEvent', {loop: eventData.loop, timeOut: eventData.timeOut})
           })
@@ -273,8 +288,11 @@ export default {
         console.log('not loggedin, returning')
         return
       }
+      if (this.$store.getters.waitingForBalance) {
+        console.log('already waiting for balance request')
+        return
+      }
       if (this.$store.getters.getUserType === 'POS') {
-        console.log('POS has no access to solidarity account balance')
         return
       }
       var vm = this
@@ -293,7 +311,7 @@ export default {
         console.log(resp.data)
         if (resp.data.balance) {
           console.log('no balance data')
-          if (eventData.loop && !vm.$store.getters.waitingForBalance) {
+          if (eventData.loop && eventData.loop !== false) {
             setTimeout(function () {
               vm.$events.$emit('acountUpdate', {loop: eventData.loop, timeOut: eventData.timeOut})
             }, eventData.timeOut)
@@ -302,7 +320,7 @@ export default {
           vm.$store.commit('setBalance', resp.data.balance.Amount)
           if (localStorage.getItem('lastBalance') < resp.data.balance.Amount) {
             localStorage.setItem('lastBalance', null)
-            vm.$store.commit('setSuccess', 'Your balance increased!')
+            // vm.$store.commit('setSuccess', 'Your balance increased!')
           }
         }
       }).catch(err => {
@@ -405,7 +423,13 @@ export default {
       langDirection: '',
       helpLink: 'https://github.com/YoQuieroAyudar/fundraising-API-web-app/wiki/Help',
       lang: 'en',
-      showSlide: true
+      showSlide: true,
+      goToModalData: {
+        url: '#link',
+        title: 'Go To Page',
+        message: 'Go to this page',
+        buttonText: 'Continue'
+      }
     }
   },
   methods: {
@@ -715,7 +739,8 @@ export default {
     'subscription-page': Subscription,
     'qr-code-page': QRCode,
     'map-page': Map,
-    'supportive-pos-page': SupportivePOS
+    'supportive-pos-page': SupportivePOS,
+    'go-to-box': GoTo
   }
 }
 
