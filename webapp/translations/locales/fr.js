@@ -112,6 +112,7 @@ const localizations = {
   'Days left from subscription': 'Jours restants de l\'abonnement',
   'Unable to set associations list': 'Impossible de définir la liste des associations',
   'Error while loading associations list': 'Erreur lors du chargement de la liste des associations'
+
 }
 
 export default localizations

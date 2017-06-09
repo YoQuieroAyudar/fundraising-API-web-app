@@ -104,7 +104,7 @@ const localizations = {
   'Sorry, no 3DS link to complete the transaction': '',
   'Map': '',
   'Version': '',
-  'ou are redirected to complete the 3DS secure transaction. If you want the transaction to complete continue to the following page and come back when done': '',
+  'You are redirected to complete the 3DS secure transaction. If you want the transaction to complete continue to the following page and come back when done': '',
   '3DS Transaction': '',
   'Continue': '',
   'Skip': '',
