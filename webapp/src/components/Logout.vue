@@ -1,5 +1,5 @@
 <template>
-  <div class="logout-area">
+  <div v-if="$store.getters.getCurrentState !== 'login' && $store.getters.getCurrentState !== ''" class="logout-area">
     <div class="nav navbar-default">
       <button class="btn btn-danger btn-xs pull-right" :title="$t('Logout')" @click="logoutUser">{{$t('Logout')}}</button>
       <button class="btn btn-default btn-xs pull-right" :title="$t('Settings')" @click="goToSettingsPage"> <i class="fa fa-cog fa-fw"></i> </button>
@@ -19,12 +19,14 @@ export default {
     gotToSubscription (e) {
       this.$events.emit('goToPageEvent', 'subscription')
       this.$store.commit('resetMessages')
+      this.$events.$emit('fetchEstablishmentEvent', {})
     },
     goToSolidarityAccount (e) {
       e.preventDefault()
       // this.$store.commit('setCurrentPage', 'solidarity')
       this.$events.emit('goToPageEvent', 'solidarity')
       this.$store.commit('resetMessages')
+      this.$events.$emit('acountUpdate', {})
     },
     logoutUser (e) {
       e.preventDefault()
@@ -90,7 +92,9 @@ h5 {
 .logout-area .nav {
   height: 2.2em;
   padding: .3em;
-  margin:.3em;
+  margin:0;
+  margin-top: .3em;
+  margin-right: .1em;
   border-radius: .3em;
   box-shadow: inset 0 0 .3em #AAA;
 }

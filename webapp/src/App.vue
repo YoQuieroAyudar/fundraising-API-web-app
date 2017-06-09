@@ -19,16 +19,37 @@
         <div class='content' v-else>
           <div class='loading' v-if="$store.getters.getLoading">
             <h1><i class='fa fa-spinner fa-spin fa-fw'></i> {{$t('Loading')}}...</h1>
+            <div class="loading-takes-long" v-if="$store.getters.getStillLoading">
+              {{$t('Loading is taking longer than normal')}}
+              <a class="" type="button" @click="$store.commit('setLoading', false);$events.emit('goToPageEvent', '')" name="button">Go home</a>
+            </div>
           </div>
 
           <div v-else >
             <message-items></message-items>
-            <div class='top-container'>
+
+            <div class="modal-wrapper">
+              <div class="modal-inner">
+                <vodal :show="$store.getters.getShowGoTo" :width="250" :height="300" animation="rotate" @hide="$store.commit('setShowGoTo', false)">
+                    <go-to-box :title="goToModalData.title" :message="goToModalData.message" :targetUrl="goToModalData.url"></go-to-box>
+                </vodal>
+              </div>
+            </div>
+
+            <div class='top-container'  v-if="($store.getters.getCurrentPage != 'login' && $store.getters.getCurrentPage != '' && $store.getters.getCurrentState != '' && $store.getters.getCurrentPage != 'signup')">
               <div class='top-menu'>
-                <button v-if="($store.getters.getCurrentPage != 'login' && $store.getters.getCurrentPage != '' && $store.getters.getCurrentPage != 'home' && $store.getters.getCurrentState != '' && $store.getters.getCurrentPage != 'signup')" class='btn btn-plain btn-back' @click='goToPrevPage'>
-                  <i v-if="langDirection == 'rtl'" class='fa fa-angle-right fa-fw'></i>
-                  <i v-else class='fa fa-angle-left fa-fw'></i>
-                </button>
+
+                <div class='logout-area'>
+                  <button :style="langDirection == 'rtl' ? 'float:right' : 'float:left'" class='btn btn-plain btn-back' @click='goToPrevPage'>
+                    <i v-if="langDirection == 'rtl'" class='fa fa-angle-right fa-fw'></i>
+                    <i v-else class='fa fa-angle-left fa-fw'></i>
+                  </button>
+
+                  <span class='hidden'>{{getMyBalance}}</span>
+                  <div :style="langDirection == 'rtl' ? 'float:left' : 'float:right'" >
+                    <logout-button></logout-button>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -50,10 +71,6 @@
               </div>
 
               <div class='loggedin-area' v-else >
-                <div class='logout-area'>
-                  <span class='hidden'>{{getMyBalance}}</span>
-                  <logout-button></logout-button>
-                </div>
 
                 <div class=''>
                   <div v-if="$store.getters.getCurrentPage == 'home' || $store.getters.getCurrentPage == ''" >
@@ -82,6 +99,14 @@
 
                   <div v-if="$store.getters.getCurrentPage == 'qrCode'">
                     <qr-code-page></qr-code-page>
+                  </div>
+
+                  <div v-if="$store.getters.getCurrentPage == 'map'">
+                    <map-page></map-page>
+                  </div>
+
+                  <div v-if="$store.getters.getCurrentPage == 'supportive-pos'">
+                    <supportive-pos-page></supportive-pos-page>
                   </div>
 
                   <div v-if="$store.getters.getCurrentPage == 'solidarity'">
@@ -140,23 +165,44 @@ import Settings from './components/Settings.vue'
 import Slides from './components/Slides.vue'
 import Subscription from './components/Subscription'
 import QRCode from './components/QRCode.vue'
+import Map from './components/Map.vue'
+import SupportivePOS from './components/SupportivePOS.vue'
+import GoTo from './components/GoTo.vue'
 
 import * as urls from './api_variables'
 import axios from 'axios'
-var jwtToken = localStorage.getItem('user_token')
+// var jwtToken = localStorage.getItem('user_token')
 
-const http = axios.create({
-  headers: { 'Authorization': 'Bearer ' + jwtToken }
-})
+// const http = axios.create({
+//   headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+// })
 
 export default {
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
+    this.$events.listen('showGoToModalEvent', eventData => {
+      this.goToModalData = eventData
+      this.$store.commit('setShowGoTo', true)
+    })
     this.$events.listen('fetchEstablishmentEvent', eventData => {
+      if (this.$store.getters.waitingForEstablishment) {
+        console.log('already waiting for the last requested Establishment')
+        return
+      }
+      var tOut = 1000
+      if (eventData && eventData.timeOut !== undefined) {
+        tOut = eventData.timeOut
+      }
+      this.$store.commit('setWaitingForEstablishment', true)
       console.log('fetchEstablishmentEvent')
       setTimeout(() => {
         this.fetchEstablishment()
-      }, 1000)
+        if (eventData && eventData.loop) {
+          setTimeout(() => {
+            this.$events.emit('fetchEstablishmentEvent', {loop: eventData.loop, timeOut: eventData.timeOut})
+          })
+        }
+      }, tOut)
     })
     this.$events.listen('sendLoginEvent', eventData => {
       console.log('sendLoginEvent')
@@ -241,17 +287,23 @@ export default {
         console.log('not loggedin, returning')
         return
       }
+      if (this.$store.getters.waitingForBalance) {
+        console.log('already waiting for balance request')
+        return
+      }
+      this.$store.commit('setWaitingForBalance', true)
+
       if (this.$store.getters.getUserType === 'POS') {
-        console.log('POS has no access to solidarity account balance')
         return
       }
       var vm = this
       let url = urls.API_URL.CurrentUrl + urls.WALLET_BALANCE_URL
-      jwtToken = localStorage.getItem('user_token')
+      // jwtToken = localStorage.getItem('user_token')
       axios({
         url: url,
-        headers: { 'Authorization': 'Bearer ' + jwtToken }
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
       }).then(resp => {
+        this.$store.commit('setWaitingForBalance', false)
         if (!resp.data) {
           console.log('no response data')
           return
@@ -260,12 +312,27 @@ export default {
         console.log(resp.data)
         if (resp.data.balance) {
           console.log('no balance data')
+          if (eventData.loop && eventData.loop !== false) {
+            setTimeout(function () {
+              vm.$events.$emit('acountUpdate', {loop: eventData.loop, timeOut: eventData.timeOut})
+            }, eventData.timeOut)
+          }
           vm.$store.commit('setCurrency', resp.data.balance.Currency)
           vm.$store.commit('setBalance', resp.data.balance.Amount)
+          if (localStorage.getItem('lastBalance') < resp.data.balance.Amount) {
+            localStorage.setItem('lastBalance', null)
+            // vm.$store.commit('setSuccess', 'Your balance increased!')
+          }
         }
       }).catch(err => {
+        this.$store.commit('setWaitingForBalance', false)
         console.log('axios failed')
         console.log(err.data)
+        if (eventData.loop && !vm.$store.getters.waitingForBalance) {
+          setTimeout(function () {
+            vm.$events.$emit('acountUpdate', {loop: eventData.loop, timeOut: eventData.timeOut})
+          }, eventData.timeOut)
+        }
       })
     })
   },
@@ -330,6 +397,20 @@ export default {
     this.$events.emit('changeLanguage', langFromUrl)
     console.log('langFromUrl')
     console.log(langFromUrl)
+
+    var singupAsPOS = Boolean(this.getQueryParams('pos-signup'))
+    console.log('SIGNUP POST VALUE:', singupAsPOS)
+    var singupAsUser = Boolean(this.getQueryParams('user-signup'))
+    var loginAsPOS = Boolean(this.getQueryParams('pos-login'))
+
+    if (singupAsPOS) {
+      this.goDirectlyTo('signupPOS')
+    } else if (singupAsUser) {
+      this.goDirectlyTo('signup')
+    } else if (loginAsPOS) {
+      this.goDirectlyTo('loginPOS')
+    }
+
     this.$events.listen('testEvent', eventData => {
       console.log('testEvent')
       console.log(eventData)
@@ -343,10 +424,47 @@ export default {
       langDirection: '',
       helpLink: 'https://github.com/YoQuieroAyudar/fundraising-API-web-app/wiki/Help',
       lang: 'en',
-      showSlide: true
+      showSlide: true,
+      goToModalData: {
+        url: '#link',
+        title: 'Go To Page',
+        message: 'Go to this page',
+        buttonText: 'Continue'
+      }
     }
   },
   methods: {
+    goDirectlyTo (pageName) {
+      var vm = this
+      vm.$store.commit('setLoading', true)
+      vm.$store.commit('setShowSlides', false)
+
+      // signupPOS or loginPOS set the loginAsUser to false
+      var loginAsUser = !((pageName === 'signupPOS') || (pageName === 'loginPOS'))
+
+      // there is no page named loginPOS, only login with loginAsUser set to false
+      pageName = pageName === 'loginPOS' ? 'login' : pageName
+
+      console.log('goDirectlyTo: ' + pageName + ' loginAsUser: ' + loginAsUser)
+
+      setTimeout(() => {
+        vm.$store.commit('setLoginAsUser', loginAsUser)
+        vm.$events.emit('goToPageEvent', pageName)
+        vm.$store.commit('setLoading', false)
+      }, 500)
+    },
+    fetchUserEstablishments () {
+      var vm = this
+      axios({
+        method: 'GET',
+        url: urls.API_URL.CurrentUrl + '/pos',
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+      }).then(resp => {
+        console.log(resp)
+        console.log(resp.data.list)
+        vm.$store.commit('setUserEstablishments', resp.data.list)
+      })
+    },
     fetchEstablishment () {
       console.log('getEstablishment')
       // continue only if the user is loggedin
@@ -363,20 +481,34 @@ export default {
       axios({
         method: 'GET',
         url: urls.API_URL.CurrentUrl + '/pos',
-        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+        headers: { 'Authorization': 'Bearer ' + token }
       }).then(resp => {
+        vm.$store.commit('setWaitingForEstablishment', false)
         console.log('POS response')
         console.log(resp.data)
         if (resp.data) {
           if (resp.data.list) {
             // this.Establishment = resp.data.list[0]
-            vm.$store.commit('setEstablishment', resp.data.list[0])
+            if (resp.data.list.length) {
+              vm.$store.commit('setEstablishment', resp.data.list[0])
+            }
           }
         }
+      }).catch(err => {
+        vm.$store.commit('setWaitingForEstablishment', false)
+        console.log('fetchEstablishment error')
+        console.log(err)
       })
     },
     getQueryParam (n) {
       var half = location.search.split(n + '=')[1]
+      return half !== undefined ? decodeURIComponent(half.split('&')[0]) : null
+    },
+    getQueryParams (n) {
+      console.log('getQueryParams')
+      console.log(location.search)
+      var half = location.search.split(n + '=')[1]
+      console.log(half)
       return half !== undefined ? decodeURIComponent(half.split('&')[0]) : null
     },
     setMessage (response) {
@@ -473,7 +605,10 @@ export default {
       var vm = this
       let url = urls.API_URL.CurrentUrl + urls.DONATION_URL
 
-      http.get(url).then(resp => {
+      axios({
+        url: url,
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+      }).then(resp => {
         console.log('call success')
         console.log(resp.data)
         if (resp.data) {
@@ -603,7 +738,10 @@ export default {
     'settings-page': Settings,
     'slide-page': Slides,
     'subscription-page': Subscription,
-    'qr-code-page': QRCode
+    'qr-code-page': QRCode,
+    'map-page': Map,
+    'supportive-pos-page': SupportivePOS,
+    'go-to-box': GoTo
   }
 }
 
@@ -655,7 +793,8 @@ a {
   position: relative;
   box-shadow: 1px 2px 2px #CCC;
   padding: 0;
-  margin: .2em;
+  margin: -0.3em;
+  height: 2.8em;
 }
 .top-menu {
   position: relative;
@@ -703,5 +842,9 @@ a {
   padding: .3em;
   color: #000;
   background: #AAA;
+}
+.modal-wrapper {
+  position: relative;
+  z-index: 1001;
 }
 </style>

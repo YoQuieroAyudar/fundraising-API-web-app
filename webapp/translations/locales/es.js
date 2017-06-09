@@ -54,7 +54,7 @@ const localizations = {
   'Error recharging account': 'Error al recargar la cuenta',
   'Recharge successful': 'Recarga exitosa',
   'Login': 'Iniciar sesión',
-  'Logout': 'Cerrar sesión',
+  'Logout': 'Cerrar',
   'Euro': 'Euro',
   'Donation Destination': 'Destinatario donativo',
   'Sorry, your donation to this charity failed': 'Su donativo no ha sido entregado',
@@ -80,7 +80,7 @@ const localizations = {
   'I can browse non-profit charities and I decide to donate from 2 to 10 euros. I can give as many times as I want...': 'Puedo consultar los organismos solidarios registrados y hacer un donativo desde 2 hasta 10 euros.<br>Puedo repetirlo tantas veces como quiera...',
   'my donation is transmitted to the charity with 0 comission...': 'Mi donativo llega al organismo solidario sin comisiones...',
   'I can ask the charity for my tax certificate.': 'Puedo pedir mi certificado fiscal de donativos.',
-    'Your subscription ends in {days} day ::: Your subscription ends in {days} days': 'Su suscripción termina en {días} días',
+  'Your subscription ends in {days} day ::: Your subscription ends in {days} days': 'Su suscripción termina en {days} día ::: Su suscripción termina en {days} días',
   'Duration': 'Duración',
   '1 month': '1 mes',
   '3 month': '3 meses',
@@ -91,9 +91,12 @@ const localizations = {
   'Total Amount Charged': 'Importe total cobrado',
   'Pay Subscription': 'Pago de suscripción',
   'Powered by Mangopay': 'Desarrollado por Mangopay',
-  'Sorry, only users are allowed to login through this form' : 'Lo siento, solo los usuarios pueden iniciar sesión a través de este formulario',
+  'Sorry, only users are allowed to login through this form': 'Lo siento, solo los usuarios pueden iniciar sesión a través de este formulario',
   'Sorry, only establishments are allowed to login through this form': 'Lo siento, solo los establecimientos tienen permiso para ingresar a través de este formulario',
-  '{x} day ::: {x} days': '{X} día ::: {x} días:'
+  '{x} day ::: {x} days': '{x} día ::: {x} días',
+  'Subscription': 'Suscripción',
+  'My QR Code': 'Mi código QR',
+  'TAX': 'IVA'
 }
 
 export default localizations

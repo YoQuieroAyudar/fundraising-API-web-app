@@ -80,7 +80,6 @@ const localizations = {
   'I can browse non-profit charities and I decide to donate from 2 to 10 euros. I can give as many times as I want...': 'Я могу просматривать некоммерческие благотворительные организации и пожертвовать от 2 до 10 евро.Могу жертвовать столько раз, сколько хочу...',
   'my donation is transmitted to the charity with 0 comission...': 'Моё пожертвование передаётся благотворительной организации с 0 комиссией.',
   'I can ask the charity for my tax certificate.': 'Я могу запросить в благотворительной организации бумагу для налоговой.',
-
   'Your subscription ends in {days} day ::: Your subscription ends in {days} days': 'Подписка заканчивается через {days} день ::: Подписка заканчивается через {days} дней',
   'Duration': 'Длительность',
   '1 month': '1 месяц',
@@ -94,7 +93,9 @@ const localizations = {
   'Powered by Mangopay': 'Работает на Mangopay',
   'Sorry, only users are allowed to login through this form': 'Извините, только пользователи могут входить через эту форму',
   'Sorry, only establishments are allowed to login through this form': 'Извините, только организации могут входить через эту форму',
-  '{x} day ::: {x} days': '{x} день ::: {x} дней'
+  'Subscription': 'Подписка',
+  'My QR Code': 'Мой QR-код',
+  'TAX': 'Налог'
 }
 
 export default localizations

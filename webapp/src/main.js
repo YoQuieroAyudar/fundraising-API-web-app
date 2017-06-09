@@ -12,13 +12,16 @@ import store from './store'
 import VueResource from 'vue-resource'
 import vuexI18n from 'vuex-i18n'
 import VueEvents from 'vue-events'
+import * as VueGoogleMaps from 'vue2-google-maps'
 
-// ga(collect => {
-//   // when hash changes
-//   Vue.$events.listen('pageChangedEvent', (name) => {
-//     collect(name)
-//   })
-// }, 'UA-XXXXX-Y')
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es' // ,
+    // v: 'OPTIONAL VERSION NUMBER',
+    // libraries: 'places', //// If you need to use place input
+  }
+})
+
 import Vodal from 'vodal'
 Vue.component(Vodal.name, Vodal)
 import VueCarousel from 'vue-carousel'

@@ -18,10 +18,14 @@ const state = {
     cif: '0',
     end_subscription: '',
     Subscriptions: null
-  }
+  },
+  UserEstablishments: []
 }
 
 const getters = {
+  getUserEstablishments (state) {
+    return state.UserEstablishments
+  },
   getPOSQRCode (state) {
     return state.Establishment.qr_code
   },
@@ -30,7 +34,7 @@ const getters = {
   },
   getPosSubscriptionEnd (state) {
     console.log('getPosSubscriptionEnd')
-    if (state.Establishment.end_subscription === '') {
+    if (state.Establishment.end_subscription && state.Establishment.end_subscription === '') {
       return 0
     }
     var end = new Date(state.Establishment.end_subscription)
@@ -41,6 +45,9 @@ const getters = {
 }
 
 const mutations = {
+  setUserEstablishments (state, list) {
+    state.UserEstablishments = list
+  },
   setEstablishment (state, pos) {
     state.Establishment = pos
   }

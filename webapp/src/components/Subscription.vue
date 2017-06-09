@@ -1,8 +1,6 @@
 <template>
   <div>
 
-
-
     <form class="form">
       <p style="margin:.3em;">{{ $t('Your subscription ends in {days} day ::: Your subscription ends in {days} days', {days: getSubscriptionEnd}, getSubscriptionEnd) }}</p>
 
@@ -46,7 +44,7 @@
         <span class="input-group-addon" id="ChargedAmount-addon1"> {{$t('Total Amount Charged')}} </span>
         <input name="ChargedAmount" class="form-control" v-model="amount" disabled aria-describedby="ChargedAmount-addon1" type="number" min="1" step=1 :placeholder="$t('Total Amount Charged')" />
       </div>
-      <button class="btn btn-primary btn-block recharge-btn" type="button" >{{$t('Pay Subscription')}}</button>
+      <button class="btn btn-primary btn-block recharge-btn" type="button" @click="sendSubscription" >{{$t('Pay Subscription')}}</button>
     </form>
 
     <img class="powered-by-mangopay-img" src="powered-by-mangopay.png" :alt="$t('Powered by Mangopay')">
@@ -82,16 +80,21 @@ h5 {
 .powered-by-mangopay-img {
   width: 100%;
 }
+.modal-wrapper {
+  position: relative;
+  z-index: 1001;
+}
 </style>
 
 <script>
 import * as urls from '../api_variables'
+import GoTo from './GoTo.vue'
 
 import axios from 'axios'
 // var jwtToken = localStorage.getItem('user_token')
 
 // const http = axios.create({
-//   headers: { 'Authorization': 'Bearer ' + jwtToken }
+//   headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
 // })
 
 export default {
@@ -117,7 +120,8 @@ export default {
       months: 1,
       remainingDays: 30,
       feesData: {},
-      Establishment: {}
+      Establishment: {},
+      secureUrl: '#'
     }
   },
   computed: {
@@ -144,6 +148,24 @@ export default {
     }
   },
   methods: {
+    rechargeFormIsValid () {
+      var isValid = true
+      // if (this.amount > parseFloat(this.$store.getters.getBalance)) {
+      //   this.$store.commit('setError', 'Amount you want to recharge is greater than your balance')
+      // }
+      if (this.cardNo.length < 16) {
+        this.$store.commit('setError', 'The card number is too short')
+        isValid = false
+      }
+      var thisYear = new Date().getFullYear()
+      var y = thisYear - 2000
+      if (this.expirationDate.month < 1 && this.expirationDate.month > 12 || this.expirationDate.year < y) {
+        this.$store.commit('setError', 'The expiration date is either invalid or already expired')
+        isValid = false
+      }
+
+      return isValid
+    },
     sendSubscription () {
       // this starts a chain of processes that call one another.
       console.log('sendSubscription')
@@ -154,11 +176,10 @@ export default {
       if (!this.rechargeFormIsValid()) {
         return
       }
-      var jwtToken = localStorage.getItem('user_token')
       var vm = this
 
-      // this.$http.headers.common['Authorization'] = 'Bearer ' + jwtToken
-      var authorizationHeader = 'Bearer ' + jwtToken
+      // this.$http.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('user_token')
+      var authorizationHeader = 'Bearer ' + localStorage.getItem('user_token')
       var options = {
         url: urls.API_URL.CurrentUrl + urls.REGISTER_CARD_URL,
         method: 'POST',
@@ -193,9 +214,51 @@ export default {
       // resp.data.accessKeyRef, resp.data.cardRegistrationURL, resp.data.data
       this.sendToMangopay(data.accessKeyRef, data.cardRegistrationURL, data.data, this.cardNo, this.expirationDate, this.CVV, this.paySubscription)
     },
-    paySubscription (month, data) {
+    paySubscription (months, data) {
       console.log('paySubscription')
-      this.$store.commit('setSuccess', 'Subscription successful')
+      console.log(months)
+      console.log(data)
+      var vm = this
+
+      axios({
+        method: 'POST',
+        url: urls.API_URL.CurrentUrl + '/pay_subscription',
+        data: {months: months, token: data},
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+      }).then(resp => {
+        console.log('paySubscription response')
+        console.log(resp)
+        console.log('status = ', resp.status)
+        console.log(resp.data)
+        if (resp.data && resp.data.transtion_type === '3DS') {
+          if (resp.data.verification_url === '') {
+            vm.$store.commit('setError', 'Sorry, no 3DS link to complete the transacion')
+            vm.$store.commit('setLoading', false)
+            return
+          }
+          localStorage.setItem('lastSubscriptionDays', this.$store.getters.getBalance)
+          // vm.secureUrl = resp.data.verification_url
+          vm.$events.emit('showGoToModalEvent', {
+            url: resp.data.verification_url,
+            message: 'You are redirected to complete the 3DS secure transacion. If you want the transacion to complete continue to the following page and come back when done',
+            title: '3DS Transaction',
+            buttonText: 'Continue'
+          })
+          // var win = window.open(resp.data.verification_url)
+          // if (window.focus) {
+          //   win.focus()
+          // }
+          vm.$store.commit('setLoading', false)
+          vm.$store.commit('setSuccess', 'Started secure transacion please complete process in the new window after you click continue')
+          return
+        }
+        vm.$store.commit('setLoading', false)
+        vm.$store.commit('setSuccess', 'Subscription successful')
+      }).catch(err => {
+        console.log('paySubscription error')
+        console.log(err)
+        vm.$store.commit('setError', 'Sorry transacion failed')
+      })
     },
     sendToMangopay (accessKeyRef, cardRegistrationURL, data, cardNo, expirationDate, CVV, paySubscriptionCallback) {
       console.log('sendToMangopay')
@@ -211,12 +274,13 @@ export default {
         mangoParameters += (mangoParameters.length > 0 ? '&' : '') + key + '=' + encodeURIComponent(mangopayData[key])
       }
 
-      // var jwtToken = localStorage.getItem('user_token')
       var vm = this
       var instance = axios.create({
         headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
       })
-      instance.post(cardRegistrationURL, mangopayData).then(resp => {
+      instance.post(cardRegistrationURL + '?' + mangoParameters, mangopayData).then(resp => {
+        console.log('sendToMangopay response')
+        console.log(JSON.stringify(resp))
         paySubscriptionCallback(vm.months, resp.data)
       }).catch(err => {
         vm.$store.commit('setLoading', false)
@@ -266,6 +330,9 @@ export default {
   beforeMount () {
     this.calculateFees()
     this.getEstablishment()
+  },
+  components: {
+    'go-to-box': GoTo
   }
 }
 </script>

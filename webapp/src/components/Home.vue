@@ -11,6 +11,7 @@
         <button class="btn btn-default" @click="goToAssociations">{{ $t('Charities') }}</button>
         <button class="btn btn-default" @click="goToDonations" >{{ $t('My Donations') }}</button>
         <button class="btn btn-default" @click="goToSolidarityAccount"> {{ $t('Solidarity Account') }} </button>
+        <button class="btn btn-default" @click="gotToSupportivePOSMap" >{{ $t('Supportive Establishments') }}</button>
       </div>
       <p v-if="$store.getters.getBalance">
         {{ $t('Total Donations') }}: <span class="">&euro; {{$store.getters.getBalance}}</span>
@@ -29,7 +30,8 @@
         <button class="btn btn-default active">{{ $t('Home') }}</button>
         <button class="btn btn-default" @click="goToAssociations">{{ $t('Charities') }}</button>
         <button class="btn btn-default" @click="gotToSubscription" >{{ $t('Subscription') }}</button>
-        <button class="btn btn-default" @click="gotToQRCode" >{{ $t('Get QR Code') }}</button>
+        <button class="btn btn-default" @click="gotToQRCode" >{{ $t('My QR Code') }}</button>
+        <button class="btn btn-default" @click="gotToMap" >{{ $t('Map') }}</button>
       </div>
 
     </div>
@@ -49,6 +51,16 @@ export default {
     }
   },
   methods: {
+    gotToMap (e) {
+      e.preventDefault()
+      this.$events.emit('goToPageEvent', 'map')
+      this.$store.commit('resetMessages')
+    },
+    gotToSupportivePOSMap (e) {
+      e.preventDefault()
+      this.$events.emit('goToPageEvent', 'supportive-pos')
+      this.$store.commit('resetMessages')
+    },
     gotToQRCode (e) {
       e.preventDefault()
       this.$events.emit('goToPageEvent', 'qrCode')

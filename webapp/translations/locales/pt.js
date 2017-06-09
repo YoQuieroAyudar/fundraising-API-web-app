@@ -94,7 +94,10 @@ const localizations = {
   'Powered by Mangopay': '',
   'Sorry, only users are allowed to login through this form': '',
   'Sorry, only establishments are allowed to login through this form': '',
-  '{x} day ::: {x} days': ''
+  '{x} day ::: {x} days': '',
+  'Subscription': '',
+  'My QR Code': '',
+  'TAX': ''
 }
 
 export default localizations
