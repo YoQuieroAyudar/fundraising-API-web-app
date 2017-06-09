@@ -97,7 +97,21 @@ const localizations = {
   '{x} day ::: {x} days': '{x} jour ::: {x} jours',
   'Subscription': 'Abonnement',
   'My QR Code': 'Mon code QR',
-  'TAX': 'TVA'
+  'TAX': 'TVA',
+  'Sorry transaction failed': '',
+  'Subscription successful': '',
+  'Started secure transaction please complete process in the new window after you click continue': '',
+  'Sorry, no 3DS link to complete the transaction': '',
+  'Map': '',
+  'Version': '',
+  'ou are redirected to complete the 3DS secure transaction. If you want the transaction to complete continue to the following page and come back when done': '',
+  '3DS Transaction': '',
+  'Continue': '',
+  'Skip': '',
+  'Sorry, no QR code image found': '',
+  'Days left from subscription': '',
+  'Unable to set associations list': '',
+  'Error while loading associations list': ''
 }
 
 export default localizations
