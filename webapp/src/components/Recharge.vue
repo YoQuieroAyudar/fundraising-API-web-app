@@ -227,11 +227,11 @@ export default {
         console.log(resp.data)
         console.log('resp.data.transtion_type = ' + resp.data.transtion_type)
         if (resp.data.transtion_type === '3DS') {
-          console.log('initiating 3DS transacion')
+          console.log('initiating 3DS transaction')
           var link = resp.data.verification_url
           if (link.length < 5) {
             console.log('link is too short')
-            vm.$store.commit('setError', 'Sorry, no 3DS link to complete the transacion')
+            vm.$store.commit('setError', 'Sorry, no 3DS link to complete the transaction')
             return
           }
           console.log('setting last balance')
@@ -242,7 +242,7 @@ export default {
           // vm.$store.commit('setShowGoTo', true)
           vm.$events.emit('showGoToModalEvent', {
             url: link,
-            message: 'You are redirected to complete the 3DS secure transacion. If you want the transacion to complete continue to the following page and come back when done',
+            message: 'You are redirected to complete the 3DS secure transaction. If you want the transaction to complete continue to the following page and come back when done',
             title: '3DS Transaction',
             buttonText: 'Continue'
           })
@@ -252,7 +252,7 @@ export default {
           // }
           vm.$store.commit('setLoading', false)
           vm.$events.$emit('acountUpdate', {})
-          vm.$store.commit('setSuccess', 'Started secure transacion please complete process in the new window after you click continue')
+          vm.$store.commit('setSuccess', 'Started secure transaction please complete process in the new window after you click continue')
           return
         }
         vm.$store.commit('setLoading', false)

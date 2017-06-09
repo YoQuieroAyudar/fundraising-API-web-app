@@ -232,7 +232,7 @@ export default {
         console.log(resp.data)
         if (resp.data && resp.data.transtion_type === '3DS') {
           if (resp.data.verification_url === '') {
-            vm.$store.commit('setError', 'Sorry, no 3DS link to complete the transacion')
+            vm.$store.commit('setError', 'Sorry, no 3DS link to complete the transaction')
             vm.$store.commit('setLoading', false)
             return
           }
@@ -240,7 +240,7 @@ export default {
           // vm.secureUrl = resp.data.verification_url
           vm.$events.emit('showGoToModalEvent', {
             url: resp.data.verification_url,
-            message: 'You are redirected to complete the 3DS secure transacion. If you want the transacion to complete continue to the following page and come back when done',
+            message: 'You are redirected to complete the 3DS secure transaction. If you want the transaction to complete continue to the following page and come back when done',
             title: '3DS Transaction',
             buttonText: 'Continue'
           })
@@ -249,7 +249,7 @@ export default {
           //   win.focus()
           // }
           vm.$store.commit('setLoading', false)
-          vm.$store.commit('setSuccess', 'Started secure transacion please complete process in the new window after you click continue')
+          vm.$store.commit('setSuccess', 'Started secure transaction please complete process in the new window after you click continue')
           return
         }
         vm.$store.commit('setLoading', false)
@@ -257,7 +257,7 @@ export default {
       }).catch(err => {
         console.log('paySubscription error')
         console.log(err)
-        vm.$store.commit('setError', 'Sorry transacion failed')
+        vm.$store.commit('setError', 'Sorry transaction failed')
       })
     },
     sendToMangopay (accessKeyRef, cardRegistrationURL, data, cardNo, expirationDate, CVV, paySubscriptionCallback) {
