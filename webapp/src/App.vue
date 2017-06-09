@@ -842,4 +842,8 @@ a {
   color: #000;
   background: #AAA;
 }
+.modal-wrapper {
+  position: relative;
+  z-index: 1001;
+}
 </style>
