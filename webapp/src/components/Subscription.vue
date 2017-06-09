@@ -1,14 +1,6 @@
 <template>
   <div>
 
-    <div class="modal-wrapper">
-      <div class="modal-inner">
-        <vodal :show="$store.getters.getShowGoTo" :width="250" :height="300" animation="rotate" @hide="$store.commit('setShowGoTo', false)">
-            <go-to-box title="3DS Transaction" message="You are redirected to complete the 3DS secure transacion. If you want the transacion to complete continue to the following page and come back when done" :url="secureUrl"></go-to-box>
-        </vodal>
-      </div>
-    </div>
-
     <form class="form">
       <p style="margin:.3em;">{{ $t('Your subscription ends in {days} day ::: Your subscription ends in {days} days', {days: getSubscriptionEnd}, getSubscriptionEnd) }}</p>
 
@@ -87,6 +79,10 @@ h5 {
 }
 .powered-by-mangopay-img {
   width: 100%;
+}
+.modal-wrapper {
+  position: relative;
+  z-index: 1001;
 }
 </style>
 
@@ -237,17 +233,22 @@ export default {
         if (resp.data && resp.data.transtion_type === '3DS') {
           if (resp.data.verification_url === '') {
             vm.$store.commit('setError', 'Sorry, no 3DS link to complete the transacion')
+            vm.$store.commit('setLoading', false)
             return
           }
           localStorage.setItem('lastSubscriptionDays', this.$store.getters.getBalance)
-          this.secureUrl = resp.data.verification_url
-          this.$store.commit('setShowGoTo', true)
+          // vm.secureUrl = resp.data.verification_url
+          vm.$events.emit('showGoToModalEvent', {
+            url: resp.data.verification_url,
+            message: 'You are redirected to complete the 3DS secure transacion. If you want the transacion to complete continue to the following page and come back when done',
+            title: '3DS Transaction',
+            buttonText: 'Continue'
+          })
           // var win = window.open(resp.data.verification_url)
           // if (window.focus) {
           //   win.focus()
           // }
           vm.$store.commit('setLoading', false)
-          vm.$events.$emit('acountUpdate', {loop: true, timeOut: 5000})
           vm.$store.commit('setSuccess', 'Started secure transacion please complete process in the new window after you click continue')
           return
         }
