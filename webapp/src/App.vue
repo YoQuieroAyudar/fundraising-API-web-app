@@ -282,7 +282,6 @@ export default {
     })
 
     this.$events.listen('acountUpdate', eventData => {
-      this.$store.commit('setWaitingForBalance', true)
       console.log('acountUpdate EVENT')
       if (!this.$store.getters.getLogin) {
         console.log('not loggedin, returning')
@@ -292,6 +291,8 @@ export default {
         console.log('already waiting for balance request')
         return
       }
+      this.$store.commit('setWaitingForBalance', true)
+
       if (this.$store.getters.getUserType === 'POS') {
         return
       }
