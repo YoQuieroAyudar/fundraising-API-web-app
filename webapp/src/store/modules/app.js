@@ -17,10 +17,14 @@ const state = {
   VNCC: 0,
   loginAsUser: true,
   showSlide: true,
-  waitingFor: {}
+  waitingFor: {},
+  showGoTo: false
 }
 
 const getters = {
+  getShowGoTo (state) {
+    return state.showGoTo
+  },
   waitingForEstablishment (state) {
     return state.waitingFor.POS
   },
@@ -69,6 +73,9 @@ const getters = {
 }
 
 const mutations = {
+  setShowGoTo (state, context) {
+    state.showGoTo = Boolean(context)
+  },
   setWaitingForEstablishment (state, context) {
     state.waitingFor.POS = Boolean(context)
   },

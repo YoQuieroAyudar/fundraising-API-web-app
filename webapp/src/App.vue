@@ -182,7 +182,7 @@ export default {
       console.log('fetchEstablishmentEvent')
       setTimeout(() => {
         this.fetchEstablishment()
-        if (eventData.loop && !this.$store.getters.waitingForEstablishment) {
+        if (eventData && eventData.loop && !this.$store.getters.waitingForEstablishment) {
           setTimeout(() => {
             this.$events.emit('fetchEstablishmentEvent', {loop: eventData.loop, timeOut: eventData.timeOut})
           })

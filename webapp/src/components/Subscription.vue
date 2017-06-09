@@ -1,7 +1,13 @@
 <template>
   <div>
 
-
+    <div class="modal-wrapper">
+      <div class="modal-inner">
+        <vodal :show="$store.getters.getShowGoTo" :width="250" :height="300" animation="rotate" @hide="$store.commit('setShowGoTo', false)">
+            <go-to-box title="3DS Transaction" message="You are redirected to complete the 3DS secure transacion. If you want the transacion to complete continue to the following page and come back when done" :url="secureUrl"></go-to-box>
+        </vodal>
+      </div>
+    </div>
 
     <form class="form">
       <p style="margin:.3em;">{{ $t('Your subscription ends in {days} day ::: Your subscription ends in {days} days', {days: getSubscriptionEnd}, getSubscriptionEnd) }}</p>
@@ -86,6 +92,7 @@ h5 {
 
 <script>
 import * as urls from '../api_variables'
+import GoTo from './GoTo.vue'
 
 import axios from 'axios'
 // var jwtToken = localStorage.getItem('user_token')
@@ -117,7 +124,8 @@ export default {
       months: 1,
       remainingDays: 30,
       feesData: {},
-      Establishment: {}
+      Establishment: {},
+      secureUrl: '#'
     }
   },
   computed: {
@@ -232,13 +240,15 @@ export default {
             return
           }
           localStorage.setItem('lastSubscriptionDays', this.$store.getters.getBalance)
-          var win = window.open(resp.data.verification_url)
-          if (window.focus) {
-            win.focus()
-          }
+          this.secureUrl = resp.data.verification_url
+          this.$store.commit('setShowGoTo', true)
+          // var win = window.open(resp.data.verification_url)
+          // if (window.focus) {
+          //   win.focus()
+          // }
           vm.$store.commit('setLoading', false)
           vm.$events.$emit('acountUpdate', {loop: true, timeOut: 5000})
-          vm.$store.commit('setSuccess', 'Started secure transacion please complete process in the new window. If your browser does not allow popups please try to give this app do that.')
+          vm.$store.commit('setSuccess', 'Started secure transacion please complete process in the new window after you click continue')
           return
         }
         vm.$store.commit('setLoading', false)
@@ -246,6 +256,7 @@ export default {
       }).catch(err => {
         console.log('paySubscription error')
         console.log(err)
+        vm.$store.commit('setError', 'Sorry transacion failed')
       })
     },
     sendToMangopay (accessKeyRef, cardRegistrationURL, data, cardNo, expirationDate, CVV, paySubscriptionCallback) {
@@ -318,6 +329,9 @@ export default {
   beforeMount () {
     this.calculateFees()
     this.getEstablishment()
+  },
+  components: {
+    'go-to-box': GoTo
   }
 }
 </script>
