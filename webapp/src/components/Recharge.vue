@@ -1,6 +1,14 @@
 <template>
   <div>
 
+    <div class="modal-wrapper">
+      <div class="modal-inner">
+        <vodal :show="$store.getters.getShowGoTo" :width="250" :height="300" animation="rotate" @hide="$store.commit('setShowGoTo', false)">
+            <go-to-box title="3DS Transaction" message="You are redirected to complete the 3DS secure transacion. If you want the transacion to complete continue to the following page and come back when done" :url="secureUrl"></go-to-box>
+        </vodal>
+      </div>
+    </div>
+
     <p>{{ $t('Account balance') }}: {{$store.getters.getBalance}} {{ $t($store.getters.getCurrency) }} </p>
 
     <form class="form">
@@ -96,7 +104,8 @@ export default {
       cardNo: '',
       CVV: '',
       expirationDate: { month: thisMonth, year: thisYear },
-      registerCardResponse: {}
+      registerCardResponse: {},
+      secureUrl: '#'
     }
   },
   computed: {
@@ -118,6 +127,7 @@ export default {
         method: 'POST',
         headers: { 'Authorization': authorizationHeader }
       }
+      console.log('Calling: ' + urls.API_URL.CurrentUrl + urls.REGISTER_CARD_URL)
       this.$http(options).then(resp => {
         if (resp.data) {
           vm.$store.commit('setRegCardResponse', resp.data)
@@ -176,42 +186,81 @@ export default {
       //   }, err => {
       //     vm.$store.commit('setLoading', false)
       //   })
+
+      console.log('mangopayData')
+      console.log(mangopayData)
+      console.log(encodeURIComponent(mangoParameters))
+
+      console.log('Calling ' + cardRegistrationURL + mangoParameters)
+
       var instance = axios.create({
         headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
       })
-      instance.post(cardRegistrationURL, mangopayData).then(resp => {
+      instance.post(cardRegistrationURL + '?' + mangoParameters, mangopayData).then(resp => {
+        console.log('sendToMangopay response')
+        console.log(JSON.stringify(resp))
         rechargeAccountCallBack(resp.data)
       }).catch(err => {
+        console.log('sendToMangopay error')
+        console.log(JSON.stringify(err))
         vm.$store.commit('setLoading', false)
         vm.$store.commit('setError', 'Error occured while waiting for the payments service')
         console.log(err)
       })
     },
     rechargeAccount (token) {
-      token = 'data=' + token
+      token = '' + token
       var vm = this
+
       var rechargeData = { amount: parseFloat(this.amount) * 100, token: token }
 
       let url = urls.API_URL.CurrentUrl + urls.RECHARGE_ACCOUNT_URL
+      console.log('Calling: ' + url)
       axios({
         method: 'post',
         url: url,
         data: rechargeData,
         headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
       }).then(resp => {
+        // check for response code
+        // if code is 200, it means normal recharge if the code is 301 it means the payment is 3DS, which returns the
+        console.log(resp)
+        console.log('status = ', resp.status)
+        console.log('is 3DS = ', rechargeData.mount >= 10)
+        console.log(resp.data)
+        if (resp.data && resp.data.transtion_type === '3DS') {
+          if (resp.data.verification_url === '') {
+            vm.$store.commit('setError', 'Sorry, no 3DS link to complete the transacion')
+            return
+          }
+          localStorage.setItem('lastBalance', this.$store.getters.getBalance)
+          this.secureUrl = resp.data.verification_url
+          this.$store.commit('setShowGoTo', true)
+          // var win = window.open(resp.data.verification_url)
+          // if (window.focus) {
+          //   win.focus()
+          // }
+          vm.$store.commit('setLoading', false)
+          vm.$events.$emit('acountUpdate', {loop: true, timeOut: 5000})
+          vm.$store.commit('setSuccess', 'Started secure transacion please complete process in the new window after you click continue')
+          return
+        }
         vm.$store.commit('setLoading', false)
         vm.$events.$emit('acountUpdate', {})
         vm.$store.commit('setSuccess', 'Recharge successful')
       }).catch(err => {
         console.log('Recharge request error')
-        console.log(err)
+        console.log(JSON.stringify(err))
+        if (err === undefined) {
+          return
+        }
         if (err.error) {
           vm.$store.commit('setError', err.error)
-        } else if (err.errors) {
+        } else if (err.errors !== undefined) {
           vm.$store.commit('setErrors', err.errors)
-        } else if (err.data.errors) {
+        } else if (err.data.errors !== undefined) {
           vm.$store.commit('setErrors', err.data.errors)
-        } else if (err.data.error) {
+        } else if (err.data.error !== undefined) {
           vm.$store.commit('setError', err.data.error)
         } else {
           vm.$store.commit('setError', err)

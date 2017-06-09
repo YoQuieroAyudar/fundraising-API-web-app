@@ -19,12 +19,14 @@ export default {
     gotToSubscription (e) {
       this.$events.emit('goToPageEvent', 'subscription')
       this.$store.commit('resetMessages')
+      this.$events.$emit('fetchEstablishmentEvent', {})
     },
     goToSolidarityAccount (e) {
       e.preventDefault()
       // this.$store.commit('setCurrentPage', 'solidarity')
       this.$events.emit('goToPageEvent', 'solidarity')
       this.$store.commit('resetMessages')
+      this.$events.$emit('acountUpdate', {})
     },
     logoutUser (e) {
       e.preventDefault()

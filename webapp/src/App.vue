@@ -19,6 +19,10 @@
         <div class='content' v-else>
           <div class='loading' v-if="$store.getters.getLoading">
             <h1><i class='fa fa-spinner fa-spin fa-fw'></i> {{$t('Loading')}}...</h1>
+            <div class="loading-takes-long" v-if="$store.getters.getStillLoading">
+              {{$t('Loading is taking longer than normal')}}
+              <a class="" type="button" @click="$store.commit('setLoading', false);$events.emit('goToPageEvent', '')" name="button">Go home</a>
+            </div>
           </div>
 
           <div v-else >
@@ -157,20 +161,33 @@ import SupportivePOS from './components/SupportivePOS.vue'
 
 import * as urls from './api_variables'
 import axios from 'axios'
-var jwtToken = localStorage.getItem('user_token')
+// var jwtToken = localStorage.getItem('user_token')
 
-const http = axios.create({
-  headers: { 'Authorization': 'Bearer ' + jwtToken }
-})
+// const http = axios.create({
+//   headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+// })
 
 export default {
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
     this.$events.listen('fetchEstablishmentEvent', eventData => {
+      if (this.$store.getters.waitingForEstablishment) {
+        return
+      }
+      var tOut = 1000
+      if (eventData && eventData.timeOut !== undefined) {
+        tOut = eventData.timeOut
+      }
+      this.$store.commit('setWaitingForEstablishment', true)
       console.log('fetchEstablishmentEvent')
       setTimeout(() => {
         this.fetchEstablishment()
-      }, 1000)
+        if (eventData && eventData.loop && !this.$store.getters.waitingForEstablishment) {
+          setTimeout(() => {
+            this.$events.emit('fetchEstablishmentEvent', {loop: eventData.loop, timeOut: eventData.timeOut})
+          })
+        }
+      }, tOut)
     })
     this.$events.listen('sendLoginEvent', eventData => {
       console.log('sendLoginEvent')
@@ -250,6 +267,7 @@ export default {
     })
 
     this.$events.listen('acountUpdate', eventData => {
+      this.$store.commit('setWaitingForBalance', true)
       console.log('acountUpdate EVENT')
       if (!this.$store.getters.getLogin) {
         console.log('not loggedin, returning')
@@ -261,11 +279,12 @@ export default {
       }
       var vm = this
       let url = urls.API_URL.CurrentUrl + urls.WALLET_BALANCE_URL
-      jwtToken = localStorage.getItem('user_token')
+      // jwtToken = localStorage.getItem('user_token')
       axios({
         url: url,
-        headers: { 'Authorization': 'Bearer ' + jwtToken }
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
       }).then(resp => {
+        this.$store.commit('setWaitingForBalance', false)
         if (!resp.data) {
           console.log('no response data')
           return
@@ -274,12 +293,27 @@ export default {
         console.log(resp.data)
         if (resp.data.balance) {
           console.log('no balance data')
+          if (eventData.loop && !vm.$store.getters.waitingForBalance) {
+            setTimeout(function () {
+              vm.$events.$emit('acountUpdate', {loop: eventData.loop, timeOut: eventData.timeOut})
+            }, eventData.timeOut)
+          }
           vm.$store.commit('setCurrency', resp.data.balance.Currency)
           vm.$store.commit('setBalance', resp.data.balance.Amount)
+          if (localStorage.getItem('lastBalance') < resp.data.balance.Amount) {
+            localStorage.setItem('lastBalance', null)
+            vm.$store.commit('setSuccess', 'Your balance increased!')
+          }
         }
       }).catch(err => {
+        this.$store.commit('setWaitingForBalance', false)
         console.log('axios failed')
         console.log(err.data)
+        if (eventData.loop && !vm.$store.getters.waitingForBalance) {
+          setTimeout(function () {
+            vm.$events.$emit('acountUpdate', {loop: eventData.loop, timeOut: eventData.timeOut})
+          }, eventData.timeOut)
+        }
       })
     })
   },
@@ -424,14 +458,21 @@ export default {
         url: urls.API_URL.CurrentUrl + '/pos',
         headers: { 'Authorization': 'Bearer ' + token }
       }).then(resp => {
+        vm.$store.commit('setWaitingForEstablishment', false)
         console.log('POS response')
         console.log(resp.data)
         if (resp.data) {
           if (resp.data.list) {
             // this.Establishment = resp.data.list[0]
-            vm.$store.commit('setEstablishment', resp.data.list[0])
+            if (resp.data.list.length) {
+              vm.$store.commit('setEstablishment', resp.data.list[0])
+            }
           }
         }
+      }).catch(err => {
+        vm.$store.commit('setWaitingForEstablishment', false)
+        console.log('fetchEstablishment error')
+        console.log(err)
       })
     },
     getQueryParam (n) {
@@ -539,7 +580,10 @@ export default {
       var vm = this
       let url = urls.API_URL.CurrentUrl + urls.DONATION_URL
 
-      http.get(url).then(resp => {
+      axios({
+        url: url,
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+      }).then(resp => {
         console.log('call success')
         console.log(resp.data)
         if (resp.data) {
