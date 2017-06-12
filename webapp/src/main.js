@@ -13,6 +13,7 @@ import VueResource from 'vue-resource'
 import vuexI18n from 'vuex-i18n'
 import VueEvents from 'vue-events'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import SocialSharing from 'vue-social-sharing'
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -21,6 +22,8 @@ Vue.use(VueGoogleMaps, {
     // libraries: 'places', //// If you need to use place input
   }
 })
+
+Vue.use(SocialSharing)
 
 import Vodal from 'vodal'
 Vue.component(Vodal.name, Vodal)
