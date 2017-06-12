@@ -1,7 +1,7 @@
 import * as urls from '../../api_variables'
 
 const state = {
-  Version: '0.7.2',
+  Version: '0.7.3',
   CurrentState: '',
   CurrentPage: '',
   PreviousPage: '',
@@ -18,10 +18,14 @@ const state = {
   loginAsUser: true,
   showSlide: true,
   waitingFor: {},
-  showGoTo: false
+  showGoTo: false,
+  showShare: false
 }
 
 const getters = {
+  getShowShare (state) {
+    return state.showShare
+  },
   getShowGoTo (state) {
     return state.showGoTo
   },
@@ -73,6 +77,9 @@ const getters = {
 }
 
 const mutations = {
+  setShowShare (state, context) {
+    state.showShare = Boolean(context)
+  },
   setShowGoTo (state, context) {
     state.showGoTo = Boolean(context)
   },

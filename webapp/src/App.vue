@@ -11,7 +11,6 @@
           <button type='button' @click="setLang('ru')" :class=" lang === 'ru' ? 'btn btn-success' : 'btn btn-default'">русский</button>
         </div>
 
-
         <div v-if="$store.getters.getShowSlide">
           <slide-page></slide-page>
         </div>
@@ -32,6 +31,14 @@
               <div class="modal-inner">
                 <vodal :show="$store.getters.getShowGoTo" :width="250" :height="300" animation="rotate" @hide="$store.commit('setShowGoTo', false)">
                     <go-to-box :title="goToModalData.title" :message="goToModalData.message" :targetUrl="goToModalData.url"></go-to-box>
+                </vodal>
+              </div>
+            </div>
+
+            <div class="modal-wrapper">
+              <div class="modal-inner">
+                <vodal :show="$store.getters.getShowShare" :width="250" :height="300" animation="rotate" @hide="$store.commit('setShowShare', false)">
+                    <share-page></share-page>
                 </vodal>
               </div>
             </div>
@@ -462,7 +469,8 @@ export default {
         title: 'Go To Page',
         message: 'Go to this page',
         buttonText: 'Continue'
-      }
+      },
+      showShare: false
     }
   },
   methods: {
@@ -890,5 +898,10 @@ a {
 .modal-wrapper {
   position: relative;
   z-index: 1001;
+}
+.share-button {
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 </style>

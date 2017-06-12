@@ -1,5 +1,8 @@
 <template>
   <div class="associations-list">
+    <div class="share-button">
+      <button class="btn btn-success pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+    </div>
     <h1>{{ $t('Charities') }}</h1>
     <label class="label label-warning"> {{ $t('Page is under-construction') }} </label>
     <div class="association-box"

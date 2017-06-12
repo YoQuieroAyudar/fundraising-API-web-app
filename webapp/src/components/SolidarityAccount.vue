@@ -1,6 +1,10 @@
 <template>
   <div>
     <div>
+      <div class="share-button">
+        <button class="btn btn-success pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+      </div>
+      
       <h2>{{$t('Solidarity Account')}}</h2>
       <label class="label label-warning">{{$t('Page is under-construction')}}</label>
     </div>

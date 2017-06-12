@@ -1,5 +1,9 @@
 <template>
   <div class="login-area-wrapper">
+    <div class="share-button">
+      <button class="btn btn-success pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+    </div>
+    
     <h1><span v-if="$store.getters.getLoginAsUser">{{$t('Login as User')}}</span><span v-else>{{$t('Login as Establishment')}}</span></h1>
     <div class="user-login" v-if="$store.getters.getLoginAsUser">
       <form class="form">
