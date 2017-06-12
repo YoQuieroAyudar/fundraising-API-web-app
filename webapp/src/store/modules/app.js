@@ -1,7 +1,7 @@
 import * as urls from '../../api_variables'
 
 const state = {
-  Version: '0.7.0',
+  Version: '0.7.1',
   CurrentState: '',
   CurrentPage: '',
   PreviousPage: '',
@@ -99,20 +99,28 @@ const mutations = {
       state.testMode = false
     }
   },
+  setAPIUrl (state, url) {
+    if (typeof url === 'string' && url !== '') {
+      state.api_url = url
+      urls.API_URL.CurrentUrl = state.api_url
+    }
+  },
   setAPI (state, apiName) {
-    console.log('changing api')
+    console.log('changing api to ' + apiName)
     if (apiName === 'mhs') {
       state.api_url = 'https://api.microhuchasolidaria.org'
+    } else if (apiName === 'test-mhs') {
+      state.api_url = 'https://api-test.microhuchasolidaria.org'
     } else if (apiName === 'iwth') {
       state.api_url = 'http://api.iwanttohelp.org.uk'
     } else {
       state.api_url = 'https://api.jevaisaider.org'
     }
+    console.log(state.api_url)
+    urls.API_URL.LastURL = urls.API_URL.CurrentUrl
     urls.API_URL.CurrentUrl = state.api_url
   },
   setCurrentState (state, newState) {
-    console.log('setting current_state')
-    console.log(newState)
     state.CurrentState = newState
   },
   setCurrentPage (state, newPage) {

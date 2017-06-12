@@ -180,6 +180,20 @@ import axios from 'axios'
 export default {
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
+    this.$events.listen('setAPIUrlLEvent', eventData => {
+      console.log('setAPIUrlLEvent')
+      if (!eventData) {
+        return
+      }
+      console.log('db = ' + eventData.db)
+      if (eventData && eventData.db) {
+        this.$store.commit('setAPI', eventData.db)
+        return
+      }
+      if (eventData && eventData.url) {
+        this.$store.commit('setAPIUrl', eventData.url)
+      }
+    })
     this.$events.listen('showGoToModalEvent', eventData => {
       this.goToModalData = eventData
       this.$store.commit('setShowGoTo', true)
@@ -398,10 +412,28 @@ export default {
     console.log('langFromUrl')
     console.log(langFromUrl)
 
-    var singupAsPOS = Boolean(this.getQueryParams('pos-signup'))
+    // check if the current domain name is one of the dbs
+    var currentUrl = window.location.hostname
+    if (currentUrl.indexOf('microhuchasolidaria') > 0) {
+      this.$store.commit('setAPI', 'mhs')
+    } else if (currentUrl.indexOf('iwanttohelp') > 0) {
+      this.$store.commit('setAPI', 'iwth')
+    } else {
+      this.$store.commit('setAPI', 'jva')
+    }
+
+    var allPars = this.parseAllParams()
+    console.log('allPars:')
+    console.log(allPars)
+
+    // var apiType = this.getQueryParams('db')
+    console.log('apiType = ' + allPars.db)
+    this.$events.emit('setAPIUrlLEvent', {db: allPars.db})
+
+    var singupAsPOS = allPars['pos-signup'] // Boolean(this.getQueryParams('pos-signup'))
     console.log('SIGNUP POST VALUE:', singupAsPOS)
-    var singupAsUser = Boolean(this.getQueryParams('user-signup'))
-    var loginAsPOS = Boolean(this.getQueryParams('pos-login'))
+    var singupAsUser = allPars['user-signup'] // Boolean(this.getQueryParams('user-signup'))
+    var loginAsPOS = allPars['pos-login'] // Boolean(this.getQueryParams('pos-login'))
 
     if (singupAsPOS) {
       this.goDirectlyTo('signupPOS')
@@ -504,11 +536,23 @@ export default {
       var half = location.search.split(n + '=')[1]
       return half !== undefined ? decodeURIComponent(half.split('&')[0]) : null
     },
+    parseAllParams () {
+      var parameters = {}
+      var all = location.search
+      all = all.replace('?', '')
+      // split all parameters
+      var pv = all.split('&')
+      for (var i = 0; i < pv.length; i++) {
+        var keyVal = pv[i].split('=')
+        parameters[keyVal[0]] = keyVal[1]
+      }
+      return parameters
+    },
     getQueryParams (n) {
       console.log('getQueryParams')
       console.log(location.search)
       var half = location.search.split(n + '=')[1]
-      console.log(half)
+      console.log('half = ' + half)
       return half !== undefined ? decodeURIComponent(half.split('&')[0]) : null
     },
     setMessage (response) {
@@ -534,15 +578,15 @@ export default {
       this.$store.commit('setLoading', false)
     },
     sendLogin (loginData) {
-      var countryDb = localStorage.getItem('country_db')
-
-      if (this.$store.getters.getAppMode !== 'test') {
-        if (countryDb === null) {
-          this.$store.commit('setAPI', 'mhs')
-        } else {
-          this.$store.commit('setAPI', countryDb)
-        }
-      }
+      // var countryDb = localStorage.getItem('country_db')
+      //
+      // if (this.$store.getters.getAppMode !== 'test') {
+      //   if (countryDb === null) {
+      //     this.$store.commit('setAPI', 'mhs')
+      //   } else {
+      //     this.$store.commit('setAPI', countryDb)
+      //   }
+      // }
       this.$store.commit('setLoading', true)
       let country = localStorage.getItem('country')
       if (!country) {
