@@ -111,7 +111,12 @@ const localizations = {
   'Days left from subscription': 'Días restantes de la suscripción',
   'Unable to set associations list': 'No se puede establecer la lista de asociaciones',
   'Error while loading associations list': 'Error al cargar la lista de asociaciones',
-  'Country of residence': 'País de residencia'
+  'Country of residence': 'País de residencia',
+  'Personal Info': 'Información',
+  'Establishment Info': 'Información establecimiento',
+  'Establishment name': 'Nombre del establecimiento',
+  'City': 'Ciudad',
+  'Zip Code': 'Código postal'
 }
 
 export default localizations
