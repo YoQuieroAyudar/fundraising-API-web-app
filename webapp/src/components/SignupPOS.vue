@@ -48,7 +48,7 @@
       </div>
 
       <div dir="ltr" class="input-group">
-        <span class="input-group-addon" title="Country of residence" id="country_of_residence-addon1"> <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> </span>
+        <span class="input-group-addon" :title="$t('Country of residence')" id="country_of_residence-addon1"> <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> </span>
         <select class="form-control" aria-describedby="country_of_residence-addon1" v-model="signup.country_of_residence">
           <option v-for="country in $store.getters.getAllCountries" :disabled="country.code == '_'" :selected="country.code == 'ES'" @changed="signin.country_of_residence = country.code" :value="country.code"> {{$t(country.name)}}</option>
         </select>
@@ -93,12 +93,12 @@
 
 
       <div dir="ltr" class="input-group">
-        <span class="input-group-addon" title="Email" id="email-addon1"> <i class="fa fa-envelope fa-fw" aria-hidden="true"></i> </span>
+        <span class="input-group-addon" :title="$t('Email')" id="email-addon1"> <i class="fa fa-envelope fa-fw" aria-hidden="true"></i> </span>
         <input name="mail" class="form-control" v-model="signup.mail" @input="updateEmail" aria-describedby="email-addon1" type="email" :placeholder="$t('Email')" :value="signup.email" />
       </div>
 
       <div dir="ltr" class="input-group">
-        <span class="input-group-addon" title="Password" id="password-addon1"> <i class="fa fa-lock fa-fw" aria-hidden="true"></i> </span>
+        <span class="input-group-addon" :title="$t('Password')" id="password-addon1"> <i class="fa fa-lock fa-fw" aria-hidden="true"></i> </span>
         <input name="password" class="form-control" v-model="signup.password"  @input="updatePassword" aria-describedby="password-addon1" type="password" :placeholder="$t('Password')" :value="signup.password" />
       </div>
 
