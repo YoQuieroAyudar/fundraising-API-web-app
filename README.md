@@ -2,10 +2,10 @@ Welcome to the fundraising-API-web-app wiki!
 
 Please choose help in your language.
 
-* [English](/YoQuieroAyudar/fundraising-API-web-app/wiki/Help).     
-* [Français](/YoQuieroAyudar/fundraising-API-web-app/wiki/Aide).   
-* [Español](/YoQuieroAyudar/fundraising-API-web-app/wiki/Ayuda).   )
-* [العربية](/YoQuieroAyudar/fundraising-API-web-app/wiki/%D9%85%D8%B3%D8%A7%D8%B9%D8%AF%D8%A9).    
+* [English](https://github.com/YoQuieroAyudar/fundraising-API-web-app/wiki/Help).     
+* [Français](https://github.com/YoQuieroAyudar/fundraising-API-web-app/wiki/Aide).   
+* [Español](https://github.com/YoQuieroAyudar/fundraising-API-web-app/wiki/Ayuda).   )
+* [العربية](https://github.com/YoQuieroAyudar/fundraising-API-web-app/wiki/%D9%85%D8%B3%D8%A7%D8%B9%D8%AF%D8%A9).  
 
 
 Help-us translate this wiki
