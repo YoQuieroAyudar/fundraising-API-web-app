@@ -4,7 +4,7 @@
 
       <carousel :autoplay="true" :autoplayTimeout="autoplayTimout" :autoplayHoverPause="true" :navigationEnabled="true" :perPage="1">
         <slide :style="slide.style" :key="index" v-for="(slide, index) in $store.getters.getCurrentSlides.slides">
-          <button type="button" class="btn btn-default btn-xs skip-btn" :title="$t('Skip')" @click="skipSlide" name="skip"> X </button>
+          <button type="button" class="btn btn-default btn-xs skip-btn" :title="$t('Skip')" @click="skipSlide" name="skip"> <i class="fa fa-close fa-fw" aria-hidden="true"></i> </button>
           <div v-if="index === 0" class="slider-image">
             <img :src="$store.getters.getSlideImage.img" alt="">
           </div>
