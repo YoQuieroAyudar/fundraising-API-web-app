@@ -116,7 +116,8 @@ const localizations = {
   'Establishment Info': 'Información establecimiento',
   'Establishment name': 'Nombre del establecimiento',
   'City': 'Ciudad',
-  'Zip Code': 'Código postal'
+  'Zip Code': 'Código postal',
+  'CIF Code': 'Código CIF'
 }
 
 export default localizations

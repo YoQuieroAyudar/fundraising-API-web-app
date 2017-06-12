@@ -117,7 +117,8 @@ const localizations = {
   'Establishment Info': 'معلومات الؤسسة',
   'Establishment name': 'اسم المؤسسة',
   'City': 'المدينة',
-  'Zip Code': 'رمز البريدي'
+  'Zip Code': 'رمز البريدي',
+  'CIF Code': 'رقم الهوية للضريبة'
 }
 
 export default localizations
