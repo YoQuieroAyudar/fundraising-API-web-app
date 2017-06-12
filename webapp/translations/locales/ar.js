@@ -111,7 +111,8 @@ const localizations = {
   'Sorry, no QR code image found': 'عذرا، لايوجد صورة رمز الاستجابة السريع',
   'Days left from subscription': 'الأيام المتبقية من المشاركة',
   'Unable to set associations list': 'تعذر تعيين قائمة الجمعيات',
-  'Error while loading associations list': 'حدث خطأ أثناء تحميل قائمة الجمعيات'
+  'Error while loading associations list': 'حدث خطأ أثناء تحميل قائمة الجمعيات',
+  'Country of residence': ''
 }
 
 export default localizations

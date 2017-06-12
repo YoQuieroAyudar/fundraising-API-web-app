@@ -111,7 +111,8 @@ const localizations = {
   'Sorry, no QR code image found': '',
   'Days left from subscription': '',
   'Unable to set associations list': '',
-  'Error while loading associations list': ''
+  'Error while loading associations list': '',
+  'Country of residence': ''
 }
 
 export default localizations
