@@ -76,7 +76,8 @@ export default {
   },
   computed: {
     getCurrentTerms () {
-      this.currentTerms = this.terms[this.selected_country.toLowerCase()]
+      var t = this.terms[this.selected_country.toLowerCase()]
+      this.currentTerms = t === '' ? t : this.terms['en']
       return this.currentTerms
     }
   }
