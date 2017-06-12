@@ -1,11 +1,10 @@
 <template>
   <div class="slides-area">
-    <button type="button" class="btn btn-primary btn-xs" @click="skipSlide" name="skip">{{$t('Skip')}}</button>
-
     <div class="wrapword">
 
       <carousel :autoplay="true" :autoplayTimeout="autoplayTimout" :autoplayHoverPause="true" :navigationEnabled="true" :perPage="1">
         <slide :style="slide.style" :key="index" v-for="(slide, index) in $store.getters.getCurrentSlides.slides">
+          <button type="button" class="btn btn-default btn-xs skip-btn" :title="$t('Skip')" @click="skipSlide" name="skip"> X </button>
           <div v-if="index === 0" class="slider-image">
             <img :src="$store.getters.getSlideImage.img" alt="">
           </div>
@@ -37,7 +36,7 @@ export default {
       if (vm.$store.getters.getShowSlide) {
         vm.$events.emit('skipSlideEvent')
       }
-    }, autoTimeout)
+    }, autoTimeout + 3000)
   },
   methods: {
     seperatedSentences (value) {
@@ -57,7 +56,7 @@ export default {
   },
   data () {
     return {
-      autoplayTimout: 5000
+      autoplayTimout: 3500
     }
   },
   computed: {
@@ -125,5 +124,16 @@ export default {
   left: 50%;
   width: 100%;
   border: 1px solid #000;
+}
+.skip-btn {
+  position: absolute;
+  height: 2em;
+  right: 0;
+  top: .2em;
+  margin-bottom: -3em;
+  margin-right: .1em;
+  border-radius: 0;
+  border: 0;
+  z-index: 1000;
 }
 </style>
