@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="user-home" v-if="$store.getters.getUserType === 'USER' || $store.getters.getUserType === 'ADMIN'">
+      <div class="share-button">
+        <button class="btn btn-success pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+      </div>
+      
       <h4>{{$t('hi')}}, {{getUsername}}</h4>
+
       <p>
         {{$t('Thanks for your generous heart. You are changing the world for a lot of people who lost hope')}}
       </p>
@@ -21,7 +26,11 @@
       </p>
     </div>
     <div class="pos-home" v-else-if="$store.getters.getUserType === 'POS'">
+      <div class="share-button">
+        <button class="btn btn-success pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+      </div>
       <h4>{{$t('hi')}}, {{getUsername}}</h4>
+
       <p>
         {{$t('Thanks for your generous heart. You are changing the world for a lot of people who lost hope')}}
       </p>

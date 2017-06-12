@@ -10,6 +10,9 @@
     </div>
 
     <h1>{{$t('Sign up')}}</h1>
+    <div class="share-button">
+      <button class="btn btn-success pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+    </div>
 
     <form class="form">
 

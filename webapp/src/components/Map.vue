@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="share-button">
+      <button class="btn btn-success pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+    </div>
     <h1>{{currentPOS.name}}</h1>
 
     <span class="hidden">{{getMapCenter}}:{{getMarkers}}</span>
