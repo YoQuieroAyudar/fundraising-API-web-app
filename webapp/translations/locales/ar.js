@@ -112,7 +112,12 @@ const localizations = {
   'Days left from subscription': 'الأيام المتبقية من المشاركة',
   'Unable to set associations list': 'تعذر تعيين قائمة الجمعيات',
   'Error while loading associations list': 'حدث خطأ أثناء تحميل قائمة الجمعيات',
-  'Country of residence': ''
+  'Country of residence': 'بلد الإقامة',
+  'Personal Info': 'المعلومات الشخصية',
+  'Establishment Info': 'معلومات الؤسسة',
+  'Establishment name': 'اسم المؤسسة',
+  'City': 'المدينة',
+  'Zip Code': 'رمز البريدي'
 }
 
 export default localizations

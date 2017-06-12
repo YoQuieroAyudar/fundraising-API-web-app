@@ -4,7 +4,7 @@
     <div class="modal-wrapper">
       <div class="modal-inner">
         <vodal :show="showTerms" :width="250" :height="300" animation="rotate" @hide="showTerms = false">
-            <terms-modal :selected_country="signup.POS_country"></terms-modal>
+            <terms-modal :selected_country="signup.country_of_residence"></terms-modal>
         </vodal>
       </div>
     </div>

@@ -86,8 +86,8 @@
       </div>
 
       <div dir="ltr" class="input-group">
-        <span class="input-group-addon" :title="$t('Address')" id="address-addon1"> <i class="fa fa-map-signs fa-fw" aria-hidden="true"></i> </span>
-        <input name="first_name" class="form-control" v-model="signup.address"  @input="updateAddress" aria-describedby="address-addon1" type="text" :placeholder="$t('Address')" :value="signup.address" />
+        <span class="input-group-addon" :title="$t('address')" id="address-addon1"> <i class="fa fa-map-signs fa-fw" aria-hidden="true"></i> </span>
+        <input name="first_name" class="form-control" v-model="signup.address"  @input="updateAddress" aria-describedby="address-addon1" type="text" :placeholder="$t('address')" :value="signup.address" />
       </div>
 
 
