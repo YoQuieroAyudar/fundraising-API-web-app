@@ -15,6 +15,11 @@ import VueEvents from 'vue-events'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import SocialSharing from 'vue-social-sharing'
 
+// make app offline-first
+import * as OfflinePluginRuntime from 'offline-plugin/runtime'
+OfflinePluginRuntime.install()
+// require('offline-plugin/runtime').install()
+
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es' // ,
