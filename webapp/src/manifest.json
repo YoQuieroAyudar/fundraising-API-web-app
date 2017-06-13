@@ -1,6 +1,6 @@
 {
   "orientation": "portrait",
-  "display": "fullscreen",
+  "display": "standalone",
   "icons": [
     {
       "src": "launcher-icon.png",
@@ -29,8 +29,10 @@
     }
   ],
   "name": "Fundraising API web-app",
-  "start_url": "/",
+  "short_name": "Fundraising WebApp",
+  "start_url": "/index.html",
   "description": "Web interface for Micro Hucha Solidaria's Rest API",
   "theme_color": "#2196f3",
-  "background_color": "#2196f3"
+  "background_color": "#2196f3",
+  "splash_pages": null
 }

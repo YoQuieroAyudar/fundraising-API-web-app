@@ -23,6 +23,7 @@ module.exports = merge(baseWebpackConfig, {
   plugins: [
     new CopyWebpackPlugin([
       { from: 'src/manifest.json', to: 'manifest.json' },
+      { from: 'src/service-worker.js', to: 'sw.js' },
       { from: 'src/assets/launcher-icon.png', to: 'launcher-icon.png' },
       { from: 'src/assets/launcher-icon-96.png', to: 'launcher-icon-96.png' },
       { from: 'src/assets/launcher-icon-144.png', to: 'launcher-icon-144.png' },
