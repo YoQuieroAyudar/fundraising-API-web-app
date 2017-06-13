@@ -33,6 +33,7 @@ module.exports = merge(baseWebpackConfig, {
       { from: 'src/assets/powered-by-mangopay.png', to: 'powered-by-mangopay.png' },
       { from: 'src/assets/slide-img-es.png', to: 'slide-img-es.png' },
       { from: 'src/assets/slide-img-fr.png', to: 'slide-img-fr.png' },
+      { from: 'src/assets/launcher-icon-512.png', to: 'launcher-icon-512.png' },
       // favicon icons
       { from: 'src/assets/icons/android-icon-36x36.png', to: '' },
       { from: 'src/assets/icons/android-icon-48x48.png', to: 'android-icon-48x48.png' },

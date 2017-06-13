@@ -37,11 +37,17 @@
      "sizes": "192x192",
      "type": "image\/png",
      "density": "4.0"
+    },
+    {
+     "src": "\/launcher-icon-512.png",
+     "sizes": "192x192",
+     "type": "image\/png",
+     "density": "4.0"
     }
   ],
   "name": "IWantToHelp",
   "short_name": "IWantToHelp",
-  "start_url": "/index.html",
+  "start_url": "/",
   "description": "Web interface for Micro Hucha Solidaria's Rest API",
   "theme_color": "#2196f3",
   "background_color": "#2196f3",
