@@ -8,6 +8,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+var OfflinePlugin = require('offline-plugin')
 
 // const CopyWebpackPlugin = require('copy-webpack-plugin')
 
@@ -31,7 +32,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   plugins: [
     new CopyWebpackPlugin([
       { from: 'src/manifest.json', to: 'manifest.json' },
-      { from: 'src/service-worker.js', to: 'sw.js' },
+      // { from: 'src/service-worker.js', to: 'sw.js' },
       { from: 'src/assets/launcher-icon.png', to: 'launcher-icon.png' },
       { from: 'src/assets/launcher-icon-96.png', to: 'launcher-icon-96.png' },
       { from: 'src/assets/launcher-icon-144.png', to: 'launcher-icon-144.png' },
@@ -104,7 +105,8 @@ var webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    new OfflinePlugin()
   ]
 })
 
