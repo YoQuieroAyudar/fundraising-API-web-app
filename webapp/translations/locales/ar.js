@@ -118,7 +118,11 @@ const localizations = {
   'Establishment name': 'اسم المؤسسة',
   'City': 'المدينة',
   'Zip Code': 'رمز البريدي',
-  'CIF Code': 'رقم الهوية للضريبة'
+  'CIF Code': 'رقم الهوية للضريبة',
+  'IWantToHelp': '',
+  'I have donated to a charity with IWantToHelp http://web.iwanttohelp.org.uk #IWantToHelp': 'تبرعت مستخدما IWantToHelp http://ar.jevaisaider.org/ #JeVaisAider ',
+  'fundraising,user,widget,IWantToHelp': 'fundraising,user,widget,JeVaisAider',
+  'YQuieroAyudar': 'JeVaisAider'
 }
 
 export default localizations

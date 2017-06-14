@@ -2,52 +2,68 @@
   <div>
     <social-sharing url="https://github.com/YoQuieroAyudar/fundraising-API-user-widget"
                       :title="$t(title)"
-                      :description="description"
-                      :quote="description"
-                      :hashtags="hashtags"
-                      :twitter-user="outTwitterUser"
+                      :description="$t(description)"
+                      :quote="$t(description)"
+                      :hashtags="$t(hashtags)"
+                      :twitter-user="$t(outTwitterUser)"
                       v-cloak inline-template>
                     <div>
-                      <ul class="share-buttons-list">
-                        <li>
-                          <network network="facebook">
-                            <i class="fa fa-facebook"></i> Facebook
-                          </network>
+                      <ul class="list-unstyled share-buttons-list" style="font-size: 1.65em;">
+                        <li class="">
+                          <a href="#">
+                            <network network="facebook">
+                              <i class="fa fa-facebook"></i> Facebook
+                            </network>
+                          </a>
                         </li>
-                        <li>
-                          <network network="googleplus">
-                            <i class="fa fa-google-plus"></i> Google +
-                          </network>
+                        <li class="">
+                          <a href="#">
+                            <network network="googleplus">
+                              <i class="fa fa-google-plus"></i> Google +
+                            </network>
+                          </a>
                         </li>
-                        <li>
-                          <network network="linkedin">
-                            <i class="fa fa-linkedin"></i> LinkedIn
-                          </network>
+                        <li class="">
+                          <a href="#">
+                            <network network="linkedin">
+                              <i class="fa fa-linkedin"></i> LinkedIn
+                            </network>
+                          </a>
                         </li>
-                        <li>
-                          <network network="pinterest">
-                            <i class="fa fa-pinterest"></i> Pinterest
-                          </network>
+                        <li class="">
+                          <a href="#">
+                            <network network="pinterest">
+                              <i class="fa fa-pinterest"></i> Pinterest
+                            </network>
+                          </a>
                         </li>
-                        <li>
-                          <network network="reddit">
-                            <i class="fa fa-reddit"></i> Reddit
-                          </network>
+                        <li class="">
+                          <a href="#">
+                            <network network="reddit">
+                              <i class="fa fa-reddit"></i> Reddit
+                            </network>
+                          </a>
                         </li>
-                        <li>
-                          <network network="twitter">
-                            <i class="fa fa-twitter"></i> Twitter
-                          </network>
+                        <li class="">
+                          <a href="#">
+                            <network network="twitter">
+                              <i class="fa fa-twitter"></i> Twitter
+                            </network>
+                          </a>
                         </li>
-                        <li>
-                          <network network="vk">
-                            <i class="fa fa-vk"></i> VKontakte
-                          </network>
+                        <li class="">
+                          <a href="#">
+                            <network network="vk">
+                              <i class="fa fa-vk"></i> VKontakte
+                            </network>
+                          </a>
                         </li>
-                        <li>
-                          <network network="whatsapp">
-                            <i class="fa fa-whatsapp"></i> Whatsapp
-                          </network>
+                        <li class="">
+                          <a href="#">
+                            <network network="whatsapp">
+                              <i class="fa fa-whatsapp"></i> Whatsapp
+                            </network>
+                          </a>
                         </li>
                       </ul>
 
@@ -62,9 +78,9 @@
 export default {
   data () {
     return {
-      title: 'Fundraising API user widget',
-      description: 'Working on a vueJS user widget that works with # fundraising API. Work in progress...',
-      hashtags: 'fundraising,user,widget',
+      title: 'IWantToHelp',
+      description: 'I have donated to a charity with IWantToHelp http://web.iwanttohelp.org.uk #IWantToHelp',
+      hashtags: 'fundraising,user,widget,IWantToHelp',
       outTwitterUser: 'YQuieroAyudar'
     }
   },
@@ -74,7 +90,7 @@ export default {
 }
 </script>
 <style scoped>
-.share-buttons-list li {
-  cursor: pointer;
+a.social-link:hover {
+  border: 1px solid #000;
 }
 </style>
