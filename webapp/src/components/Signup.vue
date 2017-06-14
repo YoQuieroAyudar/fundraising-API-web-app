@@ -10,7 +10,7 @@
     </div>
 
     <div class="share-button">
-      <button class="btn btn-success pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+      <button class="btn btn-success btn-xs pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
     </div>
     <h1>{{$t('Sign up')}}</h1>
 
@@ -118,6 +118,12 @@ a {
 .modal-wrapper {
   position: relative;
   z-index: 1001;
+}
+.share-button {
+  position: absolute;
+  left: 0;
+  right: 1.7em;
+  margin-top: 0;
 }
 </style>
 

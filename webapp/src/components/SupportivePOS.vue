@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="share-button">
-      <button class="btn btn-success pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+      <button class="btn btn-success btn-xs pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
     </div>
-    
+
     <h1>{{currentPOS.name}}</h1>
 
     <pre>{{$data}}</pre>
@@ -125,4 +125,11 @@ h4 {
 h5 {
   font-size: 1em;
 }
+.share-button {
+  position: absolute;
+  left: 0;
+  right: 1.7em;
+  margin-top: 0;
+}
+
 </style>

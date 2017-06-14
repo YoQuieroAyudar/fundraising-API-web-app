@@ -911,6 +911,7 @@ a {
 .share-button {
   position: absolute;
   left: 0;
-  right: 0;
+  right: 1.7em;
+  margin-top: 0;
 }
 </style>

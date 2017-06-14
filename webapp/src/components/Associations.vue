@@ -1,7 +1,7 @@
 <template>
   <div class="associations-list">
     <div class="share-button">
-      <button class="btn btn-success pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+      <button class="btn btn-success btn-xs pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
     </div>
     <h1>{{ $t('Charities') }}</h1>
     <label class="label label-warning"> {{ $t('Page is under-construction') }} </label>
@@ -144,5 +144,11 @@ h4 {
 }
 h5 {
   font-size: 1em;
+}
+.share-button {
+  position: absolute;
+  left: 0;
+  right: 1.7em;
+  margin-top: 0;
 }
 </style>
