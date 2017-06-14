@@ -201,9 +201,9 @@ export default {
       if (!eventData) {
         return
       }
-      console.log('db = ' + eventData.db)
-      if (eventData && eventData.db) {
-        this.$store.commit('setAPI', eventData.db)
+      console.log('db = ' + eventData)
+      if (eventData !== undefined) {
+        this.$store.commit('setAPI', eventData)
         return
       }
       if (eventData && eventData.url) {
@@ -428,23 +428,38 @@ export default {
     console.log('langFromUrl')
     console.log(langFromUrl)
 
-    // check if the current domain name is one of the dbs
-    var currentUrl = window.location.hostname
-    if (currentUrl.indexOf('microhuchasolidaria') > 0) {
-      this.$store.commit('setAPI', 'mhs')
-    } else if (currentUrl.indexOf('iwanttohelp') > 0) {
-      this.$store.commit('setAPI', 'iwth')
-    } else {
-      this.$store.commit('setAPI', 'jva')
-    }
+    // // check if the current domain name is one of the dbs
+    // var currentUrl = window.location.hostname
+    // if (currentUrl.indexOf('localhost')) {
+    //   // do nothing
+    // } if (currentUrl.indexOf('microhuchasolidaria') > 0) {
+    //   this.$store.commit('setAPI', 'mhs')
+    // } else if (currentUrl.indexOf('iwanttohelp') > 0) {
+    //   this.$store.commit('setAPI', 'iwth')
+    // } else {
+    //   this.$store.commit('setAPI', 'jva')
+    // }
 
     var allPars = this.parseAllParams()
     console.log('allPars:')
     console.log(allPars)
 
     // var apiType = this.getQueryParams('db')
-    console.log('apiType = ' + allPars.db)
-    this.$events.emit('setAPIUrlLEvent', {db: allPars.db})
+    if (allPars.db !== undefined && allPars.country === undefined) {
+      console.log('apiType = ' + allPars.db)
+      console.log('emitting setAPIUrlLEvent')
+      setTimeout(() => {
+        this.$events.emit('setAPIUrlLEvent', allPars.db)
+      }, 1000)
+    }
+    if (allPars.country !== undefined) {
+      setTimeout(() => {
+        console.log('setting country to ' + allPars.country)
+        var countryCode = typeof allPars.country === 'string' ? allPars.country.toUpperCase() : allPars.country.toString()
+        this.$store.commit('setSelectedCountry', countryCode)
+        this.$store.commit('setAPI', undefined)
+      }, 500)
+    }
 
     var singupAsPOS = allPars['pos-signup'] // Boolean(this.getQueryParams('pos-signup'))
     console.log('SIGNUP POST VALUE:', singupAsPOS)

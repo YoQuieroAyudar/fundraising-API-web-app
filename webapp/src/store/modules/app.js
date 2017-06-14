@@ -19,10 +19,14 @@ const state = {
   showSlide: true,
   waitingFor: {},
   showGoTo: false,
-  showShare: false
+  showShare: false,
+  selectedCountry: 'ES'
 }
 
 const getters = {
+  getSelectedCountry (state) {
+    return state.selectedCountry
+  },
   getShowShare (state) {
     return state.showShare
   },
@@ -77,6 +81,9 @@ const getters = {
 }
 
 const mutations = {
+  setSelectedCountry (state, context) {
+    state.selectedCountry = typeof context === 'string' ? context.toUpperCase() : context.code
+  },
   setShowShare (state, context) {
     state.showShare = Boolean(context)
   },
@@ -113,12 +120,46 @@ const mutations = {
     }
   },
   setAPI (state, apiName) {
+    if (apiName === undefined) {
+      switch (state.selectedCountry) {
+        case 'ES':
+          apiName = 'mhs'
+          break
+        case 'FR':
+          apiName = 'jva'
+          break
+        case 'BE':
+          apiName = 'jva'
+          break
+        case 'CH':
+          apiName = 'jva'
+          break
+        case 'MA':
+          apiName = 'jva'
+          break
+        case 'TN':
+          apiName = 'jva'
+          break
+        case 'GB':
+          apiName = 'iwth'
+          break
+        case 'US':
+          apiName = 'iwth'
+          break
+        default:
+          apiName = 'jva'
+      }
+    }
+
+    apiName = typeof apiName === 'string' ? apiName.toLowerCase() : apiName
+
     console.log('changing api to ' + apiName)
-    if (apiName === 'mhs') {
+    console.log('has mhs = ' + apiName.indexOf('mhs'))
+    if (apiName.indexOf('mhs') > -1) {
       state.api_url = 'https://api.microhuchasolidaria.org'
-    } else if (apiName === 'test-mhs') {
+    } else if (apiName.indexOf('test-mhs') > -1) {
       state.api_url = 'https://api-test.microhuchasolidaria.org'
-    } else if (apiName === 'iwth') {
+    } else if (apiName.indexOf('iwth') > -1) {
       state.api_url = 'http://api.iwanttohelp.org.uk'
     } else {
       state.api_url = 'https://api.jevaisaider.org'

@@ -1,7 +1,7 @@
 <template>
   <div class="login-area-wrapper">
     <div class="share-button">
-      <button class="btn btn-success btn-xs pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+      <button :class="$i18n.locale() == 'ar' ? 'btn btn-success btn-xs pull-left' : 'btn btn-success btn-xs pull-right'" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
     </div>
 
     <h1><span v-if="$store.getters.getLoginAsUser">{{$t('Login as User')}}</span><span v-else>{{$t('Login as Establishment')}}</span></h1>
@@ -9,8 +9,8 @@
       <form class="form">
         <div dir="ltr" class="input-group">
           <span class="input-group-addon" :title="$t('Country')" id="country-addon1"> {{$t('Donation Destination')}}</span>
-          <select class="form-control" aria-describedby="nationality-addon1" @change="updateAPI" v-model="country">
-            <option v-for="(ctry, i) in $store.getters.getTopCountries" :selected="true" :value="ctry">{{ctry.name}}</option>
+          <select class="form-control" aria-describedby="nationality-addon1" @change="updateAPI" v-model="country" >
+            <option v-for="(ctry, i) in $store.getters.getTopCountries" :selected="i == 1" :value="ctry.code">{{ctry.name}}</option>
           </select>
         </div>
         <div dir="ltr" class="input-group" :title="$t('Email')">
@@ -86,6 +86,10 @@ a {
   right: 1.7em;
   margin-top: 0;
 }
+.pull-left {
+  left: 0;
+  margin-left: 2em;
+}
 </style>
 
 <script>
@@ -103,12 +107,21 @@ export default {
       },
       rememberMe: localStorage.getItem('rememberMe'),
       facebookLogin: false,
-      country: {name: 'Spain', db: 'mhs', code: 'ES'},
+      // country: {name: 'Spain', db: 'mhs', code: 'ES'},
       asUser: true
     }
   },
   computed: {
-
+    country: {
+      get () {
+        return this.$store.getters.getSelectedCountry.toUpperCase()
+      },
+      set (newValue) {
+        console.log('new value for country')
+        console.log(newValue)
+        this.$store.commit('setSelectedCountry', newValue.toUpperCase())
+      }
+    }
   },
   methods: {
     gotToLoginPOS () {
