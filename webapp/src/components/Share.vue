@@ -129,7 +129,7 @@ export default {
         baseUrl += '?'
       }
       if (baseUrl.indexOf('lang=') < 0) {
-        var lang = 'lang=' + encodeURIComponent(lang)
+        lang = 'lang=' + encodeURIComponent(lang)
         this.endsWith(baseUrl, '&') ? baseUrl += lang : baseUrl += '&' + lang
       }
       var db = this.$store.getters.getApiDB
