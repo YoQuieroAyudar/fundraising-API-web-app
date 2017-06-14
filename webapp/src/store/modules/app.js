@@ -20,10 +20,14 @@ const state = {
   waitingFor: {},
   showGoTo: false,
   showShare: false,
-  selectedCountry: 'ES'
+  selectedCountry: 'ES',
+  api_db: 'mhs'
 }
 
 const getters = {
+  getApiDB (state) {
+    return state.api_db
+  },
   getSelectedCountry (state) {
     return state.selectedCountry
   },
@@ -157,12 +161,16 @@ const mutations = {
     console.log('has mhs = ' + apiName.indexOf('mhs'))
     if (apiName.indexOf('mhs') > -1) {
       state.api_url = 'https://api.microhuchasolidaria.org'
+      state.api_db = 'mhs'
     } else if (apiName.indexOf('test-mhs') > -1) {
       state.api_url = 'https://api-test.microhuchasolidaria.org'
+      state.api_db = 'test-mhs'
     } else if (apiName.indexOf('iwth') > -1) {
       state.api_url = 'http://api.iwanttohelp.org.uk'
+      state.api_db = 'iwth'
     } else {
       state.api_url = 'https://api.jevaisaider.org'
+      state.api_db = 'jva'
     }
     console.log(state.api_url)
     urls.API_URL.LastURL = urls.API_URL.CurrentUrl
