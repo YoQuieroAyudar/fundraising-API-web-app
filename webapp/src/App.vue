@@ -428,17 +428,22 @@ export default {
     console.log('langFromUrl')
     console.log(langFromUrl)
 
-    // // check if the current domain name is one of the dbs
-    // var currentUrl = window.location.hostname
-    // if (currentUrl.indexOf('localhost')) {
-    //   // do nothing
-    // } if (currentUrl.indexOf('microhuchasolidaria') > 0) {
-    //   this.$store.commit('setAPI', 'mhs')
-    // } else if (currentUrl.indexOf('iwanttohelp') > 0) {
-    //   this.$store.commit('setAPI', 'iwth')
-    // } else {
-    //   this.$store.commit('setAPI', 'jva')
-    // }
+    // check if the current domain name is one of the dbs
+    var currentUrl = window.location.hostname
+    console.log('You are on ' + currentUrl)
+    if (currentUrl.indexOf('localhost') > -1) {
+      // do nothing
+      console.log('localhost')
+    } else if (currentUrl.indexOf('microhuchasolidaria') > -1) {
+      this.$store.commit('setAPI', 'mhs')
+      console.log('microhuchasolidaria')
+    } else if (currentUrl.indexOf('iwanttohelp') > -1) {
+      this.$store.commit('setAPI', 'iwth')
+      console.log('iwanttohelp')
+    } else {
+      this.$store.commit('setAPI', 'jva')
+      console.log('default: jevaisaider')
+    }
 
     var allPars = this.parseAllParams()
     console.log('allPars:')

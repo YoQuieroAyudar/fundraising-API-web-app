@@ -1,6 +1,6 @@
 <template>
   <div>
-    <social-sharing url="https://github.com/YoQuieroAyudar/fundraising-API-user-widget"
+    <social-sharing :url="url"
                       :title="$t(title)"
                       :description="$t(description)"
                       :quote="$t(description)"
@@ -110,6 +110,28 @@ export default {
   },
   methods: {
 
+  },
+  computed: {
+    url () {
+      var address = window.location.href.replace('#/', '')
+      var baseUrl = ''
+      // if in development use the production url
+      if (address.indexOf('localhost') > -1) {
+        baseUrl = 'https://yoquieroayudar.github.io'
+      } else {
+        baseUrl = address
+      }
+      var lang = localStorage.getItem('user_locale')
+      lang = lang === null ? this.$i18n.locale() : lang
+      var db = this.$store.getters.getApiDB
+      var country = this.$store.getters.getSelectedCountry
+      if (country === null) {
+        baseUrl += '?lang=' + encodeURIComponent(lang) + '&db=' + encodeURIComponent(db)
+      } else {
+        baseUrl += '?lang=' + encodeURIComponent(lang) + '&country=' + encodeURIComponent(country)
+      }
+      return baseUrl
+    }
   }
 }
 </script>

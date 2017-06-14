@@ -41,6 +41,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       { from: 'src/assets/powered-by-mangopay.png', to: 'powered-by-mangopay.png' },
       { from: 'src/assets/slide-img-es.png', to: 'slide-img-es.png' },
       { from: 'src/assets/slide-img-fr.png', to: 'slide-img-fr.png' },
+      { from: 'src/assets/launcher-icon-512.png', to: 'launcher-icon-512.png'},
     ]),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
