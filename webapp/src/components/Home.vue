@@ -2,9 +2,9 @@
   <div>
     <div class="user-home" v-if="$store.getters.getUserType === 'USER' || $store.getters.getUserType === 'ADMIN'">
       <div class="share-button">
-        <button class="btn btn-success pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+        <button class="btn btn-success btn-xs pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
       </div>
-      
+
       <h4>{{$t('hi')}}, {{getUsername}}</h4>
 
       <p>
@@ -27,7 +27,7 @@
     </div>
     <div class="pos-home" v-else-if="$store.getters.getUserType === 'POS'">
       <div class="share-button">
-        <button class="btn btn-success pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+        <button class="btn btn-success btn-xs pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
       </div>
       <h4>{{$t('hi')}}, {{getUsername}}</h4>
 
@@ -130,5 +130,11 @@ h4 {
 }
 h5 {
   font-size: 1em
+}
+.share-button {
+  position: absolute;
+  left: 0;
+  right: 1.7em;
+  margin-top: 0;
 }
 </style>
