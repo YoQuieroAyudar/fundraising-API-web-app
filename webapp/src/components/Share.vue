@@ -109,7 +109,9 @@ export default {
     }
   },
   methods: {
-
+    endsWith (item, end) {
+      return item.lastIndexOf(end) === (item.length - 1)
+    }
   },
   computed: {
     url () {
@@ -123,12 +125,18 @@ export default {
       }
       var lang = localStorage.getItem('user_locale')
       lang = lang === null ? this.$i18n.locale() : lang
+      if (baseUrl.indexOf('?') < 0) {
+        baseUrl += '?'
+      }
+      if (baseUrl.indexOf('lang=') < 0) {
+        var lang = 'lang=' + encodeURIComponent(lang)
+        this.endsWith(baseUrl, '&') ? baseUrl += lang : baseUrl += '&' + lang
+      }
       var db = this.$store.getters.getApiDB
       var country = this.$store.getters.getSelectedCountry
-      if (country === null) {
-        baseUrl += '?lang=' + encodeURIComponent(lang) + '&db=' + encodeURIComponent(db)
-      } else {
-        baseUrl += '?lang=' + encodeURIComponent(lang) + '&country=' + encodeURIComponent(country)
+      if (country === null && baseUrl.indexOf('')) {
+        db = 'db=' + encodeURIComponent(db)
+        this.endsWith(baseUrl, '&') ? baseUrl += db : baseUrl + '&' + db
       }
       return baseUrl
     }
