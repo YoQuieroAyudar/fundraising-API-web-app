@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="share-button">
-      <button class="btn btn-success btn-xs pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
+      <button :class="$i18n.locale() == 'ar' ? 'btn btn-success btn-xs pull-left' : 'btn btn-success btn-xs pull-right'" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
     </div>
 
     <h1>{{currentPOS.name}}</h1>
@@ -130,6 +130,10 @@ h5 {
   left: 0;
   right: 1.7em;
   margin-top: 0;
+}
+.pull-left {
+  left: 0;
+  margin-left: 2em;
 }
 
 </style>
