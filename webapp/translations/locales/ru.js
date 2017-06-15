@@ -95,8 +95,8 @@ const localizations = {
   'Sorry, only establishments are allowed to login through this form': 'Извините, только организации могут входить через эту форму',
   '{x} day ::: {x} days': '{x} день ::: {x} дней'
   'Subscription': 'Подписка',
-  'Мой QR-код': '',
-  'TAX': 'НАЛОГ',
+  'My QR Code': 'Мой QR-код',
+  'TAX': 'Налог',
   'Sorry transaction failed': 'Ошибка транзакции',
   'Subscription successful': 'Подписка успешна',
   'Started secure transaction please complete process in the new window after you click continue': 'После начала безопасной транзакции, пожалуйста, завершите процесс в новом окне после нажатия кнопки продолжения',
