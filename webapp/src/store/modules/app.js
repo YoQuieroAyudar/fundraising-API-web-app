@@ -1,7 +1,7 @@
 import * as urls from '../../api_variables'
 
 const state = {
-  Version: '0.8.2',
+  Version: '0.8.3',
   CurrentState: '',
   CurrentPage: '',
   PreviousPage: '',
@@ -166,7 +166,7 @@ const mutations = {
       state.api_url = 'https://api-test.microhuchasolidaria.org'
       state.api_db = 'test-mhs'
     } else if (apiName.indexOf('iwth') > -1) {
-      state.api_url = 'http://api.iwanttohelp.org.uk'
+      state.api_url = 'https://api.iwanttohelp.org.uk'
       state.api_db = 'iwth'
     } else {
       state.api_url = 'https://api.jevaisaider.org'
