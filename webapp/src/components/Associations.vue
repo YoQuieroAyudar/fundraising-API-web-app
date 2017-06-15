@@ -55,15 +55,20 @@ export default {
       }
       console.log('Searching for ' + country)
       let url = urls.API_URL.CurrentUrl + urls.ASSO_SEARCH_URL
+      var data = {}
+      data.POS_id = 1
 
-      url = (country !== undefined && country !== null && country !== '') ? url + '?country=' + country : url
+      if (country !== undefined && country !== null && country !== '') {
+        url += '?country=' + country
+        data.country = country
+      }
 
       var jwtToken = localStorage.getItem('user_token')
 
       axios({
         method: 'POST',
         url: url,
-        data: {POS_id: 1, country: country},
+        data: data,
         headers: { 'Authorization': `Bearer ${jwtToken}` }
       }).then(resp => {
         console.log(resp.status)
