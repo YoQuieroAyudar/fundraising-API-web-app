@@ -28,8 +28,8 @@
       "type": "image/png"
     }
   ],
-  "name": "Fundraising API web-app",
-  "short_name": "Fundraising WebApp",
+  "name": "I Want To Help",
+  "short_name": "IWantToHelp",
   "start_url": "/index.html",
   "description": "Web interface for Micro Hucha Solidaria's Rest API",
   "theme_color": "#2196f3",
