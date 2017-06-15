@@ -4,10 +4,11 @@
       <button :class="$i18n.locale() == 'ar' ? 'btn btn-success btn-xs pull-left' : 'btn btn-success btn-xs pull-right'" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
     </div>
     <h1 class="page-top-title">{{ $t('Charities') }}</h1>
-    <label class="label label-warning"> {{ $t('Page is under-construction') }} </label>
+
+    <input type="text" class="form-control" name="search-asso" @input="searchAsso" :placeholder="$t('Search by name or description')" v-model:value="search">
     <div class="association-box"
       @click="selectAssociation(assoc.id)"
-      v-for="assoc in this.$store.getters.getAssociations">
+      v-for="assoc in $store.getters.getCurrentAssoList">
 
       <img class="assoc-logo" :src="assoc.logo_url" :alt="$t(assoc.short_description)">
       <h4>{{assoc.name}}</h4>
@@ -26,28 +27,42 @@ import axios from 'axios'
 export default {
   beforeMount () {
     console.log('beforeUpdate')
-    this.associations = this.$store.getters.getAssociations
-    if (this.associations.length === 0) {
+    if (this.$store.getters.getAssociations.length === 0) {
       console.log('associations length = 0')
       console.log('Getting new list')
       this.getAssociationsFromAPI()
-      this.associations = this.$store.getters.getAssociations
     }
   },
   data () {
     return {
-      associations: []
+      associations: [],
+      search: '',
+      searchTimout: 0
     }
   },
   methods: {
+    searchAsso (e) {
+      console.log('searchAsso')
+      var searchText = this.search
+      var vm = this
+      clearTimeout(this.searchTimout)
+      this.searchTimout = setTimeout(function () {
+        var assos = vm.$store.getters.getAssociations.filter(asso => {
+          var name = asso.name !== undefined ? asso.name.toLowerCase() : ''
+          var description = asso.description !== undefined ? asso.description.toLowerCase() : ''
+          searchText = searchText.toLowerCase()
+          return (name.indexOf(searchText) > -1) || (description.indexOf(searchText) > -1)
+        })
+        console.log('associations found ' + assos.length)
+        vm.$store.commit('setCurrentAssoList', assos)
+      }, 500)
+    },
     selectAssociation (assocId) {
       console.log(assocId)
       this.$store.commit('selectAssoById', assocId)
-      // this.$store.commit('setCurrentPage', 'asso_details')
       this.$events.emit('goToPageEvent', 'asso_details/' + assocId)
     },
     getAssociationsFromAPI () {
-      // var jwtToken = localStorage.getItem('user_token')
       var vm = this
       let country = localStorage.getItem('country_code')
       if (country == null) {
@@ -88,27 +103,6 @@ export default {
           vm.$store.commit('setErrors', err.data.errors)
         }
       })
-
-      // this.$http.headers.common['Authorization'] = 'Bearer ' + jwtToken
-      // this.$http.post(url, {POS_id: 1, country: country})
-      //     .then(resp => {
-      //       console.log(resp.status)
-      //       console.log(resp.statusText)
-      //       console.log(resp)
-      //       if (resp.data) {
-      //         vm.$store.commit('setAssoList', resp.data)
-      //       } else {
-      //         vm.$store.commit('setErrors', [{error: 'Unable to set associations list'}])
-      //       }
-      //     }, err => {
-      //       if (!err.data) {
-      //         vm.$store.commit('setError', {error: 'Error while loading associations list'})
-      //         return
-      //       }
-      //       if (err.data.errors) {
-      //         vm.$store.commit('setErrors', err.data.errors)
-      //       }
-      //     })
     }
   },
   computed: {
