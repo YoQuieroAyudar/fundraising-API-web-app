@@ -5,7 +5,7 @@
         <button :class="$i18n.locale() == 'ar' ? 'btn btn-success btn-xs pull-left' : 'btn btn-success btn-xs pull-right'" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
       </div>
 
-      <h4>{{$t('hi')}}, {{getUsername}}</h4>
+      <h4 class="page-top-title">{{$t('hi')}}, {{getUsername}}</h4>
 
       <p>
         {{$t('Thanks for your generous heart. You are changing the world for a lot of people who lost hope')}}
@@ -29,7 +29,7 @@
       <div class="share-button">
         <button class="btn btn-success btn-xs pull-right" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
       </div>
-      <h4>{{$t('hi')}}, {{getUsername}}</h4>
+      <h4 class="page-top-title">{{$t('hi')}}, {{getUsername}}</h4>
 
       <p>
         {{$t('Thanks for your generous heart. You are changing the world for a lot of people who lost hope')}}
@@ -117,19 +117,19 @@ h1, h2, h3, h4, h5 {
   font-weight: bold
 }
 h1 {
-  font-size: 1.6em
+  font-size: 1.45em;
 }
 h2{
-  font-size: 1.45em
+  font-size: 1.3em;
 }
 h3{
-  font-size: 1.3em
+  font-size: 1.15em;
 }
 h4 {
-  font-size: 1.15em
+  font-size: 1em;
 }
 h5 {
-  font-size: 1em
+  font-size: 0.95em;
 }
 .share-button {
   position: absolute;
@@ -140,5 +140,10 @@ h5 {
 .pull-left {
   left: 0;
   margin-left: 2em;
+}
+.page-top-title {
+  width: 75%;
+  border: 1px solid #EFE;
+  padding: .1em;
 }
 </style>
