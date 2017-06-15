@@ -1,14 +1,18 @@
 const state = {
   list: [],
+  allAssociations: [],
   selected: {}
 }
 
 const getters = {
-  getAssociations (state) {
+  getCurrentAssoList (state) {
     return state.list
   },
+  getAssociations (state) {
+    return state.allAssociations
+  },
   getAssoById (state, id) {
-    return state.list.filter(asso => asso.id === id)
+    return state.allAssociations.filter(asso => asso.id === id)
   },
   getSelectedAssociation (state) {
     return state.selected
@@ -16,20 +20,24 @@ const getters = {
 }
 
 const mutations = {
+  setCurrentAssoList (state, currentList) {
+    state.list = currentList
+  },
   selectAssoById (state, id) {
-    var assos = state.list.filter(asso => asso.id === id)
+    var assos = state.allAssociations.filter(asso => asso.id === id)
     state.selected = assos[0]
   },
   setAssoList (state, context) {
     if (context.list) {
-      console.log('setting asso list')
+      console.log('setting asso allAssociations')
+      state.allAssociations = context.list
       state.list = context.list
       return
     }
     console.log('not setting asso list')
   },
   resetAssoList (state) {
-    state.list = []
+    state.allAssociations = []
   }
 }
 
