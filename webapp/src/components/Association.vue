@@ -116,18 +116,18 @@ h1, h2, h3, h4, h5 {
   font-weight: bold;
 }
 h1 {
-  font-size: 1.6em;
-}
-h2{
   font-size: 1.45em;
 }
-h3{
+h2{
   font-size: 1.3em;
 }
-h4 {
+h3{
   font-size: 1.15em;
 }
-h5 {
+h4 {
   font-size: 1em;
+}
+h5 {
+  font-size: 0.95em;
 }
 </style>
