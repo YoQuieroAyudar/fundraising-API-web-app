@@ -123,7 +123,9 @@ const localizations = {
   'I have donated to a charity with IWantToHelp http://web.iwanttohelp.org.uk #IWantToHelp': '',
   'fundraising,user,widget,IWantToHelp': '',
   'YQuieroAyudar': '',
-  'Share': ''
+  'Share': '',
+  'Search by name or description': 'Поиск по названию или описанию',
+  'Supportive Establishments': ''
 }
 
 export default localizations
