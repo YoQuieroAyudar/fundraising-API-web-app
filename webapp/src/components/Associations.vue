@@ -54,7 +54,9 @@ export default {
         country = 'ES'
       }
       console.log('Searching for ' + country)
-      let url = urls.API_URL.CurrentUrl + urls.ASSO_SEARCH_URL + '?country=' + country
+      let url = urls.API_URL.CurrentUrl + urls.ASSO_SEARCH_URL
+
+      url = (country !== undefined && country !== null && country !== '') ? url + '?country=' + country : url
 
       var jwtToken = localStorage.getItem('user_token')
 
