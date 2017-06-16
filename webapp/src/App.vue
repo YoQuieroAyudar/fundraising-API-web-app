@@ -249,7 +249,7 @@ export default {
       clearTimeout(this.tOuts.selectCountryTimeout)
       this.tOuts.selectCountryTimeout = setTimeout(() => {
         console.log('setting country to ' + allPars.country)
-        var countryCode = typeof allPars.country === 'string' ? allPars.country.toUpperCase() : allPars.country.toString()
+        var countryCode = typeof allPars.country === 'string' ? allPars.country.toUpperCase() : this.getCountryByCurrentDomainName() // allPars.country.toString()
         this.$store.commit('setSelectedCountry', countryCode)
         this.$store.commit('setAPI', undefined)
       }, 500)
@@ -506,7 +506,7 @@ export default {
         localStorage.clear()
       } else { // no token means not signed in
         this.$store.commit('setCurrentState', 'login')
-        localStorage.setItem('country_code', 'ES')
+        localStorage.setItem('country_code', this.getCountryByCurrentDomainName())
         return 'login'
       }
 
@@ -547,6 +547,33 @@ export default {
     }
   },
   methods: {
+    getCountryByCurrentDomainName () {
+      var currentDomainName = location.hostname
+
+      targetNames = [
+        {
+          'name': 'localhost',
+          'country': 'FR'
+        },
+        {
+          'name': 'microhuchasolidaria',
+          'country': 'ES'
+        },
+        {
+          'name': 'iwanttohelp',
+          'country': 'UK'
+        }
+      ]
+
+      for (var i = 0; i < targetNames.length; i++) {
+        if (currentDomainName.indexOf(targetNames[i].name.toLowerCase)) {
+          console.log('current url' + currentDomainName)
+          console.log('setting country to' + targetNames[i].country)
+          return targetNames[i].country
+        }
+      }
+      return 'ES'
+    },
     goToCharityPage (id) {
       console.log('going to charity ' + id + ' page')
       var assos = this.$store.getters.getAssociations
@@ -695,8 +722,8 @@ export default {
       this.$store.commit('setLoading', true)
       let country = localStorage.getItem('country')
       if (!country) {
-        country = {name: 'Spain', db: 'mhs', code: 'ES'}
-        localStorage.setItem('country', JSON.stringify(country))
+        // country = {name: 'Spain', db: 'mhs', code: 'ES'}
+        localStorage.setItem('country_code', this.getCountryByCurrentDomainName())
       }
       var creds = loginData
       // var setMyToken = this.setUserToken
@@ -843,7 +870,7 @@ export default {
       let country = localStorage.getItem('country_code')
       if (country == null) {
         console.log('no country, default is ES')
-        country = 'ES'
+        country = this.getCountryByCurrentDomainName()
       }
       let url = urls.API_URL.CurrentUrl + urls.ASSO_SEARCH_URL
       var data = {}
