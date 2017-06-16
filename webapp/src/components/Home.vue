@@ -19,7 +19,7 @@
         <button class="btn btn-default" @click="gotToSupportivePOSMap" >{{ $t('Supportive Establishments') }}</button>
       </div>
       <p v-if="$store.getters.getBalance">
-        {{ $t('Total Donations') }}: <span class="">&euro; {{$store.getters.getBalance}}</span>
+        {{ $t('Total Donations') }}: <span class="">{{$store.getters.getBalance}} &euro;</span>
       </p>
       <p v-else>
         <i class="fa fa-spinner fa-spin fa-fw"></i>
