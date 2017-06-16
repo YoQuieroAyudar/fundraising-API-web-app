@@ -246,7 +246,7 @@ export default {
             if (resp.data) {
               data = resp.data
               if (data.message) {
-                setReponseMessage({'success': 'Signed up successfully!'})
+                setReponseMessage({'success': 'Please confirm your email now to access your account!'})
                 goToLoginPage()
               }
             }
