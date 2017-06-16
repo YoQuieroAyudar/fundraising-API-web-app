@@ -6,7 +6,6 @@
       </div>
 
       <h2>{{$t('Solidarity Account')}}</h2>
-      <label class="label label-warning">{{$t('Page is under-construction')}}</label>
     </div>
     <div>
       <recharge-account-page></recharge-account-page>

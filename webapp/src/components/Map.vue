@@ -5,6 +5,8 @@
     </div>
     <h1 class="page-top-title">{{currentPOS.name}}</h1>
 
+    <label class="label label-warning">{{ $t('Page is under-construction') }}</label>
+
     <span class="hidden">{{getMapCenter}}:{{getMarkers}}</span>
 
     <div v-if="markers.length > 0" class="map1">
