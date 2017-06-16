@@ -550,9 +550,9 @@ export default {
     getCountryByCurrentDomainName () {
       var currentDomainName = location.hostname
 
-      targetNames = [
+      var targetNames = [
         {
-          'name': 'localhost',
+          'name': 'jevaisaider',
           'country': 'FR'
         },
         {
