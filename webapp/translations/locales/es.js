@@ -124,7 +124,8 @@ const localizations = {
   'YQuieroAyudar': 'YoQuieroAyudar',
   'Share': 'Compartir',
   'Search by name or description': 'Buscar por nombre o descripción',
-  'Supportive Establishments': 'Establecimiento solidario'
+  'Supportive Establishments': 'Establecimiento solidario',
+  'Please confirm your email now to access your account!': 'Confirma tu correo electrónico ahora para acceder a tu cuenta'
 }
 
 export default localizations
