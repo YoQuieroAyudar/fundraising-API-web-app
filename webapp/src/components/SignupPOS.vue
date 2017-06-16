@@ -335,7 +335,7 @@ export default {
             if (resp.data) {
               data = resp.data
               if (data.message) {
-                vm.setMessage({'success': 'Signed up successfully!'})
+                vm.setMessage({'success': 'Please confirm your email now to access your account!'})
                 goToLoginPOSPage()
               }
             }
