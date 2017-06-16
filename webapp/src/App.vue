@@ -194,224 +194,11 @@ import axios from 'axios'
 // }
 
 export default {
+  beforeDestroy () {
+    console.log('beforeDestroy')
+  },
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
-    this.$events.listen('setAPIUrlLEvent', eventData => {
-      console.log('setAPIUrlLEvent')
-      if (!eventData) {
-        return
-      }
-      console.log('db = ' + eventData)
-      if (eventData !== undefined) {
-        this.$store.commit('setAPI', eventData)
-        return
-      }
-      if (eventData && eventData.url) {
-        this.$store.commit('setAPIUrl', eventData.url)
-      }
-    })
-    this.$events.listen('showGoToModalEvent', eventData => {
-      this.goToModalData = eventData
-      this.$store.commit('setShowGoTo', true)
-    })
-    this.$events.listen('fetchEstablishmentEvent', eventData => {
-      if (this.$store.getters.waitingForEstablishment) {
-        console.log('already waiting for the last requested Establishment')
-        return
-      }
-      var tOut = 1000
-      if (eventData && eventData.timeOut !== undefined) {
-        tOut = eventData.timeOut
-      }
-      this.$store.commit('setWaitingForEstablishment', true)
-      console.log('fetchEstablishmentEvent')
-      setTimeout(() => {
-        this.fetchEstablishment()
-        if (eventData && eventData.loop) {
-          setTimeout(() => {
-            this.$events.emit('fetchEstablishmentEvent', {loop: eventData.loop, timeOut: eventData.timeOut})
-          })
-        }
-      }, tOut)
-    })
-    this.$events.listen('sendLoginEvent', eventData => {
-      console.log('sendLoginEvent')
-      this.sendLogin(eventData)
-    })
-
-    this.$events.listen('sendEvent', eventData => {
-      console.log('got sendEvent')
-      console.log(eventData)
-      // eventData = { type: 'type', action: 'action', label: '', value: '' }
-      ga('send', 'event', eventData.type, eventData.action, eventData.label, eventData.value)
-    })
-
-    this.$events.listen('goToPageEvent', pageName => {
-      console.log('got goToPageEvent')
-      var slash = pageName.indexOf('/')
-      if (slash > 0) {
-        pageName = pageName.slice(0, slash)
-      }
-      this.$store.commit('setCurrentPage', pageName)
-      this.$events.emit('pageChangedEvent', pageName)
-    })
-
-    ga(collect => {
-      // when hash changes
-      this.$events.listen('pageChangedEvent', (name) => {
-        console.log('visitng ' + name)
-        collect(name)
-      })
-    }, 'UA-86334488-3')
-
-    this.$events.listen('skipSlideEvent', eventData => {
-      console.log('got skipSlideEvent')
-      this.$store.commit('setShowSlides', false)
-    })
-
-    this.$events.listen('logoutEvent', eventData => {
-      console.log('LOGING OUT EVENT')
-      console.log(eventData)
-      this.$store.commit('logout')
-      this.$store.commit('setCurrentState', 'login')
-      // this.$store.commit('setCurrentPage', 'login')
-      this.$events.emit('goToPageEvent', 'login')
-      this.$store.commit('resetMessages')
-      this.$store.commit('resetAssoList')
-      // localStorage.removeItem('country')
-      // localStorage.removeItem('user_token')
-      // localStorage.removeItem('rememberMe')
-      localStorage.clear()
-      this.$store.commit('setAPI', 'mhs')
-    })
-
-    this.$events.listen('checkDonationMeterics', eventData => {
-      this.getDonationMetrics()
-    })
-
-    this.$events.listen('loginEvent', eventData => {
-      console.log('LOGIN EVENT')
-      console.log(eventData)
-      localStorage.setItem('user_data', JSON.stringify(eventData.decoded))
-      var userType = (eventData.decoded.status || 'USER')
-      if (userType === 'POS') {
-        this.$events.emit('fetchEstablishmentEvent')
-      }
-      localStorage.setItem('user_token', eventData.token)
-      this.$store.commit('setToken', eventData.token)
-      localStorage.setItem('rememberMe', eventData.rememberMe)
-      console.log('USER TYPE: ')
-      console.log(eventData.decoded)
-      this.$store.commit('setUserType', eventData.decoded.status)
-      this.$store.commit('setCurrentState', 'loggedin')
-      // this.$store.commit('setCurrentPage', 'home')
-      this.$events.emit('goToPageEvent', 'home')
-      this.setMessage({'success': 'Login successfully!'})
-      var vm = this
-      setTimeout(() => { vm.$events.$emit('acountUpdate', {}) }, 1000)
-    })
-
-    this.$events.listen('acountUpdate', eventData => {
-      console.log('acountUpdate EVENT')
-      if (!this.$store.getters.getLogin) {
-        console.log('not loggedin, returning')
-        return
-      }
-      if (this.$store.getters.waitingForBalance) {
-        console.log('already waiting for balance request')
-        return
-      }
-      this.$store.commit('setWaitingForBalance', true)
-
-      if (this.$store.getters.getUserType === 'POS') {
-        return
-      }
-      var vm = this
-      let url = urls.API_URL.CurrentUrl + urls.WALLET_BALANCE_URL
-      // jwtToken = localStorage.getItem('user_token')
-      axios({
-        url: url,
-        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
-      }).then(resp => {
-        this.$store.commit('setWaitingForBalance', false)
-        if (!resp.data) {
-          console.log('no response data')
-          return
-        }
-        console.log('response data')
-        console.log(resp.data)
-        if (resp.data.balance) {
-          console.log('no balance data')
-          if (eventData.loop && eventData.loop !== false) {
-            setTimeout(function () {
-              vm.$events.$emit('acountUpdate', {loop: eventData.loop, timeOut: eventData.timeOut})
-            }, eventData.timeOut)
-          }
-          vm.$store.commit('setCurrency', resp.data.balance.Currency)
-          vm.$store.commit('setBalance', resp.data.balance.Amount)
-          if (localStorage.getItem('lastBalance') < resp.data.balance.Amount) {
-            localStorage.setItem('lastBalance', null)
-            // vm.$store.commit('setSuccess', 'Your balance increased!')
-          }
-        }
-      }).catch(err => {
-        this.$store.commit('setWaitingForBalance', false)
-        console.log('axios failed')
-        console.log(err.data)
-        if (eventData.loop && !vm.$store.getters.waitingForBalance) {
-          setTimeout(function () {
-            vm.$events.$emit('acountUpdate', {loop: eventData.loop, timeOut: eventData.timeOut})
-          }, eventData.timeOut)
-        }
-      })
-    })
-  },
-  beforeCreate () {
-    console.log('beforeCreate')
-
-    var vm = this
-    setTimeout(() => { vm.$store.commit('resetMessages') }, 5000)
-
-    var rememberMe = localStorage.getItem('rememberMe')
-
-    if (rememberMe == null) {
-      this.$store.commit('setCurrentState', 'login')
-      // this.$store.commit('setCurrentPage', 'login')
-      this.$events.emit('goToPageEvent', 'login')
-      return 'login'
-    }
-    if (rememberMe !== null) {
-      // read the saved token from localStorage
-      var jwtToken = localStorage.getItem('user_token')
-      // var email = localStorage.getItem('user_email')
-      // var ss = localStorage.getItem('ss')
-      // if found user is loggedin
-      if (jwtToken !== null) {
-        // var loginData = {mail: email, password: ss}
-        localStorage.clear()
-        // this.$events.emit('sendLoginEvent', loginData)
-        // // check if the currentState is empty
-        // if (this.$store.getters.getCurrentState === '') {
-        //   if (email) {
-        //     this.$store.commit('updateEmail', email)
-        //     console.log('email: ' + email)
-        //   } else {
-        //     this.$store.commit('updateEmail', 'User')
-        //   }
-        //   this.$store.commit('setCurrentState', 'loggedin')
-        //   this.$store.commit('setToken', jwtToken)
-        //   return 'loggedin'
-        // }
-      } else { // no token means not signed in
-        this.$store.commit('setCurrentState', 'login')
-        localStorage.setItem('country_code', 'ES')
-        return 'login'
-      }
-
-      return this.$store.getters.getCurrentState
-    }
-  },
-  beforeMount () {
     this.$events.listen('changeLanguage', eventData => {
       console.log('changeLanguage')
       var lang = String(eventData).toLowerCase()
@@ -451,14 +238,16 @@ export default {
 
     // var apiType = this.getQueryParams('db')
     if (allPars.db !== undefined && allPars.country === undefined) {
-      console.log('apiType = ' + allPars.db)
-      console.log('emitting setAPIUrlLEvent')
-      setTimeout(() => {
+      clearTimeout(this.tOuts.changeApiTimeout)
+      this.tOuts.changeApiTimeout = setTimeout(() => {
+        console.log('apiType = ' + allPars.db)
+        console.log('setAPIUrlLEvent')
         this.$events.emit('setAPIUrlLEvent', allPars.db)
       }, 1000)
     }
     if (allPars.country !== undefined) {
-      setTimeout(() => {
+      clearTimeout(this.tOuts.selectCountryTimeout)
+      this.tOuts.selectCountryTimeout = setTimeout(() => {
         console.log('setting country to ' + allPars.country)
         var countryCode = typeof allPars.country === 'string' ? allPars.country.toUpperCase() : allPars.country.toString()
         this.$store.commit('setSelectedCountry', countryCode)
@@ -483,9 +272,251 @@ export default {
       console.log('testEvent')
       console.log(eventData)
     })
+
+    // code above is from beforeMount
+
+    this.$events.listen('getCharitiesEvent', eventData => {
+      var now = new Date()
+      if (this.lastChecked.associations !== null) {
+        var duration = this.lastChecked.associations - now
+        if (duration < 1000) {
+          console.log('getCharitiesEvent was emitted before ' + duration)
+          return
+        }
+      }
+      this.lastChecked.associations = now
+
+      console.log('getCharitiesEvent')
+      // clearTimeout(this.tOuts.charityTimeout)
+      // this.tOuts.charityTimeout = setTimeout(() => {
+      //   this.getAssociationsFromAPI()
+      // }, 1000)
+      this.getAssociationsFromAPI()
+    })
+
+    this.$events.listen('setAPIUrlLEvent', eventData => {
+      console.log('setAPIUrlLEvent')
+      if (!eventData) {
+        return
+      }
+      console.log('db = ' + eventData)
+      if (eventData !== undefined) {
+        this.$store.commit('setAPI', eventData)
+        return
+      }
+      if (eventData && eventData.url) {
+        this.$store.commit('setAPIUrl', eventData.url)
+      }
+    })
+    this.$events.listen('showGoToModalEvent', eventData => {
+      this.goToModalData = eventData
+      this.$store.commit('setShowGoTo', true)
+    })
+    this.$events.listen('fetchEstablishmentEvent', eventData => {
+      if (this.$store.getters.waitingForEstablishment) {
+        console.log('already waiting for the last requested Establishment')
+        return
+      }
+      var tOut = 1000
+      if (eventData && eventData.timeOut !== undefined) {
+        tOut = eventData.timeOut
+      }
+      this.$store.commit('setWaitingForEstablishment', true)
+      console.log('fetchEstablishmentEvent')
+      clearTimeout(this.tOuts.establishmentsTimeout)
+      this.tOuts.establishmentsTimeout = setTimeout(() => {
+        this.fetchEstablishment()
+        if (eventData && eventData.loop) {
+          setTimeout(() => {
+            this.$events.emit('fetchEstablishmentEvent', {loop: eventData.loop, timeOut: eventData.timeOut})
+          })
+        }
+      }, tOut)
+    })
+    this.$events.listen('sendLoginEvent', eventData => {
+      // if (this.sentLoginEvent === false) {
+      console.log('sendLoginEvent')
+      this.sendLogin(eventData)
+      // this.sentLoginEvent = true
+      // }
+    })
+
+    this.$events.listen('sendEvent', eventData => {
+      console.log('got sendEvent')
+      console.log(eventData)
+      // eventData = { type: 'type', action: 'action', label: '', value: '' }
+      ga('send', 'event', eventData.type, eventData.action, eventData.label, eventData.value)
+    })
+
+    this.$events.listen('goToPageEvent', pageName => {
+      console.log('got goToPageEvent')
+      var slash = pageName.indexOf('/')
+      if (slash > 0) {
+        pageName = pageName.slice(0, slash)
+      }
+      this.$store.commit('setCurrentPage', pageName)
+      this.$events.emit('pageChangedEvent', pageName)
+    })
+
+    ga(collect => {
+      // when hash changes
+      this.$events.listen('pageChangedEvent', (name) => {
+        console.log('visitng ' + name)
+        collect(name)
+      })
+    }, 'UA-86334488-3')
+
+    this.$events.listen('skipSlideEvent', eventData => {
+      console.log('got skipSlideEvent')
+      this.$store.commit('setShowSlides', false)
+    })
+
+    this.$events.listen('logoutEvent', eventData => {
+      console.log('LOGING OUT EVENT')
+      this.sentLoginEvent = false
+      console.log(eventData)
+      this.$store.commit('logout')
+      this.$store.commit('setCurrentState', 'login')
+      // this.$store.commit('setCurrentPage', 'login')
+      this.$events.emit('goToPageEvent', 'login')
+      this.$store.commit('resetMessages')
+      this.$store.commit('resetAssoList')
+      localStorage.clear()
+      this.$store.commit('setAPI', 'mhs')
+    })
+
+    this.$events.listen('checkDonationMeterics', eventData => {
+      this.getDonationMetrics()
+    })
+
+    this.$events.listen('loginEvent', eventData => {
+      // if (this.sentLoginEvent === true) {
+      //   console.log('loginEvent is already in proccess')
+      //   return
+      // }
+      console.log('LOGIN EVENT')
+      console.log(eventData)
+      console.log('saving user data')
+      localStorage.setItem('user_data', JSON.stringify(eventData.decoded))
+      var userType = (eventData.decoded.status || 'USER')
+      if (userType === 'POS') {
+        console.log('user type is POS')
+        this.$events.emit('fetchEstablishmentEvent')
+      }
+      console.log('saving user token')
+      localStorage.setItem('user_token', eventData.token)
+      this.$store.commit('setToken', eventData.token)
+      localStorage.setItem('rememberMe', eventData.rememberMe)
+      console.log('setting USER TYPE: ')
+      this.$store.commit('setUserType', eventData.decoded.status)
+      this.$store.commit('setCurrentState', 'loggedin')
+      this.$store.commit('setCurrentPage', 'home')
+      this.setMessage({'success': 'Login successfully!'})
+      var vm = this
+      clearTimeout(this.tOuts.balanceTimout)
+      this.tOuts.balanceTimout = setTimeout(() => { vm.$events.$emit('acountUpdate', {}) }, 1000)
+    })
+
+    this.$events.listen('acountUpdate', eventData => {
+      console.log('acountUpdate EVENT')
+      if (!this.$store.getters.getLogin) {
+        console.log('not loggedin, returning')
+        return
+      }
+      if (this.$store.getters.waitingForBalance) {
+        console.log('already waiting for balance request')
+        return
+      }
+      this.$store.commit('setWaitingForBalance', true)
+
+      if (this.$store.getters.getUserType === 'POS') {
+        return
+      }
+      var vm = this
+      let url = urls.API_URL.CurrentUrl + urls.WALLET_BALANCE_URL
+      // jwtToken = localStorage.getItem('user_token')
+      axios({
+        url: url,
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+      }).then(resp => {
+        this.$store.commit('setWaitingForBalance', false)
+        if (!resp.data) {
+          console.log('no response data')
+          return
+        }
+        console.log('response data')
+        console.log(resp.data)
+        if (resp.data.balance) {
+          console.log('no balance data')
+          // if (eventData.loop && eventData.loop !== false) {
+          //   setTimeout(function () {
+          //     vm.$events.$emit('acountUpdate', {loop: eventData.loop, timeOut: eventData.timeOut})
+          //   }, eventData.timeOut)
+          // }
+          vm.$store.commit('setCurrency', resp.data.balance.Currency)
+          vm.$store.commit('setBalance', resp.data.balance.Amount)
+          if (localStorage.getItem('lastBalance') < resp.data.balance.Amount) {
+            localStorage.setItem('lastBalance', null)
+            // vm.$store.commit('setSuccess', 'Your balance increased!')
+          }
+        }
+      }).catch(err => {
+        this.$store.commit('setWaitingForBalance', false)
+        console.log('axios failed')
+        console.log(err.data)
+        // if (eventData.loop && !vm.$store.getters.waitingForBalance) {
+        //   setTimeout(function () {
+        //     vm.$events.$emit('acountUpdate', {loop: eventData.loop, timeOut: eventData.timeOut})
+        //   }, eventData.timeOut)
+        // }
+      })
+    })
+  },
+  beforeCreate () {
+    console.log('beforeCreate')
+
+    // clear all events
+    console.log('clearing all Event Listeners')
+    this.$events.remove('changeLanguage')
+    this.$events.remove('getCharitiesEvent')
+    this.$events.remove('setAPIUrlLEvent')
+    this.$events.remove('showGoToModalEvent')
+    this.$events.remove('fetchEstablishmentEvent')
+    this.$events.remove('setWaitingForEstablishment')
+    this.$events.remove('sendLoginEvent')
+    this.$events.remove('sendEvent')
+    this.$events.remove('goToPageEvent')
+    this.$events.remove('pageChangedEvent')
+    this.$events.remove('skipSlideEvent')
+    this.$events.remove('logoutEvent')
+    this.$events.remove('checkDonationMeterics')
+    this.$events.remove('loginEvent')
+    this.$events.remove('acountUpdate')
+
+    var vm = this
+    setTimeout(() => { vm.$store.commit('resetMessages') }, 5000)
+
+    var rememberMe = localStorage.getItem('rememberMe')
+
+    if (rememberMe !== null) {
+      // read the saved token from localStorage
+      var jwtToken = localStorage.getItem('user_token')
+      if (jwtToken !== null) {
+        localStorage.clear()
+      } else { // no token means not signed in
+        this.$store.commit('setCurrentState', 'login')
+        localStorage.setItem('country_code', 'ES')
+        return 'login'
+      }
+
+      return this.$store.getters.getCurrentState
+    }
+  },
+  beforeMount () {
+    console.log('beforeMount')
   },
   beforeUpdate () {
-
+    console.log('beforeUpdate')
   },
   data () {
     return {
@@ -499,10 +530,43 @@ export default {
         message: 'Go to this page',
         buttonText: 'Continue'
       },
-      showShare: false
+      showShare: false,
+      tOuts: {
+        charityTimeout: 0,
+        balanceTimout: 0,
+        establishmentsTimeout: 0,
+        changeApiTimeout: 0,
+        selectCountryTimeout: 0
+      },
+      sentLoginEvent: false,
+      lastChecked: {
+        balance: null,
+        associations: null
+      }
     }
   },
   methods: {
+    goToCharityPage (id) {
+      console.log('going to charity ' + id + ' page')
+      var assos = this.$store.getters.getAssociations
+      console.log('found ' + assos.length + ' charities')
+      console.log('found ' + this.$store.getters.getCurrentAssoList.length + ' charities')
+      var found = null
+
+      for (var i = 0; i < assos.length; i++) {
+        console.log('asso.id = ' + assos[i].id)
+        console.log('asso.id === id ' + (parseInt(assos[i].id) === parseInt(id)))
+        if (parseInt(assos[i].id) === parseInt(id)) {
+          console.log('found')
+          console.log(assos[i])
+          found = assos[i]
+        }
+      }
+      if (found !== null) {
+        this.$store.commit('selectAssoById', found.id)
+        this.$events.emit('goToPageEvent', 'asso_details/' + found.id)
+      }
+    },
     goDirectlyTo (pageName) {
       var vm = this
       vm.$store.commit('setLoading', true)
@@ -516,11 +580,14 @@ export default {
 
       console.log('goDirectlyTo: ' + pageName + ' loginAsUser: ' + loginAsUser)
 
-      setTimeout(() => {
-        vm.$store.commit('setLoginAsUser', loginAsUser)
-        vm.$events.emit('goToPageEvent', pageName)
-        vm.$store.commit('setLoading', false)
-      }, 500)
+      // setTimeout(() => {
+      //   vm.$store.commit('setLoginAsUser', loginAsUser)
+      //   vm.$events.emit('goToPageEvent', pageName)
+      //   vm.$store.commit('setLoading', false)
+      // }, 500)
+      vm.$store.commit('setLoginAsUser', loginAsUser)
+      vm.$events.emit('goToPageEvent', pageName)
+      vm.$store.commit('setLoading', false)
     },
     fetchUserEstablishments () {
       var vm = this
@@ -768,6 +835,61 @@ export default {
       } else {
         return url + 'Help'
       }
+    },
+    getAssociationsFromAPI () {
+      console.log('App.vue: getAssociationsFromAPI')
+      var vm = this
+      let country = localStorage.getItem('country_code')
+      if (country == null) {
+        console.log('no country, default is ES')
+        country = 'ES'
+      }
+      let url = urls.API_URL.CurrentUrl + urls.ASSO_SEARCH_URL
+      var data = {}
+      data.POS_id = 1
+
+      if (country !== undefined && country !== null && country !== '') {
+        console.log('country = ' + country)
+        url += '?country=' + country
+        data.country = country
+      }
+
+      var jwtToken = localStorage.getItem('user_token')
+
+      console.log('calling to: ' + url)
+
+      axios({
+        method: 'POST',
+        url: url,
+        data: data,
+        headers: { 'Authorization': `Bearer ${jwtToken}` }
+      }).then(resp => {
+        console.log(resp.status)
+        console.log(resp.statusText)
+        console.log(resp)
+        if (resp.data) {
+          var allParams = this.parseAllParams()
+          if ('target' in allParams) {
+            console.log('set target charity')
+            console.log(allParams.target)
+
+            setTimeout(function () {
+              vm.goToCharityPage(allParams.target)
+            }, 500)
+          }
+          vm.$store.commit('setAssoList', resp.data)
+        } else {
+          vm.$store.commit('setErrors', [{error: 'Unable to set associations list'}])
+        }
+      }).catch(err => {
+        if (!err.data) {
+          vm.$store.commit('setError', {error: 'Error while loading associations list'})
+          return
+        }
+        if (err.data.errors) {
+          vm.$store.commit('setErrors', err.data.errors)
+        }
+      })
     }
   },
   computed: {
