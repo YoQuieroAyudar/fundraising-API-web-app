@@ -3,14 +3,39 @@
     <div class="nav navbar-default">
       <button class="btn btn-danger btn-xs pull-right" :title="$t('Logout')" @click="logoutUser">{{$t('Logout')}}</button>
       <button class="btn btn-default btn-xs pull-right" :title="$t('Settings')" @click="goToSettingsPage"> <i class="fa fa-cog fa-fw"></i> </button>
-      <label v-if="$store.getters.getLoginAsUser" :class="balanceLabelClasses" :title="$t('Wallet Balance')" @click="goToSolidarityAccount"> {{$store.getters.getBalance}} {{$t($store.getters.getCurrency)}} </label>
+      <label v-if="$store.getters.getLoginAsUser" :class="balanceLabelClasses" :title="$t('Wallet Balance')" @click="goToSolidarityAccount"> {{$store.getters.getBalance}} &euro; </label>
       <label v-else :class="daysLeftLabelClasses" :title="$t('Days left from subscription')" @click="gotToSubscription"> {{$t('{x} day ::: {x} days', {x: $store.getters.getPosSubscriptionEnd}, $store.getters.getPosSubscriptionEnd)}} </label>
+      <a class="btn btn-xs our-twitter-link" :title="$t('twitter')" target="_blank" :href="twitterUrl">  <i class="fa fa-twitter fa-fw"></i>  </a>
+      <a class="btn btn-xs our-facebook-link" :title="$t('facebook')" target="_blank" :href="facebookUrl">  <i class="fa fa-facebook fa-fw"></i>  </a>
+      <a class="btn btn-xs our-linkedin-link" :title="$t('LinkedIn')" target="_blank" :href="linkedInUrl">  <i class="fa fa-linkedin fa-fw"></i>  </a>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      socialLinks: [
+        {
+          db: 'jva',
+          links: {
+            facebook: 'https://www.facebook.com/JeVaisAider',
+            twitter: 'https://twitter.com/JeVaisAider',
+            linkedIn: 'https://www.linkedin.com/groups/8527508'
+          }
+        },
+        {
+          db: 'mhs',
+          links: {
+            facebook: 'https://www.facebook.com/YQuieroAyudar',
+            twitter: 'https://twitter.com/YQuieroAyudar?lang=es',
+            linkedIn: 'https://www.linkedin.com/groups/8508381'
+          }
+        }
+      ]
+    }
+  },
   methods: {
     goToSettingsPage (e) {
       // this.$store.commit('setCurrentPage', 'settings')
@@ -34,6 +59,36 @@ export default {
     }
   },
   computed: {
+    linkedInUrl () {
+      var apiDb = this.$store.getters.getApiDB
+      for (var i = 0; i < this.socialLinks.length; i++) {
+        console.log(this.socialLinks[i].db === apiDb)
+        if (this.socialLinks[i].db === apiDb) {
+          return this.socialLinks[i].links.linkedIn
+        }
+      }
+      return this.socialLinks[0].links.linkedIn
+    },
+    twitterUrl () {
+      var apiDb = this.$store.getters.getApiDB
+      for (var i = 0; i < this.socialLinks.length; i++) {
+        console.log(this.socialLinks[i].db === apiDb)
+        if (this.socialLinks[i].db === apiDb) {
+          return this.socialLinks[i].links.twitter
+        }
+      }
+      return this.socialLinks[0].links.twitter
+    },
+    facebookUrl () {
+      var apiDb = this.$store.getters.getApiDB
+      for (var i = 0; i < this.socialLinks.length; i++) {
+        console.log(this.socialLinks[i].db === apiDb)
+        if (this.socialLinks[i].db === apiDb) {
+          return this.socialLinks[i].links.facebook
+        }
+      }
+      return this.socialLinks[0].links.facebook
+    },
     walletBalance () {
       return this.$store.getters.getBalance
     },
@@ -104,5 +159,40 @@ h5 {
   padding-right: .5em;
   font-size: 1.2em;
   cursor: pointer;
+}
+.our-twitter-link,
+.our-facebook-link,
+.our-linkedin-link {
+  border: 1px solid #EDF;
+  padding: .1em;
+  padding-left: .3em;
+  padding-right: .3em;
+  border-radius: .3em;
+}
+.our-facebook-link {
+  background-color: #3b5998;
+  color: #fff;
+}
+.our-twitter-link {
+  background-color: #55acee;
+  color: #fff;
+}
+.our-linkedin-link {
+  background-color: #007bb5;
+  color: #fff;
+  margin-right: .3em;
+}
+.our-facebook-link:hover {
+  background-color: #fff;
+  color: #3b5998;
+}
+.our-twitter-link:hover {
+  background-color: #fff;
+  color: #55acee;
+}
+.our-linkedin-link:hover {
+  background-color: #fff;
+  color: #007bb5;
+  margin-right: .3em;
 }
 </style>
