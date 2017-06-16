@@ -1,6 +1,5 @@
 <template>
   <div class="associations-list">
-    <label class="label label-warning">{{ $t('Page is under-construction')}}</label>
     <div class="association-box">
       <div class="">
         <div class="btn-group donation-section" role="group" aria-label="donation-section">

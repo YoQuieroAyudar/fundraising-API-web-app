@@ -54,12 +54,30 @@
 <script>
 
 export default {
+  beforeMount () {
+  },
+  mounted () {
+    console.log('mounted')
+    this.$events.emit('getCharitiesEvent')
+  },
   data () {
     return {
       loadingDonationMetrics: false
     }
   },
   methods: {
+    parseAllParams () {
+      var parameters = {}
+      var all = location.search
+      all = all.replace('?', '')
+      // split all parameters
+      var pv = all.split('&')
+      for (var i = 0; i < pv.length; i++) {
+        var keyVal = pv[i].split('=')
+        parameters[keyVal[0]] = keyVal[1]
+      }
+      return parameters
+    },
     gotToMap (e) {
       e.preventDefault()
       this.$events.emit('goToPageEvent', 'map')
