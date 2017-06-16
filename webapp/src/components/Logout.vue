@@ -5,8 +5,8 @@
       <button class="btn btn-default btn-xs pull-right" :title="$t('Settings')" @click="goToSettingsPage"> <i class="fa fa-cog fa-fw"></i> </button>
       <label v-if="$store.getters.getLoginAsUser" :class="balanceLabelClasses" :title="$t('Wallet Balance')" @click="goToSolidarityAccount"> {{$store.getters.getBalance}} {{$t($store.getters.getCurrency)}} </label>
       <label v-else :class="daysLeftLabelClasses" :title="$t('Days left from subscription')" @click="gotToSubscription"> {{$t('{x} day ::: {x} days', {x: $store.getters.getPosSubscriptionEnd}, $store.getters.getPosSubscriptionEnd)}} </label>
-      <a class="btn btn-xs our-twitter-link" :title="$t('Twitter')" target="_blank" :href="twitterUrl">  <i class="fa fa-twitter fa-fw"></i>  </a>
-      <a class="btn btn-xs our-facebook-link" :title="$t('Facebook')" target="_blank" :href="facebookUrl">  <i class="fa fa-facebook fa-fw"></i>  </a>
+      <a class="btn btn-xs our-twitter-link" :title="$t('twitter')" target="_blank" :href="twitterUrl">  <i class="fa fa-twitter fa-fw"></i>  </a>
+      <a class="btn btn-xs our-facebook-link" :title="$t('facebook')" target="_blank" :href="facebookUrl">  <i class="fa fa-facebook fa-fw"></i>  </a>
     </div>
   </div>
 </template>
