@@ -3,10 +3,11 @@
     <div class="nav navbar-default">
       <button class="btn btn-danger btn-xs pull-right" :title="$t('Logout')" @click="logoutUser">{{$t('Logout')}}</button>
       <button class="btn btn-default btn-xs pull-right" :title="$t('Settings')" @click="goToSettingsPage"> <i class="fa fa-cog fa-fw"></i> </button>
-      <label v-if="$store.getters.getLoginAsUser" :class="balanceLabelClasses" :title="$t('Wallet Balance')" @click="goToSolidarityAccount"> {{$store.getters.getBalance}} {{$t($store.getters.getCurrency)}} </label>
+      <label v-if="$store.getters.getLoginAsUser" :class="balanceLabelClasses" :title="$t('Wallet Balance')" @click="goToSolidarityAccount"> {{$store.getters.getBalance}} &euro; </label>
       <label v-else :class="daysLeftLabelClasses" :title="$t('Days left from subscription')" @click="gotToSubscription"> {{$t('{x} day ::: {x} days', {x: $store.getters.getPosSubscriptionEnd}, $store.getters.getPosSubscriptionEnd)}} </label>
       <a class="btn btn-xs our-twitter-link" :title="$t('twitter')" target="_blank" :href="twitterUrl">  <i class="fa fa-twitter fa-fw"></i>  </a>
       <a class="btn btn-xs our-facebook-link" :title="$t('facebook')" target="_blank" :href="facebookUrl">  <i class="fa fa-facebook fa-fw"></i>  </a>
+      <a class="btn btn-xs our-linkedin-link" :title="$t('LinkedIn')" target="_blank" :href="linkedInUrl">  <i class="fa fa-linkedin fa-fw"></i>  </a>
     </div>
   </div>
 </template>
@@ -160,20 +161,26 @@ h5 {
   cursor: pointer;
 }
 .our-twitter-link,
-.our-facebook-link {
+.our-facebook-link,
+.our-linkedin-link {
   border: 1px solid #EDF;
   padding: .1em;
   padding-left: .3em;
   padding-right: .3em;
+  border-radius: .3em;
 }
 .our-facebook-link {
   background-color: #3b5998;
   color: #fff;
-  margin-right: .3em;
 }
 .our-twitter-link {
   background-color: #55acee;
   color: #fff;
+}
+.our-linkedin-link {
+  background-color: #007bb5;
+  color: #fff;
+  margin-right: .3em;
 }
 .our-facebook-link:hover {
   background-color: #fff;
@@ -182,5 +189,10 @@ h5 {
 .our-twitter-link:hover {
   background-color: #fff;
   color: #55acee;
+}
+.our-linkedin-link:hover {
+  background-color: #fff;
+  color: #007bb5;
+  margin-right: .3em;
 }
 </style>
