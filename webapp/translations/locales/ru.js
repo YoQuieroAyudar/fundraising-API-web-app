@@ -93,7 +93,7 @@ const localizations = {
   'Powered by Mangopay': 'Работает на Mangopay',
   'Sorry, only users are allowed to login through this form': 'Извините, только пользователи могут входить через эту форму',
   'Sorry, only establishments are allowed to login through this form': 'Извините, только организации могут входить через эту форму',
-  '{x} day ::: {x} days': '{x} день ::: {x} дней'
+  '{x} day ::: {x} days': '{x} день ::: {x} дней',
   'Subscription': 'Подписка',
   'My QR Code': 'Мой QR-код',
   'TAX': 'Налог',

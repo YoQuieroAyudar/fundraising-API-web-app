@@ -383,6 +383,7 @@ export default {
       this.$store.commit('resetAssoList')
       localStorage.clear()
       this.$store.commit('setAPI', 'mhs')
+      window.location.reload()
     })
 
     this.$events.listen('checkDonationMeterics', eventData => {

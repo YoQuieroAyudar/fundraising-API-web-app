@@ -4,6 +4,8 @@
       <button :class="$i18n.locale() == 'ar' ? 'btn btn-success btn-xs pull-left' : 'btn btn-success btn-xs pull-right'" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
     </div>
     <h1 class="page-top-title">{{$t('My Donations')}}</h1>
+
+    <label class="label label-warning">{{ $t('Page is under-construction') }}</label>
     <br>
 
   </div>
