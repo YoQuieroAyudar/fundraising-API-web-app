@@ -3,14 +3,27 @@
     <div class="share-button">
       <button :class="$i18n.locale() == 'ar' ? 'btn btn-success btn-xs pull-left' : 'btn btn-success btn-xs pull-right'" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
     </div>
-    <h1 class="page-top-title">{{$t('My Donations')}}</h1>
+    <h1 class="page-top-title">{{$t('Transactions')}}</h1>
 
+    <label class="label label-warning">{{ $t('Page is under-construction') }}</label>
     <br>
+
+    <div class="transacion-date-filters">
+      <div class="input-group">
+        <span class="input-group-addon" id="startDate-addon"> {{$t('Start date')}} </span>
+        <input id="date" type="date" class="form-control" aria-describedby="startDate-addon" :value="startDate">
+      </div>
+
+      <div class="input-group">
+        <span class="input-group-addon" id="endDate-addon"> {{$t('End date')}} </span>
+        <input id="date" type="date" class="form-control" aria-describedby="endDate-addon" :value="endDate">
+      </div>
+    </div>
 
     <div class="">
       <div class="panel panel-default">
         <!-- Default panel contents -->
-        <!-- <div class="panel-heading">{{$t('Transactions')}}</div> -->
+        <div class="panel-heading">{{$t('Transactions')}}</div>
 
         <!-- Table -->
         <table class="table">
@@ -23,15 +36,10 @@
           <tbody>
             <tr v-for="item in $store.getters.getTransactions">
               <td>
-                <h4 class="charity-name">
-                  {{item.association.name}}
-                  <label class="date-label">{{formatDate(item.created_at)}}</label>
-                </h4>
-
+                {{item.association.name}}<hr>
+                {{item.date}}
               </td>
-              <td>
-                <strong>{{formatEuros(item.amount)}} &euro;</strong>
-              </td>
+              <td>{{formatEuros(item.amount)}} &euro;</td>
             </tr>
           </tbody>
         </table>
@@ -61,19 +69,6 @@ export default {
     }
   },
   methods: {
-    formatDate (date) {
-      var now = new Date(date)
-
-      var day, year, month
-      day = now.getDate()
-      month = now.getMonth()
-      year = now.getFullYear()
-
-      day = day < 10 ? '0' + day : day
-      month = month < 10 ? '0' + month : month
-
-      return day + '/' + month + '/' + year
-    },
     formatEuros (amount) {
       return (parseFloat(amount) / 100).toFixed(2)
     },
@@ -134,11 +129,9 @@ h5 {
   border: 1px solid #EFE;
   padding: .1em;
 }
-.date-label {
-  font-size: .8em;
-  font-weight: lighter;
-}
-.charity-name {
-  margin-top: 0;
+.transacion-date-filters {
+  padding: .3em;
+  padding-right: 1em;
+  margin-right: 1em;
 }
 </style>

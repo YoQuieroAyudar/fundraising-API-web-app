@@ -15,6 +15,7 @@
         <button class="btn btn-default active">{{ $t('Home') }}</button>
         <button class="btn btn-default" @click="goToAssociations">{{ $t('Charities') }}</button>
         <button class="btn btn-default" @click="goToDonations" >{{ $t('My Donations') }}</button>
+        <!-- <button class="btn btn-default" @click="goToTranactions" >{{ $t('Transactions') }}</button> -->
         <button class="btn btn-default" @click="goToSolidarityAccount"> {{ $t('Solidarity Account') }} </button>
         <button class="btn btn-default" @click="gotToSupportivePOSMap" >{{ $t('Supportive Establishments') }}</button>
       </div>
@@ -39,6 +40,7 @@
         <button class="btn btn-default active">{{ $t('Home') }}</button>
         <button class="btn btn-default" @click="goToAssociations">{{ $t('Charities') }}</button>
         <button class="btn btn-default" @click="gotToSubscription" >{{ $t('Subscription') }}</button>
+        <!-- <button class="btn btn-default" @click="goToTranactions" >{{ $t('Transactions') }}</button> -->
         <button class="btn btn-default" @click="gotToQRCode" >{{ $t('My QR Code') }}</button>
         <button class="btn btn-default" @click="gotToMap" >{{ $t('Map') }}</button>
       </div>
@@ -77,6 +79,11 @@ export default {
         parameters[keyVal[0]] = keyVal[1]
       }
       return parameters
+    },
+    goToTranactions (e) {
+      e.preventDefault()
+      this.$events.emit('goToPageEvent', 'transactions')
+      this.$store.commit('resetMessages')
     },
     gotToMap (e) {
       e.preventDefault()

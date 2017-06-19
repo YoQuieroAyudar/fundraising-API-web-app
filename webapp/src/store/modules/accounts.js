@@ -1,10 +1,14 @@
 const state = {
   RegisterCardResponse: {},
   AccountBalance: 0,
-  BalanceCurrency: 'EUR'
+  BalanceCurrency: 'EUR',
+  Transactions: []
 }
 
 const getters = {
+  getTransactions (state) {
+    return state.Transactions
+  },
   getRegCardResponse (state) {
     return state.RegisterCardResponse
   },
@@ -22,6 +26,9 @@ const getters = {
 }
 
 const mutations = {
+  setTransactions (state, context) {
+    state.Transactions = (context instanceof Array) ? context : []
+  },
   setRegCardResponse (state, context) {
     state.RegisterCardResponse = context
   },
