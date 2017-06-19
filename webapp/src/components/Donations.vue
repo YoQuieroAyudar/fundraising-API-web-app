@@ -5,20 +5,97 @@
     </div>
     <h1 class="page-top-title">{{$t('My Donations')}}</h1>
 
-    <label class="label label-warning">{{ $t('Page is under-construction') }}</label>
     <br>
+
+    <div class="">
+      <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <!-- <div class="panel-heading">{{$t('Transactions')}}</div> -->
+
+        <!-- Table -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th>{{$t('Charity')}}</th>
+              <th>{{$t('Amount')}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in $store.getters.getTransactions">
+              <td>
+                <h4 class="charity-name">
+                  {{item.association.name}}
+                  <label class="date-label">{{formatDate(item.created_at)}}</label>
+                </h4>
+
+              </td>
+              <td>
+                <strong>{{formatEuros(item.amount)}} &euro;</strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
   </div>
 </template>
 
 <script>
+import * as urls from '../api_variables'
+import axios from 'axios'
+
 export default {
+  beforeMount () {
+    this.getTransactions()
+  },
+  data () {
+    var now = new Date()
+    var day, year, month
+    day = now.getDate()
+    month = now.getMonth()
+    year = now.getFullYear()
+    return {
+      startDate: '2017-01-01',
+      endDate: `${year}-${month}-${day}`
+    }
+  },
   methods: {
-    goToRechargePage (e) {
-      e.preventDefault()
-      this.$store.commit('resetMessages')
-      // this.$store.commit('setCurrentPage', 'recharge')
-      this.$events.emit('goToPageEvent', 'recharge')
+    formatDate (date) {
+      var now = new Date(date)
+
+      var day, year, month
+      day = now.getDate()
+      month = now.getMonth()
+      year = now.getFullYear()
+
+      day = day < 10 ? '0' + day : day
+      month = month < 10 ? '0' + month : month
+
+      return day + '/' + month + '/' + year
+    },
+    formatEuros (amount) {
+      return (parseFloat(amount) / 100).toFixed(2)
+    },
+    getTransactions () {
+      var vm = this
+      var query = '?'
+      query += 'before_date=' + encodeURIComponent(this.startDate)
+      query += 'after_date=' + encodeURIComponent(this.endDate)
+      console.log(query)
+
+      axios({
+        url: urls.API_URL.CurrentUrl + '/donation',
+        headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
+      }).then(resp => {
+        console.log('getTransactions response')
+        console.log(resp)
+        if (resp.data !== undefined) {
+          if (resp.data.donations) {
+            vm.$store.commit('setTransactions', resp.data.donations)
+          }
+        }
+      })
     }
   }
 }
@@ -56,5 +133,12 @@ h5 {
   width: 75%;
   border: 1px solid #EFE;
   padding: .1em;
+}
+.date-label {
+  font-size: .8em;
+  font-weight: lighter;
+}
+.charity-name {
+  margin-top: 0;
 }
 </style>
