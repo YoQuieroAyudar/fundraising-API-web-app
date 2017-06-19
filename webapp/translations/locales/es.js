@@ -125,7 +125,8 @@ const localizations = {
   'Share': 'Compartir',
   'Search by name or description': 'Buscar por nombre o descripción',
   'Supportive Establishments': 'Establecimiento solidario',
-  'Please confirm your email now to access your account!': 'Confirma tu correo electrónico ahora para acceder a tu cuenta'
+  'Please confirm your email now to access your account!': 'Confirma tu correo electrónico ahora para acceder a tu cuenta',
+  'Transactions': ''
 }
 
 export default localizations

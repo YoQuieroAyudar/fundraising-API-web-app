@@ -126,7 +126,8 @@ const localizations = {
   'Share': 'شارك',
   'Search by name or description': 'ابحث مستخدما اسمها او وصفها',
   'Supportive Establishments': 'المؤسسات الداعمة',
-  'Please confirm your email now to access your account!': 'يرجى إكمال التأكيد في بريدك الإلكتروني الآن للدخول إلى حسابك'
+  'Please confirm your email now to access your account!': 'يرجى إكمال التأكيد في بريدك الإلكتروني الآن للدخول إلى حسابك',
+  'Transactions': ''
 }
 
 export default localizations

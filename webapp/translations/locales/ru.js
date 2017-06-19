@@ -125,7 +125,8 @@ const localizations = {
   'Share': 'Поделиться',
   'Search by name or description': 'Поиск по названию или описанию',
   'Supportive Establishments': 'Поддерживающие организации',
-  'Please confirm your email now to access your account!': ''
+  'Please confirm your email now to access your account!': '',
+  'Transactions': ''
 }
 
 export default localizations

@@ -126,7 +126,8 @@ const localizations = {
   'Share': '',
   'Search by name or description': '',
   'Supportive Establishments': '',
-  'Please confirm your email now to access your account!': ''
+  'Please confirm your email now to access your account!': '',
+  'Transactions': ''
 }
 
 export default localizations
