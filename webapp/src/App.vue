@@ -100,6 +100,10 @@
                     <donations-page></donations-page>
                   </div>
 
+                  <div v-if="$store.getters.getCurrentPage == 'transactions'">
+                    <transactions-page></transactions-page>
+                  </div>
+
                   <div v-if="$store.getters.getCurrentPage == 'subscription'">
                     <subscription-page></subscription-page>
                   </div>
@@ -175,6 +179,7 @@ import QRCode from './components/QRCode.vue'
 import Map from './components/Map.vue'
 import SupportivePOS from './components/SupportivePOS.vue'
 import GoTo from './components/GoTo.vue'
+import Transactions from './components/Transactions.vue'
 
 import * as urls from './api_variables'
 import axios from 'axios'
@@ -972,7 +977,8 @@ export default {
     'qr-code-page': QRCode,
     'map-page': Map,
     'supportive-pos-page': SupportivePOS,
-    'go-to-box': GoTo
+    'go-to-box': GoTo,
+    'transactions-page': Transactions
   }
 }
 
