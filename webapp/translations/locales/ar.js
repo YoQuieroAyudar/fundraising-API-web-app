@@ -127,7 +127,9 @@ const localizations = {
   'Search by name or description': 'ابحث مستخدما اسمها او وصفها',
   'Supportive Establishments': 'المؤسسات الداعمة',
   'Please confirm your email now to access your account!': 'يرجى إكمال التأكيد في بريدك الإلكتروني الآن للدخول إلى حسابك',
-  'Transactions': ''
+  'Date': 'التاريخ',
+  'Amount': 'الكمية',
+  'Charity': 'الجمعية الخيرية'
 }
 
 export default localizations

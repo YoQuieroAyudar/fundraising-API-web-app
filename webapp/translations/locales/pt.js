@@ -127,7 +127,9 @@ const localizations = {
   'Search by name or description': '',
   'Supportive Establishments': '',
   'Please confirm your email now to access your account!': '',
-  'Transactions': ''
+  'Date': '',
+  'Amount': '',
+  'Charity': ''
 }
 
 export default localizations

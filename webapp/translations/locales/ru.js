@@ -126,7 +126,9 @@ const localizations = {
   'Search by name or description': 'Поиск по названию или описанию',
   'Supportive Establishments': 'Поддерживающие организации',
   'Please confirm your email now to access your account!': '',
-  'Transactions': ''
+  'Date': '',
+  'Amount': '',
+  'Charity': ''
 }
 
 export default localizations
