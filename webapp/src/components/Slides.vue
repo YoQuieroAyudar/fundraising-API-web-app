@@ -31,7 +31,6 @@ export default {
   mounted () {
     var vm = this
     var autoTimeout = (4 * this.autoplayTimout) || this.autoplayTimout
-    console.log('autoTimeout = ' + autoTimeout)
     setTimeout(() => {
       if (vm.$store.getters.getShowSlide) {
         vm.$events.emit('skipSlideEvent')
@@ -40,17 +39,14 @@ export default {
   },
   methods: {
     seperatedSentences (value) {
-      console.log('seperatedSentences')
       if (!value) {
         return ''
       }
       value = value.toString().split('<br>')
-      console.log('length: ' + value.length)
       return value
     },
     skipSlide (e) {
       e.preventDefault()
-      console.log('skipping slide show')
       this.$events.emit('skipSlideEvent')
     }
   },
