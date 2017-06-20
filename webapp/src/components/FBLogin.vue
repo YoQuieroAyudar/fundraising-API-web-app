@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="fb-login-wrapper">
     <fb-signin-button
       :params="fbSignInParams"
       @success="onSignInSuccess"
@@ -40,5 +40,6 @@ export default {
   border-radius: 3px;
   background-color: #4267b2;
   color: #fff;
+  cursor: pointer;
 }
 </style>
