@@ -607,11 +607,13 @@ export default {
       var currentDomainName = location.hostname
       currentDomainName = currentDomainName.toLowerCase()
 
+      console.log('current url ' + currentDomainName)
+
       var targetNames = this.targetNames
 
       for (var i = 0; i < targetNames.length; i++) {
-        if (currentDomainName.indexOf(targetNames[i].name.toLowerCase) > -1) {
-          console.log('current url ' + currentDomainName)
+        console.log(i + '- target ' + targetNames[i].name)
+        if (currentDomainName.indexOf(targetNames[i].name.toLowerCase()) > -1) {
           console.log('setting country to ' + targetNames[i].country)
           return targetNames[i].country
         }
