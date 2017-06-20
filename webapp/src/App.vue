@@ -587,8 +587,14 @@ export default {
 
       var targetNames = this.targetNames
 
+      console.log('current url ' + currentDomainName)
+
       for (var i = 0; i < targetNames.length; i++) {
-        if (currentDomainName.indexOf(targetNames[i].name.toLowerCase) > -1) {
+        console.log(i + '- name = ' + targetNames[i].name)
+        console.log('db = ' + targetNames[i].db)
+        console.log('name is in url' + currentDomainName.indexOf(targetNames[i].name))
+
+        if (currentDomainName.indexOf(targetNames[i].name.toLowerCase()) > -1) {
           console.log('current url ' + currentDomainName)
           console.log('setting db to ' + targetNames[i].db)
           return targetNames[i].db
