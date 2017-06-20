@@ -487,6 +487,15 @@ export default {
   beforeCreate () {
     console.log('beforeCreate')
 
+    window.fbAsyncInit = function () {
+      window.FB.init({
+        appId: '1279278258816835|kH8R_ksCrluuPjy3iZWcXWUpGB4',
+        cookie: true,  // enable cookies to allow the server to access the session
+        xfbml: true // ,  // parse social plugins on this page
+        // version: 'v2.8' // use graph api version 2.8
+      })
+    }
+
     // clear all events
     console.log('clearing all Event Listeners')
     this.$events.remove('changeLanguage')
