@@ -1,7 +1,7 @@
 import * as urls from '../../api_variables'
 
 const state = {
-  Version: '0.9.0',
+  Version: '0.9.3',
   CurrentState: '',
   CurrentPage: '',
   PreviousPage: '',
@@ -158,7 +158,6 @@ const mutations = {
     apiName = typeof apiName === 'string' ? apiName.toLowerCase() : apiName
 
     console.log('changing api to ' + apiName)
-    console.log('has mhs = ' + apiName.indexOf('mhs'))
     if (apiName.indexOf('mhs') > -1) {
       state.api_url = 'https://api.microhuchasolidaria.org'
       state.api_db = 'mhs'
