@@ -34,6 +34,10 @@ module.exports = merge(baseWebpackConfig, {
       { from: 'src/assets/slide-img-es.png', to: 'slide-img-es.png' },
       { from: 'src/assets/slide-img-fr.png', to: 'slide-img-fr.png' },
       { from: 'src/assets/launcher-icon-512.png', to: 'launcher-icon-512.png'},
+      { from: 'src/assets/Webapp-JeVaisAider-2.png', to: 'Webapp-JeVaisAider-2.png'},
+      { from: 'src/assets/Webapp-JeVaisAider-1.png', to: 'Webapp-JeVaisAider-1.png'},
+      { from: 'src/assets/Webapp-YoQuieroAyudar-2.png', to: 'Webapp-YoQuieroAyudar-2.png'},
+      { from: 'src/assets/Webapp-YoQuieroAyudar-1.png', to: 'Webapp-YoQuieroAyudar-1.png'},
     ]),
     new webpack.DefinePlugin({
       'process.env': config.dev.env
