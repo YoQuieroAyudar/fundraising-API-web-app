@@ -1,69 +1,44 @@
-<!-- <template>
-  <div v-if="!authenticated">
-    <a href="#" @click='doLogin' class="btn btn-block btn-social btn-facebook btn-flat">
-      <i class="fa fa-facebook"></i> {{ $t('Sign in using Facebook') }}
-    </a>
+<template>
+  <div class="">
+    <fb-signin-button
+      :params="fbSignInParams"
+      @success="onSignInSuccess"
+      @error="onSignInError">
+      Sign in with Facebook
+    </fb-signin-button>
   </div>
 </template>
 
-<style scoped>
-.fb-login-button {
-  margin-bottom: .3em;
-}
-</style>
-
 <script>
-import auth from './../auth'
 export default {
-
   data () {
     return {
-      email: '',
-      password: '',
-      authenticated: false
+      fbSignInParams: {
+        scope: 'email,user_likes',
+        return_scopes: true
+      }
     }
-  },
-  computed: {
-
-  },
-  beforeCreate () {
-    this.loadFbLoginApi()
   },
   methods: {
-    loadFbLoginApi () {
-      window.fbAsyncInit = function () {
-        FB.init({
-          appId      : FB_APP_ID,
-          cookie     : true,  // enable cookies to allow the server to access
-          // the session
-          xfbml      : true,  // parse social plugins on this page
-          version    : 'v2.5' // use version 2.1
-        })
-      }
-
-      console.log('Loading fb api')
-        // Load the SDK asynchronously
-      (function(d, s, id) {
-          var js, fjs = d.getElementsByTagName(s)[0]
-          if (d.getElementById(id)) return
-          js = d.createElement(s);  js.id = id
-          js.src = '//connect.facebook.net/en_US/sdk.js'
-          fjs.parentNode.insertBefore(js, fjs)
-      }(document, 'script', 'facebook-jssdk'))
-    },
-    doLogin () {
-      var vm = this
-
-      FB.login(function (response) {
-        if (response.status === 'connected') {
-          console.log('In response')
-          auth.facebookLogin(response.authResponse, function () {
-            vm.$router.push({ name: 'redirect' })
-          })
-        }
+    onSignInSuccess (response) {
+      window.FB.api('/me', dude => {
+        console.log(`Good to see you, ${dude.name}.`)
       })
+    },
+    onSignInError (error) {
+      console.log('OH NOES', error)
     }
   }
-
 }
-</script> -->
+</script>
+
+<style>
+.fb-signin-button {
+  /* This is where you control how the button looks. Be creative! */
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background-color: #4267b2;
+  color: #fff;
+}
+</style>

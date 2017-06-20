@@ -6,6 +6,7 @@
 
     <h1 class="page-top-title"><span v-if="$store.getters.getLoginAsUser">{{$t('Login as User')}}</span><span v-else>{{$t('Login as Establishment')}}</span></h1>
     <div class="user-login" v-if="$store.getters.getLoginAsUser">
+      <fb-login></fb-login>
       <form class="form">
         <div dir="ltr" class="input-group">
           <span class="input-group-addon" :title="$t('Country')" id="country-addon1"> {{$t('Donation Destination')}}</span>

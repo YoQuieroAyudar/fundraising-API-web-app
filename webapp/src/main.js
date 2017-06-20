@@ -48,6 +48,11 @@ require('../static/font-awesome-8500ab3a5a.js')
 import 'vodal/common.css'
 import 'vodal/rotate.css'
 
+// import facebook-jssdk
+// import fb from 'service/facebook'
+import FBSignInButton from 'vue-facebook-signin-button'
+Vue.use(FBSignInButton)
+
 Vue.use(vuexI18n.plugin, store)
 Vue.i18n.add('es', Spanish)
 Vue.i18n.add('fr', French)
