@@ -223,19 +223,25 @@ export default {
     // check if the current domain name is one of the dbs
     var currentUrl = window.location.hostname
     console.log('You are on ' + currentUrl)
-    if (currentUrl.indexOf('localhost') > -1) {
-      // do nothing
-      console.log('localhost')
-    } else if (currentUrl.indexOf('microhuchasolidaria') > -1) {
-      this.$store.commit('setAPI', 'mhs')
-      console.log('microhuchasolidaria')
-    } else if (currentUrl.indexOf('iwanttohelp') > -1) {
-      this.$store.commit('setAPI', 'iwth')
-      console.log('iwanttohelp')
-    } else {
-      this.$store.commit('setAPI', 'jva')
-      console.log('default: jevaisaider')
-    }
+    this.$store.commit('setAPI', this.getApiByCurrentDomainName())
+    localStorage.setItem('country_code', this.getCountryByCurrentDomainName())
+
+    // if (currentUrl.indexOf('localhost') > -1) {
+    //   // do nothing
+    //   console.log('localhost')
+    // } else if (currentUrl.indexOf('microhuchasolidaria') > -1) {
+    //   this.$store.commit('setAPI', 'mhs')
+    //
+    //   console.log('microhuchasolidaria')
+    // } else if (currentUrl.indexOf('iwanttohelp') > -1) {
+    //   this.$store.commit('setAPI', 'iwth')
+    //   localStorage.setItem('country_code', this.getCountryByCurrentDomainName())
+    //   console.log('iwanttohelp')
+    // } else {
+    //   this.$store.commit('setAPI', 'jva')
+    //   localStorage.setItem('country_code', this.getCountryByCurrentDomainName())
+    //   console.log('default: jevaisaider')
+    // }
 
     var allPars = this.parseAllParams()
     console.log('allPars:')
@@ -548,32 +554,59 @@ export default {
       lastChecked: {
         balance: null,
         associations: null
-      }
-    }
-  },
-  methods: {
-    getCountryByCurrentDomainName () {
-      var currentDomainName = location.hostname
-
-      var targetNames = [
+      },
+      targetNames: [
+        {
+          'name': 'localhost',
+          'country': 'ES',
+          'db': 'mhs'
+        },
         {
           'name': 'jevaisaider',
-          'country': 'FR'
+          'country': 'FR',
+          'db': 'jva'
         },
         {
           'name': 'microhuchasolidaria',
-          'country': 'ES'
+          'country': 'ES',
+          'db': 'mhs'
         },
         {
           'name': 'iwanttohelp',
-          'country': 'UK'
+          'country': 'UK',
+          'db': 'iwth'
         }
       ]
+    }
+  },
+  methods: {
+    getApiByCurrentDomainName () {
+      console.log('getApiByCurrentDomainName')
+      var currentDomainName = location.hostname
+      currentDomainName = currentDomainName.toLowerCase()
+
+      var targetNames = this.targetNames
 
       for (var i = 0; i < targetNames.length; i++) {
-        if (currentDomainName.indexOf(targetNames[i].name.toLowerCase)) {
-          console.log('current url' + currentDomainName)
-          console.log('setting country to' + targetNames[i].country)
+        if (currentDomainName.indexOf(targetNames[i].name.toLowerCase) > -1) {
+          console.log('current url ' + currentDomainName)
+          console.log('setting db to ' + targetNames[i].db)
+          return targetNames[i].db
+        }
+      }
+      return 'mhs'
+    },
+    getCountryByCurrentDomainName () {
+      console.log('getCountryByCurrentDomainName')
+      var currentDomainName = location.hostname
+      currentDomainName = currentDomainName.toLowerCase()
+
+      var targetNames = this.targetNames
+
+      for (var i = 0; i < targetNames.length; i++) {
+        if (currentDomainName.indexOf(targetNames[i].name.toLowerCase) > -1) {
+          console.log('current url ' + currentDomainName)
+          console.log('setting country to ' + targetNames[i].country)
           return targetNames[i].country
         }
       }
@@ -613,14 +646,14 @@ export default {
 
       console.log('goDirectlyTo: ' + pageName + ' loginAsUser: ' + loginAsUser)
 
-      // setTimeout(() => {
-      //   vm.$store.commit('setLoginAsUser', loginAsUser)
-      //   vm.$events.emit('goToPageEvent', pageName)
-      //   vm.$store.commit('setLoading', false)
-      // }, 500)
-      vm.$store.commit('setLoginAsUser', loginAsUser)
-      vm.$events.emit('goToPageEvent', pageName)
-      vm.$store.commit('setLoading', false)
+      setTimeout(() => {
+        vm.$store.commit('setLoginAsUser', loginAsUser)
+        vm.$events.emit('goToPageEvent', pageName)
+        vm.$store.commit('setLoading', false)
+      }, 500)
+      // vm.$store.commit('setLoginAsUser', loginAsUser)
+      // vm.$events.emit('goToPageEvent', pageName)
+      // vm.$store.commit('setLoading', false)
     },
     fetchUserEstablishments () {
       var vm = this
