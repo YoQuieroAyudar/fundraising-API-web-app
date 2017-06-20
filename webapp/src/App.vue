@@ -634,6 +634,7 @@ export default {
       }
     },
     goDirectlyTo (pageName) {
+      console.log('goDirectlyTo: ' + pageName)
       var vm = this
       vm.$store.commit('setLoading', true)
       vm.$store.commit('setShowSlides', false)
