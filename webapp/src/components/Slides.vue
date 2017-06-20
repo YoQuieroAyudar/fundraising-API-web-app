@@ -3,12 +3,16 @@
     <div class="wrapword">
 
       <carousel :autoplay="true" :autoplayTimeout="autoplayTimout" :autoplayHoverPause="true" :navigationEnabled="true" :perPage="1">
+        <slide :style="image.styles" :key="index" v-for="(image, index) in $store.getters.getCurrentImages">
+          <button type="button" class="btn btn-default btn-xs skip-btn" :title="$t('Skip')" @click="skipSlide" name="skip"> <i class="fa fa-close fa-fw" aria-hidden="true"></i> </button>
+          <div class="slider-image">
+            <img :src="image.img" :alt="image.title">
+          </div>
+        </slide>
+
         <slide :style="slide.style" :key="index" v-for="(slide, index) in $store.getters.getCurrentSlides.slides">
           <button type="button" class="btn btn-default btn-xs skip-btn" :title="$t('Skip')" @click="skipSlide" name="skip"> <i class="fa fa-close fa-fw" aria-hidden="true"></i> </button>
-          <div v-if="index === 0" class="slider-image">
-            <img :src="$store.getters.getSlideImage.img" alt="">
-          </div>
-          <div v-else class="label"  dir="ltr">
+          <div class="label"  dir="ltr">
             <p class="sentence" dir="ltr" v-for="text in seperatedSentences($t(slide.text))">{{text}}</p>
           </div>
         </slide>
@@ -52,7 +56,7 @@ export default {
   },
   data () {
     return {
-      autoplayTimout: 3500
+      autoplayTimout: 2330
     }
   },
   computed: {
@@ -115,6 +119,9 @@ export default {
 /*.sentence {
   clear: both;
 }*/
+.slider-image {
+  height: 350px;
+}
 .slider-image img {
   top: 50%;
   left: 50%;

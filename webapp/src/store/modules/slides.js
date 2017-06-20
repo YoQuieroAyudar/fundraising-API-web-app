@@ -9,12 +9,18 @@ const state = {
     'ru': {'img': 'slide-img-fr.png', 'title': ''}
   },
   list: {
+    'images': {
+      'jva': [
+        {'img': 'Webapp-JeVaisAider-1.png', 'title': '', 'styles': { backgroundColor: '#fff', width: '100%', height: '100%' }},
+        {'img': 'Webapp-JeVaisAider-2.png', 'title': '', 'styles': { backgroundColor: '#fff', width: '100%', height: '100%' }}
+      ],
+      'mhs': [
+        {'img': 'Webapp-YoQuieroAyudar-1.png', 'title': '', 'styles': { backgroundColor: '#fff', width: '100%', height: '100%' }},
+        {'img': 'Webapp-YoQuieroAyudar-2.png', 'title': '', 'styles': { backgroundColor: '#fff', width: '100%', height: '100%' }}
+      ]
+    },
     'en': {
       'slides': [
-        {
-          'text': '',
-          'style': { backgroundColor: '#FFF', width: '100%', height: '100%' }
-        },
         {
           'text': 'I create and validate my account.<br>I credit my account with my credit card...',
           'style': { backgroundColor: '#FF9933', width: '100%', height: '100%' }
@@ -56,6 +62,13 @@ const getters = {
       return state.list[lang]
     }
     return state.list.en
+  },
+  getCurrentImages (state) {
+    console.log('getCurrentImages')
+    // console.log(state.list.images.en)
+    // var api = state.
+
+    return state.list.images.jva
   }
 }
 
