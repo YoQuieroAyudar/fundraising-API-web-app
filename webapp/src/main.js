@@ -57,9 +57,9 @@ Vue.i18n.add('ru', Russian)
 Vue.use(VueResource)
 // Vue.use(Vuefire)
 
+/*eslint-disable */
 Vue.use(VueEvents)
 
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   store,
@@ -70,3 +70,4 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
+/*eslint-enable */

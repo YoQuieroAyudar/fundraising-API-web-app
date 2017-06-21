@@ -6,6 +6,9 @@
 
     <h1 class="page-top-title"><span v-if="$store.getters.getLoginAsUser">{{$t('Login as User')}}</span><span v-else>{{$t('Login as Establishment')}}</span></h1>
     <div class="user-login" v-if="$store.getters.getLoginAsUser">
+      <div>
+        <button class="btn btn-primary btn-xs" @click="$store.commit('setShowSocialLogin', true)" type="button" name="button">{{$t('Login with your Social Account')}}</button>
+      </div>
       <form class="form">
         <div dir="ltr" class="input-group">
           <span class="input-group-addon" :title="$t('Country')" id="country-addon1"> {{$t('Donation Destination')}}</span>
@@ -98,7 +101,6 @@ a {
 </style>
 
 <script>
-import FBLogin from './FBLogin.vue'
 import VideoFrame from './Vids.vue'
 import LoginPOS from './LoginPOS.vue'
 
@@ -192,7 +194,6 @@ export default {
   },
   components: {
     'login-pos-form': LoginPOS,
-    'fb-login': FBLogin,
     'video-frame': VideoFrame
   }
 

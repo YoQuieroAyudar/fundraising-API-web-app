@@ -43,6 +43,15 @@
               </div>
             </div>
 
+            <div class="modal-wrapper">
+              <div class="modal-inner">
+                <vodal :show="$store.getters.getSocialLogin" :width="250" :height="300" animation="rotate" @hide="$store.commit('setShowSocialLogin', false)">
+                    <h1>Social Login</h1>
+                    <fb-login></fb-login>
+                </vodal>
+              </div>
+            </div>
+
             <div class='top-container'  v-if="($store.getters.getCurrentPage != 'login' && $store.getters.getCurrentPage != '' && $store.getters.getCurrentState != '' && $store.getters.getCurrentPage != 'signup')">
               <div class='top-menu'>
 
@@ -180,9 +189,20 @@ import Map from './components/Map.vue'
 import SupportivePOS from './components/SupportivePOS.vue'
 import GoTo from './components/GoTo.vue'
 import Transactions from './components/Transactions.vue'
+import FBLogin from './components/FBLogin.vue'
 
 import * as urls from './api_variables'
 import axios from 'axios'
+
+(function (d, s, id) {
+  var js
+  var fjs = d.getElementsByTagName(s)[0]
+  if (d.getElementById(id)) return
+  js = d.createElement(s); js.id = id
+  js.src = '//connect.facebook.net/en_US/sdk.js'
+  fjs.parentNode.insertBefore(js, fjs)
+}(document, 'script', 'facebook-jssdk'))
+
 // var jwtToken = localStorage.getItem('user_token')
 
 // const http = axios.create({
@@ -204,6 +224,109 @@ export default {
   },
   mounted () {
     /** ** ** ** ** ** *** *** IVENTS *** *** ** ** ** ** ** ** ** ** **/
+
+    /* ******** FACEBOOK SDK EVENTS ****************/
+    this.$events.listen('socialLoginEvent', eventData => {
+      let vm = this
+      console.log('socialLoginEvent')
+      if (eventData.type !== undefined && eventData.type.length > 1) {
+        // login to facebook
+        var url = urls.API_URL.CurrentUrl + '/signin/' + eventData.type
+        console.log('data')
+        var Data = {'token': eventData.id}
+        console.log(Data)
+        axios({
+          method: 'POST',
+          url: url,
+          data: Data
+        }).then(resp => {
+          console.log(eventData.type + ' login response')
+          console.log(resp)
+          if (resp.data !== undefined && resp.data.token !== undefined) {
+            var decoded = jwtDecode(resp.data.token)
+            console.log('loggedin successfully')
+            vm.$store.commit('setShowSocialLogin', false)
+            // vm.$store.commit('setToken', resp.data.token)
+            vm.$events.$emit('loginEvent', {token: resp.data.token, 'decoded': decoded})
+            vm.$events.emit('goToPageEvent', 'home')
+          } else if (resp.token) {
+            console.log('loggedin successfully')
+            vm.$store.commit('setToken', resp.token)
+            vm.$events.emit('goToPageEvent', 'home')
+          }
+        }).catch(err => {
+          console.log(eventData.type + ' login error')
+          console.log(err)
+        })
+      }
+    })
+
+    this.$events.listen('initializeFBEvent', eventData => {
+      console.log('FACEBOOK LOGIN mounted')
+      let vm = this
+      window.fbAsyncInit = () => {
+        console.log('FACEBOOK LOGIN fbAsyncInit')
+        /*eslint-disable */
+        window.FB.init({
+          appId: '219601041795109',
+          cookie: true,
+          xfbml: true,
+          version: 'v2.9'
+        })
+        window.FB.getLoginStatus(function (response) {
+          console.log('FACEBOOK LOGIN getLoginStatus')
+          console.log(response)
+          vm.$events.emit('statusChangeFBEvent', response)
+        })
+        /*eslint-enable */
+      }
+    })
+
+    this.$events.listen('getFBProfileEvent', eventData => {
+      console.log('FACEBOOK LOGIN getProfile()')
+      /*eslint-disable */
+      window.FB.api('/me', eventData)
+      /*eslint-enable */
+    })
+
+    this.$events.listen('loginFBEvent', eventData => {
+      console.log('FACEBOOK LOGIN login()')
+      let vm = this
+      /*eslint-disable */
+      FB.login(function (response) {
+        console.log('login response')
+        console.log(response)
+        vm.$events.emit('statusChangeFBEvent', response)
+      }, {scope: 'publish_actions'})
+      /*eslint-enable */
+    })
+    this.$events.listen('logoutFBEvent', eventData => {
+      console.log('FACEBOOK LOGIN logout()')
+      let vm = this
+      /*eslint-disable */
+      FB.logout(function (response) {
+        console.log('logout response')
+        console.log(response)
+        vm.$events.emit('statusChangeFBEvent', response)
+      })
+      /*eslint-enable */
+    })
+    this.$events.listen('statusChangeFBEvent', response => {
+      console.log('FACEBOOK LOGIN statusChangeCallback')
+      let vm = this
+      vm.ready = true
+      console.log('statusChangeCallback')
+      console.log(response)
+      if (response.status === 'connected') {
+        vm.authorized = true
+        vm.$events.imit('getFBProfileEvent', response)
+      } else if (response.status === 'not_authorized') {
+        vm.authorized = false
+      } else {
+        vm.authorized = false
+      }
+    })
+
     this.$events.listen('changeLanguage', eventData => {
       console.log('changeLanguage')
       var lang = String(eventData).toLowerCase()
@@ -409,18 +532,21 @@ export default {
       console.log('LOGIN EVENT')
       console.log(eventData)
       console.log('saving user data')
-      localStorage.setItem('user_data', JSON.stringify(eventData.decoded))
-      var userType = (eventData.decoded.status || 'USER')
-      if (userType === 'POS') {
-        console.log('user type is POS')
-        this.$events.emit('fetchEstablishmentEvent')
+      if (eventData.decoded !== undefined) {
+        localStorage.setItem('user_data', JSON.stringify(eventData.decoded))
+        var userType = (eventData.decoded.status || 'USER')
+        if (userType === 'POS') {
+          console.log('user type is POS')
+          this.$events.emit('fetchEstablishmentEvent')
+        }
+        this.$store.commit('setUserType', eventData.decoded.status)
       }
+
       console.log('saving user token')
       localStorage.setItem('user_token', eventData.token)
       this.$store.commit('setToken', eventData.token)
       localStorage.setItem('rememberMe', eventData.rememberMe)
       console.log('setting USER TYPE: ')
-      this.$store.commit('setUserType', eventData.decoded.status)
       this.$store.commit('setCurrentState', 'loggedin')
       this.$store.commit('setCurrentPage', 'home')
       this.setMessage({'success': 'Login successfully!'})
@@ -504,6 +630,12 @@ export default {
     this.$events.remove('checkDonationMeterics')
     this.$events.remove('loginEvent')
     this.$events.remove('acountUpdate')
+    this.$events.remove('initializeFBEvent')
+    this.$events.remove('getFBProfileEvent')
+    this.$events.remove('loginFBEvent')
+    this.$events.remove('logoutFBEvent')
+    this.$events.remove('statusChangeFBEvent')
+    this.$events.remove('socialLoginEvent')
 
     var vm = this
     setTimeout(() => { vm.$store.commit('resetMessages') }, 5000)
@@ -1020,7 +1152,8 @@ export default {
     'map-page': Map,
     'supportive-pos-page': SupportivePOS,
     'go-to-box': GoTo,
-    'transactions-page': Transactions
+    'transactions-page': Transactions,
+    'fb-login': FBLogin
   }
 }
 
