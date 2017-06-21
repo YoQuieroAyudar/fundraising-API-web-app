@@ -1,7 +1,7 @@
 import * as urls from '../../api_variables'
 
 const state = {
-  Version: '0.9.3',
+  Version: '0.9.4',
   CurrentState: '',
   CurrentPage: '',
   PreviousPage: '',
@@ -21,10 +21,22 @@ const state = {
   showGoTo: false,
   showShare: false,
   selectedCountry: 'ES',
-  api_db: 'mhs'
+  api_db: 'mhs',
+  showSocialLogin: false,
+  FBAuthorized: false,
+  FBProfile: {}
 }
 
 const getters = {
+  getFBProfile (state) {
+    return state.FBProfile
+  },
+  getFBAuthorized (state) {
+    return state.FBAuthorized
+  },
+  getSocialLogin (state) {
+    return state.showSocialLogin
+  },
   getApiDB (state) {
     return state.api_db
   },
@@ -85,6 +97,18 @@ const getters = {
 }
 
 const mutations = {
+  setFBProfile (state, context) {
+    if (context.name === undefined && context.id === undefined) {
+      return
+    }
+    state.FBProfile = context
+  },
+  setFBAuthorized (state, context) {
+    state.FBAuthorized = Boolean(context)
+  },
+  setShowSocialLogin (state, context) {
+    state.showSocialLogin = Boolean(context)
+  },
   setSelectedCountry (state, context) {
     state.selectedCountry = typeof context === 'string' ? context.toUpperCase() : context.code
   },
