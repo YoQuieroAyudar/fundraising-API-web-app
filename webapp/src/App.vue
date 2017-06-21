@@ -386,6 +386,7 @@ export default {
         var countryCode = typeof allPars.country === 'string' ? allPars.country.toUpperCase() : this.getCountryByCurrentDomainName() // allPars.country.toString()
         this.$store.commit('setSelectedCountry', countryCode)
         this.$store.commit('setAPI', undefined)
+        this.$store.commit('setCurrentImages', this.$store.getters.getApiDB)
       }, 500)
     }
 
@@ -441,6 +442,7 @@ export default {
       if (eventData && eventData.url) {
         this.$store.commit('setAPIUrl', eventData.url)
       }
+      this.$store.commit('setCurrentImages', this.$store.getters.getApiDB)
     })
     this.$events.listen('showGoToModalEvent', eventData => {
       this.goToModalData = eventData
