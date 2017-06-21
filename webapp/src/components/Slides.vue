@@ -31,20 +31,23 @@ export default {
     console.log('SLIDES beforeCreate')
   },
   beforeMount () {
-    console.log('SLIDES beforeMount')
-    console.log('slide images')
-    console.log(JSON.stringify(this.$store.getters.getCurrentImages))
+    console.log(JSON.stringify(this.getImages))
   },
   mounted () {
     var vm = this
-    var imageCounter = parseInt(this.$store.getters.getCurrentImages.length)
-    var slideCounter = parseInt(this.$store.getters.getCurrentSlides.length)
-    var autoTimeout = ((imageCounter + slideCounter) * this.autoplayTimout) || this.autoplayTimout
+    var imageCounter = parseInt(this.getImages.length)
+    imageCounter *= this.autoplayTimout
+    var slideCounter = parseInt(this.$store.getters.getCurrentSlides.slides.length)
+    slideCounter *= this.autoplayTimout
+    var autoTimeout = (imageCounter + slideCounter) || this.autoplayTimout
+    console.log('TIMEOUT: ' + autoTimeout)
     setTimeout(() => {
       if (vm.$store.getters.getShowSlide) {
         vm.$events.emit('skipSlideEvent')
       }
     }, autoTimeout + 3000)
+    console.log(JSON.stringify(this.getImages))
+    console.log(JSON.stringify(this.$store.getters.getCurrentImages.slides))
   },
   methods: {
     seperatedSentences (value) {
@@ -66,7 +69,17 @@ export default {
   },
   computed: {
     getImages () {
-      return this.$store.getters.getCurrentImages
+      var api = this.$store.getters.getApiDB
+      switch (api) {
+        case 'mhs':
+          return this.$store.getters.getAllImages.mhs
+        case 'jva':
+          return this.$store.getters.getAllImages.jva
+        case 'iwth':
+          return this.$store.getters.getAllImages.jva
+        default:
+          return this.$store.getters.getCurrentImages
+      }
     },
     getSlideImage () {
       var lang = localStorage.getItem('user_locale')

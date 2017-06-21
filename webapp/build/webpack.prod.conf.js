@@ -46,6 +46,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       { from: 'src/assets/Webapp-JeVaisAider-1.png', to: 'Webapp-JeVaisAider-1.png'},
       { from: 'src/assets/Webapp-YoQuieroAyudar-2.png', to: 'Webapp-YoQuieroAyudar-2.png'},
       { from: 'src/assets/Webapp-YoQuieroAyudar-1.png', to: 'Webapp-YoQuieroAyudar-1.png'},
+      { from: 'src/assets/Webapp-Plain-1.png', to: 'Webapp-Plain-1.png'},
     ]),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
