@@ -4,14 +4,14 @@
 
       <carousel :autoplay="true" :autoplayTimeout="autoplayTimout" :autoplayHoverPause="true" :navigationEnabled="true" :perPage="1">
         <slide :style="image.styles" :key="index" v-for="(image, index) in getImages">
-          <button type="button" class="btn btn-default btn-xs skip-btn" :title="$t('Skip')" @click="skipSlide" name="skip"> <i class="fa fa-close fa-fw" aria-hidden="true"></i> </button>
+          <button type="button" class="btn btn-default skip-btn" :title="$t('Skip')" @click="skipSlide" name="skip"> <!-- <i class="fa fa-close fa-fw" aria-hidden="true"></i>--> X </button>
           <div class="slider-image">
             <img :src="image.img" :alt="image.title">
           </div>
         </slide>
 
         <slide :style="slide.style" :key="index" v-for="(slide, index) in $store.getters.getCurrentSlides.slides">
-          <button type="button" class="btn btn-default btn-xs skip-btn" :title="$t('Skip')" @click="skipSlide" name="skip"> <i class="fa fa-close fa-fw" aria-hidden="true"></i> </button>
+          <button type="button" class="btn btn-default skip-btn" :title="$t('Skip')" @click="skipSlide" name="skip"> <!-- <i class="fa fa-close fa-fw" aria-hidden="true"></i>--> X </button>
           <div class="label"  dir="ltr">
             <p class="sentence" dir="ltr" v-for="text in seperatedSentences($t(slide.text))">{{text}}</p>
           </div>
@@ -138,7 +138,11 @@ export default {
 }
 .skip-btn {
   position: absolute;
+  padding: -1em;
   height: 2em;
+  width: 2em;
+  font-size: 1.2em;
+  font-weight: bolder;
   right: 0;
   top: .2em;
   margin-bottom: -3em;
@@ -146,5 +150,7 @@ export default {
   border-radius: 0;
   border: 0;
   z-index: 1000;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 </style>
