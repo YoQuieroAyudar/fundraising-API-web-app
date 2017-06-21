@@ -3,7 +3,7 @@
     <div class="wrapword">
 
       <carousel :autoplay="true" :autoplayTimeout="autoplayTimout" :autoplayHoverPause="true" :navigationEnabled="true" :perPage="1">
-        <slide :style="image.styles" :key="index" v-for="(image, index) in $store.getters.getCurrentImages">
+        <slide :style="image.styles" :key="index" v-for="(image, index) in getImages">
           <button type="button" class="btn btn-default btn-xs skip-btn" :title="$t('Skip')" @click="skipSlide" name="skip"> <i class="fa fa-close fa-fw" aria-hidden="true"></i> </button>
           <div class="slider-image">
             <img :src="image.img" :alt="image.title">
@@ -28,13 +28,18 @@ import { Carousel, Slide } from 'vue-carousel'
 
 export default {
   beforeCreate () {
-    // this.$events.listen('languageChanged', lang => {
-    //   this.currentSlides = this.getSlidesByLang(lang)
-    // })
+    console.log('SLIDES beforeCreate')
+  },
+  beforeMount () {
+    console.log('SLIDES beforeMount')
+    console.log('slide images')
+    console.log(JSON.stringify(this.$store.getters.getCurrentImages))
   },
   mounted () {
     var vm = this
-    var autoTimeout = (4 * this.autoplayTimout) || this.autoplayTimout
+    var imageCounter = parseInt(this.$store.getters.getCurrentImages.length)
+    var slideCounter = parseInt(this.$store.getters.getCurrentSlides.length)
+    var autoTimeout = ((imageCounter + slideCounter) * this.autoplayTimout) || this.autoplayTimout
     setTimeout(() => {
       if (vm.$store.getters.getShowSlide) {
         vm.$events.emit('skipSlideEvent')
@@ -60,6 +65,9 @@ export default {
     }
   },
   computed: {
+    getImages () {
+      return this.$store.getters.getCurrentImages
+    },
     getSlideImage () {
       var lang = localStorage.getItem('user_locale')
       if (lang === 'es') {
