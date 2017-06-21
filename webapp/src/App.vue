@@ -46,7 +46,7 @@
             <div class="modal-wrapper">
               <div class="modal-inner">
                 <vodal :show="$store.getters.getSocialLogin" :width="250" :height="300" animation="rotate" @hide="$store.commit('setShowSocialLogin', false)">
-                    <h1>Social Login</h1>
+                    <h1>{{$t('Social Login')}}</h1>
                     <fb-login></fb-login>
                 </vodal>
               </div>
