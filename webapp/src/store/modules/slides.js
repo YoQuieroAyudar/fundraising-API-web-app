@@ -1,4 +1,5 @@
 const state = {
+  currentImages: [],
   images: {
     'en': {'img': 'slide-img-fr.png', 'title': ''},
     'ar': {'img': 'slide-img-fr.png', 'title': ''},
@@ -65,14 +66,31 @@ const getters = {
   },
   getCurrentImages (state) {
     console.log('getCurrentImages')
-    // console.log(state.list.images.en)
-    // var api = state.
-
-    return state.list.images.jva
+    return state.currentImages
   }
 }
 
 const mutations = {
+  setCurrentImages (state, context) {
+    console.log('getCurrentImages')
+
+    var api = context
+    console.log('api_db: ' + api)
+    switch (api) {
+      case 'jva':
+        state.currentImages = state.list.images.jva
+        break
+      case 'mhs':
+        state.currentImages = state.list.images.mhs
+        break
+      case 'iwth':
+        state.currentImages = state.list.images.jva
+        break
+      default:
+        state.currentImages = state.list.images.jva
+        break
+    }
+  }
 }
 
 const actions = {

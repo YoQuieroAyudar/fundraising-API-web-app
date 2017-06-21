@@ -128,7 +128,11 @@ const localizations = {
   'Please confirm your email now to access your account!': '',
   'Date': '',
   'Amount': '',
-  'Charity': ''
+  'Charity': '',
+  'Social Login': '',
+  'Logout from facebook': '',
+  'Login with facebook': '',
+  'Login with your Social Account': ''
 }
 
 export default localizations

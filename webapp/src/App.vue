@@ -46,7 +46,7 @@
             <div class="modal-wrapper">
               <div class="modal-inner">
                 <vodal :show="$store.getters.getSocialLogin" :width="250" :height="300" animation="rotate" @hide="$store.commit('setShowSocialLogin', false)">
-                    <h1>Social Login</h1>
+                    <h1>{{$t('Social Login')}}</h1>
                     <fb-login></fb-login>
                 </vodal>
               </div>
@@ -386,6 +386,7 @@ export default {
         var countryCode = typeof allPars.country === 'string' ? allPars.country.toUpperCase() : this.getCountryByCurrentDomainName() // allPars.country.toString()
         this.$store.commit('setSelectedCountry', countryCode)
         this.$store.commit('setAPI', undefined)
+        this.$store.commit('setCurrentImages', this.$store.getters.getApiDB)
       }, 500)
     }
 
@@ -441,6 +442,7 @@ export default {
       if (eventData && eventData.url) {
         this.$store.commit('setAPIUrl', eventData.url)
       }
+      this.$store.commit('setCurrentImages', this.$store.getters.getApiDB)
     })
     this.$events.listen('showGoToModalEvent', eventData => {
       this.goToModalData = eventData
