@@ -7,7 +7,7 @@
     <h1 class="page-top-title"><span v-if="$store.getters.getLoginAsUser">{{$t('Login as User')}}</span><span v-else>{{$t('Login as Establishment')}}</span></h1>
     <div class="user-login" v-if="$store.getters.getLoginAsUser">
       <div>
-        <button class="btn btn-primary btn-xs" @click="$store.commit('setShowSocialLogin', true)" type="button" name="button">{{$t('Login with your Social Account')}}</button>
+        <button class="btn btn-primary btn-xs" @click="$store.commit('setShowSocialLogin', true)" type="button" name="button"><i class="fa fa-facebook fa-fw"></i> {{$t('Login with your Social Account')}}</button>
       </div>
       <form class="form">
         <div dir="ltr" class="input-group">
