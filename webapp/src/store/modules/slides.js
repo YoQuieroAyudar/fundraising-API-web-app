@@ -1,5 +1,8 @@
 const state = {
-  currentImages: [],
+  currentImages: [
+    {'img': 'Webapp-Plain-1.png', 'title': '', 'styles': { backgroundColor: '#fff', width: '100%', height: '100%' }},
+    {'img': 'Webapp-Plain-1.png', 'title': '', 'styles': { backgroundColor: '#fff', width: '100%', height: '100%' }}
+  ],
   images: {
     'en': {'img': 'slide-img-fr.png', 'title': ''},
     'ar': {'img': 'slide-img-fr.png', 'title': ''},
@@ -52,7 +55,7 @@ const getters = {
     if (state.images[lang] !== undefined) {
       return state.images[lang]
     }
-    return state.images.fr
+    return state.currentImages
   },
   getCurrentSlides (state) {
     var lang = localStorage.getItem('user_locale')
@@ -67,6 +70,9 @@ const getters = {
   getCurrentImages (state) {
     console.log('getCurrentImages')
     return state.currentImages
+  },
+  getAllImages (state) {
+    return state.list.images
   }
 }
 

@@ -377,7 +377,8 @@ export default {
         console.log('apiType = ' + allPars.db)
         console.log('setAPIUrlLEvent')
         this.$events.emit('setAPIUrlLEvent', allPars.db)
-      }, 1000)
+        this.$store.commit('setCurrentImages', allPars.db)
+      }, 500)
     }
     if (allPars.country !== undefined) {
       clearTimeout(this.tOuts.selectCountryTimeout)
