@@ -127,9 +127,13 @@ const localizations = {
   'Search by name or description': 'Rechercher par nom ou description',
   'Supportive Establishments': 'Etablissement solidaire',
   'Please confirm your email now to access your account!': 'Veuillez confirmer votre courrier électronique maintenant pour accéder à votre compte',
-  'Date': '',
-  'Amount': '',
-  'Charity': ''
+  'Date': 'Date',
+  'Amount': 'Montant',
+  'Charity': 'Organisme',
+  'Social Login': 'Login social',
+  'Logout from facebook': 'Fermer session',
+  'Login with facebook': 'Connexion',
+  'Login with your Social Account': 'Login social'
 }
 
 export default localizations

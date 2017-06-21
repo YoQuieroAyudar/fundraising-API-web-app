@@ -129,7 +129,11 @@ const localizations = {
   'Please confirm your email now to access your account!': 'يرجى إكمال التأكيد في بريدك الإلكتروني الآن للدخول إلى حسابك',
   'Date': 'التاريخ',
   'Amount': 'الكمية',
-  'Charity': 'الجمعية الخيرية'
+  'Charity': 'الجمعية الخيرية',
+  'Social Login': 'الدخول مغ مواقع التواصل',
+  'Logout from facebook': 'الخروج من فيسبوك',
+  'Login with facebook': 'الدخول مع فيسبوك',
+  'Login with your Social Account': 'الدخول مغ مواقع التواصل'
 }
 
 export default localizations
