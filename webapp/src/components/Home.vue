@@ -10,7 +10,6 @@
       <p>
         {{$t('Thanks for your generous heart. You are changing the world for a lot of people who lost hope')}}
       </p>
-      <pre>{{country}}</pre>
 
       <div dir="ltr" class="input-group">
         <span class="input-group-addon" :title="$t('Country')" id="country-addon1"> {{$t('Donation Destination')}}</span>
@@ -159,8 +158,10 @@ export default {
       console.log('typeof countries = ' + (typeof countries))
       // console.log('instance of countries = ' + instanceof countries)
       console.log(JSON.stringify(countries[0]))
-      vm.country = countries[0]
-      this.$store.commit('setSelectedCountry', this.country.code)
+      if (this.country === null) {
+        vm.country = countries[0]
+        this.$store.commit('setSelectedCountry', this.country.code)
+      }
       return countries
     },
     getUsername () {

@@ -1207,6 +1207,9 @@ h5 {
 .mobile-full-page .content {
   height: 580px;
 }
+.desktop-max .content {
+  height: 90%;
+}
 a {
   cursor: pointer;
 }
@@ -1231,10 +1234,14 @@ a {
   height: 1.5em;
   padding: .3em;
   margin: .85em;
+  margin-bottom: .5em;
+  padding-bottom: 1em;
   bottom: 0;
   left: 0;
   max-width: 290px;
   width: 92%;
+  background-color: rgba(255, 255, 255, 1);
+  border-top: 1px solid #AAA;
 }
 .bottom-menu .test-mode {
   color: #FFF;
