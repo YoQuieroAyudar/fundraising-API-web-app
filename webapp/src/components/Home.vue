@@ -10,6 +10,14 @@
       <p>
         {{$t('Thanks for your generous heart. You are changing the world for a lot of people who lost hope')}}
       </p>
+      <pre>{{country}}</pre>
+
+      <div dir="ltr" class="input-group">
+        <span class="input-group-addon" :title="$t('Country')" id="country-addon1"> {{$t('Donation Destination')}}</span>
+        <select class="form-control" aria-describedby="nationality-addon1" @change="updateCountry" v-model="country" >
+          <option v-for="(ctry, i) in getApiCountries" :selected="i === 0" :value="ctry">{{ctry.name}}</option>
+        </select>
+      </div>
 
       <div class="btn-group btn-group-vertical btn-block" role="group" aria-label="home-menu-items">
         <button class="btn btn-default active">{{ $t('Home') }}</button>
@@ -64,10 +72,20 @@ export default {
   },
   data () {
     return {
-      loadingDonationMetrics: false
+      loadingDonationMetrics: false,
+      country: null
     }
   },
   methods: {
+    updateCountry () {
+      if (this.country !== null && this.country !== undefined && this.country.code !== undefined) {
+        localStorage.setItem('country', JSON.stringify(this.country))
+        localStorage.setItem('country_code', this.country.code)
+        localStorage.setItem('country_db', this.country.db)
+        this.$store.commit('setSelectedCountry', this.country.code)
+        this.$events.emit('getCharitiesEvent')
+      }
+    },
     parseAllParams () {
       var parameters = {}
       var all = location.search
@@ -121,6 +139,30 @@ export default {
     }
   },
   computed: {
+    getApiCountries () {
+      var vm = this
+      var db = this.$store.getters.getApiDB
+      console.log('getApiCountries: ' + db)
+      var countries = []
+      var tempList = this.$store.getters.getTopCountries
+      console.log('countries length = ' + tempList.length)
+      console.log(tempList)
+      countries = tempList.filter(c => {
+        return c.db === db
+      })
+      // for (var i = 0; i < tempList.length; i++) {
+      //   console.log(tempList[i].db)
+      //   if (tempList[i].db === db) {
+      //     countries.push(tempList[i])
+      //   }
+      // }
+      console.log('typeof countries = ' + (typeof countries))
+      // console.log('instance of countries = ' + instanceof countries)
+      console.log(JSON.stringify(countries[0]))
+      vm.country = countries[0]
+      this.$store.commit('setSelectedCountry', this.country.code)
+      return countries
+    },
     getUsername () {
       var userData = JSON.parse(localStorage.getItem('user_data'))
       return userData.first_name + ' ' + userData.last_name
