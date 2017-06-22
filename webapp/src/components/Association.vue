@@ -87,7 +87,7 @@ export default {
 </script>
 <style scoped>
 .associations-list {
-
+  margin-top: .7em;
 }
 .association-box {
   box-shadow: 1px 1px 1px #999;
