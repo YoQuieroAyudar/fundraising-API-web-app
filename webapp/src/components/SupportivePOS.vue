@@ -4,105 +4,28 @@
       <button :class="$i18n.locale() == 'ar' ? 'btn btn-success btn-xs pull-left' : 'btn btn-success btn-xs pull-right'" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
     </div>
 
-    <h1 class="page-top-title">{{currentPOS.name}}</h1>
+    <h1 class="page-top-title">{{ $t('Supportive Establishments') }}</h1>
 
-    <pre>{{$data}}</pre>
-
-    <span class="hidden">{{getMapCenter}}:{{getMarkers}}</span>
-    <div class="map1">
-      <gmap-map
-        :center="center"
-        :zoom="12"
-        style="width: 500px; height: 300px"
-      >
-        <gmap-marker
-          :key="index"
-          v-for="(m, index) in [{position: center}]"
-          :position="m.position"
-          :clickable="true"
-          :draggable="true"
-
-        ></gmap-marker>
-      </gmap-map>
-    </div>
-
-    <!-- <div v-else class="map2">
-      <gmap-map
-        :center="center"
-        :zoom="6"
-        map-type-id="terrain"
-        style="width: 500px; height: 300px"
-      ></gmap-map>
-    </div> -->
+    <g-map-window></g-map-window>
+    
   </div>
+
 </template>
 
 <script>
+import Map from './Map.vue'
+
 export default {
   data () {
     return {
-      center: {'lat': 0.0, 'lng': 0.0},
-      markers: [{
-        position: {'lat': 10.0, 'lng': 10.0}
-      }]
     }
   },
   methods: {
-    getCountryLocation (countryCode) {
-      var location = {}
-      if (countryCode === 'FR') {
-        location.lat = 48
-        location.lng = 2 // {lat: 48.86, lng: 2.35}
-        return location
-      } else {
-        location.lat = 40
-        location.lng = -3 // {lat: 40.42, lng: -3.7}
-        return location
-      }
-    }
   },
   computed: {
-    currentPOS () {
-      return this.$store.getters.getEstablishment
-    },
-    getMapCenter () {
-      // retuns long and lat of the POS
-      console.log('getMapCenter')
-      console.log(this.currentPOS.geo_x)
-      console.log(this.currentPOS.geo_y)
-      var long, lat
-      if (this.currentPOS.geo_x === 0 && this.currentPOS.geo_y === 0) {
-        console.log('NO geo_x or geo_y')
-        var countryLocation = this.getCountryLocation(this.currentPOS.country)
-        long = countryLocation.long
-        lat = countryLocation.lat
-        console.log('LONG: ' + long)
-        console.log('LAT: ' + lat)
-      } else {
-        console.log('THERE is geo_x and geo_y')
-        long = this.currentPOS.geo_x
-        lat = this.currentPOS.geo_y
-        console.log('LONG: ' + long)
-        console.log('LAT: ' + lat)
-      }
-
-      this.center.lat = lat
-      this.center.lng = long // {lng: long, lat: lat}
-      this.markers = []
-      this.markers.push({position: this.center})
-      return this.center
-    },
-    getMarkers () {
-      // this.markers = [{position: this.center}]
-      var mk = []
-      for (var i = 0; i < this.$store.getters.getUserEstablishments.length; i++) {
-        mk.push({position: {lat: this.$store.getters.getUserEstablishments[i].geo_y, lng: this.$store.getters.getUserEstablishments[i].geo_x}})
-      }
-      this.markers = mk
-      console.log('markers:')
-      console.log(mk)
-      return mk
-    }
+  },
+  components: {
+    'g-map-window': Map
   }
 }
 </script>
