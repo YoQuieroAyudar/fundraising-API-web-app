@@ -104,8 +104,14 @@ export default {
   font-family: Arial;
   font-size: 2em;
   text-align: center;
-  min-height: 400px;
   width: 200px;
+}
+
+.mobile-full-page .VueCarousel-slide {
+  min-height: 500px;
+}
+.desktop-max .VueCarousel-slide {
+  min-height: 400px;
 }
 
 .label {
