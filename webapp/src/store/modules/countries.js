@@ -991,7 +991,7 @@ const getters = {
     return state.list
   },
   getTopCountries (state) {
-    var topCountries = {}
+    var topCountries = []
     // TODO: if the top countries list length change please change this number
     var topNumber = 6
     for (var i = 0; i < topNumber; i++) {
@@ -1000,7 +1000,7 @@ const getters = {
     return topCountries
   },
   getOtherCountries (state) {
-    var otherCountries = {name: '_______________', code: '_'}
+    var otherCountries = [{name: '_______________', code: '_'}]
     var j = 1
     for (var i = 4; i < state.list.length; i++) {
       otherCountries[j] = state.list[i]
