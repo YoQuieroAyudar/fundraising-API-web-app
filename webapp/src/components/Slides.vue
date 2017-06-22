@@ -157,16 +157,16 @@ export default {
 }
 .skip-btn {
   position: absolute;
-  padding: -1em;
-  height: 2em;
-  width: 2em;
+  padding: .3;
+  padding-top: 0;
+  padding-bottom: 0;
   font-size: 1.2em;
   font-weight: bolder;
   right: 0;
   top: .2em;
   margin-bottom: -3em;
   margin-right: .1em;
-  border-radius: 0;
+  border-radius: 50%;
   border: 0;
   z-index: 1000;
   color: #fff;
