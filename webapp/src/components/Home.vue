@@ -68,6 +68,7 @@ export default {
   mounted () {
     console.log('mounted')
     this.$events.emit('getCharitiesEvent')
+    this.$events.emit('fetchUserEstablishmentsEvent')
   },
   data () {
     return {
