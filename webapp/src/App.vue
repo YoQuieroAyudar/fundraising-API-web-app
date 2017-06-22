@@ -413,13 +413,13 @@ export default {
 
     this.$events.listen('getCharitiesEvent', eventData => {
       var now = new Date()
-      if (this.lastChecked.associations !== null) {
-        var duration = this.lastChecked.associations - now
-        if (duration < 1000) {
-          console.log('getCharitiesEvent was emitted before ' + duration)
-          return
-        }
-      }
+      // if (this.lastChecked.associations !== null) {
+      //   var duration = this.lastChecked.associations - now
+      //   if (duration < 1000) {
+      //     console.log('getCharitiesEvent was emitted before ' + duration)
+      //     return
+      //   }
+      // }
       this.lastChecked.associations = now
 
       console.log('getCharitiesEvent')
@@ -1049,8 +1049,8 @@ export default {
     getAssociationsFromAPI () {
       console.log('App.vue: getAssociationsFromAPI')
       var vm = this
-      let country = localStorage.getItem('country_code')
-      if (country == null) {
+      let country = this.$store.getters.getSelectedCountry // localStorage.getItem('country_code')
+      if (country === undefined) {
         console.log('no country, default is ES')
         country = this.getCountryByCurrentDomainName()
       }
