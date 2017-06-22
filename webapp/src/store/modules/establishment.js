@@ -19,10 +19,14 @@ const state = {
     end_subscription: '',
     Subscriptions: null
   },
-  UserEstablishments: []
+  UserEstablishments: [],
+  AllEstablishments: []
 }
 
 const getters = {
+  getAllEstablishments (state) {
+    return state.AllEstablishments
+  },
   getUserEstablishments (state) {
     return state.UserEstablishments
   },
@@ -45,6 +49,11 @@ const getters = {
 }
 
 const mutations = {
+  setAllEstablishments (state, context) {
+    console.log('setting all establishments')
+    console.log(context)
+    state.AllEstablishments = context
+  },
   setUserEstablishments (state, list) {
     state.UserEstablishments = list
   },
