@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="webapp-wrapper">
     <div class="other">
       <div :dir='currentLangDirection' id='wrapper' v-bind:class='getWidthClass'>
         <span class='hidden'>{{currentState}}</span>
@@ -24,7 +24,7 @@
             </div>
           </div>
 
-          <div v-else >
+          <div class="notloading" v-else >
             <message-items></message-items>
 
             <div class="modal-wrapper">
@@ -1163,19 +1163,23 @@ export default {
 </script>
 
 <style scoped>
+html {
+  height: 100%;
+}
 #wrapper {
   position: relative;
   margin: auto;
   border: 1px solid #555;
-  height: 500px;
   padding: 0.5em;
   overflow: hidden;
 }
 .mobile-full-page {
   max-width: 100%;
+  height: 690px;
 }
 .desktop-max {
   max-width: 300px;
+  height: 500px;
 }
 h1, h2, h3, h4, h5 {
   font-weight: bold;
@@ -1196,10 +1200,12 @@ h5 {
   font-size: 0.95em;
 }
 .content {
-  height: 90%;
   overflow-y: scroll;
   overflow-x: hidden;
   padding-right: .4em;
+}
+.mobile-full-page .content {
+  height: 580px;
 }
 a {
   cursor: pointer;
@@ -1267,5 +1273,8 @@ a {
   left: 0;
   right: 1.7em;
   margin-top: 0;
+}
+.mobile-full-page .notloading {
+  height: 570px;
 }
 </style>
