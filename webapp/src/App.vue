@@ -449,6 +449,9 @@ export default {
       this.goToModalData = eventData
       this.$store.commit('setShowGoTo', true)
     })
+    this.$events.listen('fetchUserEstablishmentsEvent', eventData => {
+      this.fetchUserEstablishments()
+    })
     this.$events.listen('fetchEstablishmentEvent', eventData => {
       if (this.$store.getters.waitingForEstablishment) {
         console.log('already waiting for the last requested Establishment')
@@ -465,7 +468,7 @@ export default {
         this.fetchEstablishment()
         if (eventData && eventData.loop) {
           setTimeout(() => {
-            this.$events.emit('fetchEstablishmentEvent', {loop: eventData.loop, timeOut: eventData.timeOut})
+            this.$events.emit('fetchEstablishmentEvent', {})
           })
         }
       }, tOut)
@@ -639,6 +642,7 @@ export default {
     this.$events.remove('logoutFBEvent')
     this.$events.remove('statusChangeFBEvent')
     this.$events.remove('socialLoginEvent')
+    this.$events.remove('fetchUserEstablishmentsEvent')
 
     var vm = this
     setTimeout(() => { vm.$store.commit('resetMessages') }, 5000)
@@ -802,20 +806,20 @@ export default {
     fetchUserEstablishments () {
       var vm = this
       axios({
-        method: 'GET',
-        url: urls.API_URL.CurrentUrl + '/pos',
+        method: 'POST',
+        url: urls.API_URL.CurrentUrl + '/search/pos',
+        data: {'geo_x': 1, 'geo_y': 1},
         headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
       }).then(resp => {
         console.log(resp)
         console.log(resp.data.list)
-        vm.$store.commit('setUserEstablishments', resp.data.list)
+        vm.$store.commit('setUserEstablishments', resp.data.list || [])
       })
     },
     fetchEstablishment () {
       console.log('getEstablishment')
       // continue only if the user is loggedin
       var token = localStorage.getItem('user_token')
-      console.log(token)
       if (token.length < 1) {
         return
       }
