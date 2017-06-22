@@ -64,7 +64,7 @@ export default {
     },
     getAssociationsFromAPI () {
       var vm = this
-      let country = localStorage.getItem('country_code')
+      let country = this.$store.getters.getSelectedCountry // localStorage.getItem('country_code')
       if (country == null) {
         country = 'ES'
       }
