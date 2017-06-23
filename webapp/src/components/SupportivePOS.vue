@@ -52,7 +52,8 @@ export default {
   },
   computed: {
     registerPosUrl () {
-      var url = '/?pos-signup=true'
+      var lang = localStorage.getItem('user_locale')
+      var url = '/?pos-signup=true&lang=' + encodeURIComponent(lang)
       return url
     }
   },
