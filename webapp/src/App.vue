@@ -233,8 +233,8 @@ export default {
         // login to facebook
         var url = urls.API_URL.CurrentUrl + '/signin/' + eventData.type
         console.log('data')
-        var Data = {'token': eventData.id}
-        console.log(Data)
+        var Data = {'token': eventData.token}
+
         axios({
           method: 'POST',
           url: url,
@@ -253,6 +253,7 @@ export default {
             console.log('loggedin successfully')
             vm.$store.commit('setToken', resp.token)
             vm.$events.emit('goToPageEvent', 'home')
+            localStorage.setItem('socialLogin', true)
           }
         }).catch(err => {
           console.log(eventData.type + ' login error')
