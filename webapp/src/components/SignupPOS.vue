@@ -170,6 +170,8 @@ a {
   left: 0;
   right: 1.7em;
   margin-top: 0;
+
+  z-index: 900;
 }
 .pull-left {
   left: 0;
