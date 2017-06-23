@@ -1,7 +1,7 @@
 import * as urls from '../../api_variables'
 
 const state = {
-  Version: '1.0.2',
+  Version: '1.0.3',
   CurrentState: '',
   CurrentPage: '',
   PreviousPage: '',
