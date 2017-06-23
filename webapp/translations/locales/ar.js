@@ -136,7 +136,19 @@ const localizations = {
   'Login with your Social Account': 'الدخول مغ مواقع التواصل',
   'Add Supportive Establishment': 'إضافة مؤسسة داعمة جديدة',
   'Are you sure to logout and register new establishment?': 'هل أنت متأكد من الخروج وتسجيل مؤسسة جديدة؟',
-  'Cancel': 'إلغاء'
+  'Cancel': 'إلغاء',
+  'Admin': '',
+  'Admin Dashboard': '',
+  'Dashboard': '',
+  'All': '',
+  'Add': '',
+  'Update': '',
+  'All Associations': '',
+  'Association name': '',
+  'description': '',
+  'Logo URL': '',
+  'IBAN': '',
+  'BIC': ''
 }
 
 export default localizations

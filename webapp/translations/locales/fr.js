@@ -136,7 +136,19 @@ const localizations = {
   'Login with your Social Account': 'Login social',
   'Add Supportive Establishment': 'Ajouter établissement solidaire',
   'Are you sure to logout and register new establishment?': 'Êtes vous sur de vouloir fermer la session et créer un nouvel établissement solidaire?',
-  'Cancel': 'Annuler'
+  'Cancel': 'Annuler',
+  'Admin': '',
+  'Admin Dashboard': '',
+  'Dashboard': '',
+  'All': '',
+  'Add': '',
+  'Update': '',
+  'All Associations': '',
+  'Association name': '',
+  'description': '',
+  'Logo URL': '',
+  'IBAN': '',
+  'BIC': ''
 }
 
 export default localizations
