@@ -2,9 +2,9 @@
   <div>
 
     <div class="input-group">
-      <input type="text" class="form-control" name="search-asso" @input="searchEstablishment" :placeholder="$t('Search by name or description')" v-model:value="search">
+      <input type="text" class="form-control" name="search-asso" :placeholder="$t('Search by name or description')" v-model:value="search">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button" name="button"> <i class="fa fa-search fa-fw" aria-hidden="true"></i> </button>
+        <button class="btn btn-default" type="button" @click="searchEstablishment" name="button"> <i class="fa fa-search fa-fw" aria-hidden="true"></i> </button>
       </span>
     </div>
 
