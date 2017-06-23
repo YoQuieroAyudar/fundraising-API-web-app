@@ -5,15 +5,15 @@
         <vodal :show="showAddPosModal" :width="250" :height="300" animation="rotate" @hide="showAddPosModal = false">
             <div class="notice-box">
               <p>
-                {{notice}}
+                {{$t(notice)}}
               </p>
               <br>
               <div class="row">
                 <div class="col-xs-6">
-                  <a class="btn btn-warning" @click="logoutAll" :href="registerPosUrl">Logout</a>
+                  <a class="btn btn-warning" @click="logoutAll" :href="registerPosUrl">{{$t('Logout')}}</a>
                 </div>
                 <div class="col-xs-6">
-                  <button class="btn btn-info" @click="showAddPosModal = false" type="button" name="button">Cancel</button>
+                  <button class="btn btn-info" @click="showAddPosModal = false" type="button" name="button">{{$t('Cancel')}}</button>
                 </div>
               </div>
             </div>
