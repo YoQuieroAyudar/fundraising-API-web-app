@@ -1,7 +1,8 @@
 <template>
   <div v-if="$store.getters.getCurrentState !== 'login' && $store.getters.getCurrentState !== ''" class="logout-area">
     <div class="nav navbar-default">
-      <button class="btn btn-danger btn-xs pull-right" :title="$t('Logout')" @click="logoutUser">{{$t('Logout')}}</button>
+      <button v-if="!$store.getters.getFBAuthorized" class="btn btn-danger btn-xs pull-right" :title="$t('Logout')" @click="logoutUser">{{$t('Logout')}}</button>
+      <button v-else class="btn btn-danger btn-xs pull-right" :title="$t('Logout')" @click="socialLogout">{{$t('Logout')}}</button>
       <button class="btn btn-default btn-xs pull-right" :title="$t('Settings')" @click="goToSettingsPage"> <i class="fa fa-cog fa-fw"></i> </button>
       <label v-if="$store.getters.getLoginAsUser" :class="balanceLabelClasses" :title="$t('Wallet Balance')" @click="goToSolidarityAccount"> {{$store.getters.getBalance}} &euro; </label>
       <label v-else :class="daysLeftLabelClasses" :title="$t('Days left from subscription')" @click="gotToSubscription"> {{$t('{x} day ::: {x} days', {x: $store.getters.getPosSubscriptionEnd}, $store.getters.getPosSubscriptionEnd)}} </label>
@@ -37,6 +38,9 @@ export default {
     }
   },
   methods: {
+    socialLogout (e) {
+      this.$store.commit('setShowSocialLogin', true)
+    },
     goToSettingsPage (e) {
       // this.$store.commit('setCurrentPage', 'settings')
       this.$events.emit('goToPageEvent', 'settings')

@@ -42,11 +42,26 @@ export default {
   mounted () {
     console.log('FACEBOOK LOGIN mounted')
     let vm = this
+    var FBAPPID = ''
+    var domainName = window.location.hostname
+    switch (domainName) {
+      case 'web.jevaisaider.org':
+        console.log('using jva id')
+        FBAPPID = ''
+        break
+      case 'web.microhuchasolidaria.org':
+        console.log('using mhs id')
+        FBAPPID = '219601041795109'
+        break
+      default:
+        console.log('using default id')
+        FBAPPID = '219601041795109'
+    }
     window.fbAsyncInit = () => {
       console.log('FACEBOOK LOGIN fbAsyncInit')
       /*eslint-disable */
       window.FB.init({
-        appId: '219601041795109',
+        appId: FBAPPID,
         cookie: true,
         xfbml: true,
         version: 'v2.9'
@@ -97,6 +112,7 @@ export default {
         console.log('logout response')
         console.log(response)
         vm.statusChangeCallback(response)
+        vm.$events.emit('logoutEvent')
       })
       /*eslint-enable */
     },
@@ -111,7 +127,7 @@ export default {
         console.log(response.authResponse)
         vm.$events.emit('socialLoginEvent', {
           type: 'facebook',
-          id: response.authResponse.accessToken
+          token: response.authResponse.accessToken
         })
         vm.$store.commit('setFBAuthorized', true)
         vm.authorized = true
@@ -122,6 +138,7 @@ export default {
       } else {
         vm.authorized = false
         vm.$store.commit('setFBAuthorized', false)
+        localStorage.removeItem('socialLoginToken')
       }
     }
   }
