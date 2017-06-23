@@ -1,3 +1,28 @@
+import Q from 'q'
+import axios from 'axios'
+var GMKEY = 'AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es'
+var GMBASE_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
+function getCoordinates (address) {
+  address = address.replace(' ', '+')
+  var url = GMBASE_URL + '?address=' + decodeURIComponent(address) + '&key=' + GMKEY
+  var deferred = Q.defer()
+  axios({
+    method: 'GET',
+    url: url
+  }).then(resp => {
+    console.log('raw response')
+    console.log(resp)
+    if (resp.data === undefined && resp.data.results === undefined && resp.data.results[0] === undefined) {
+      deferred.resolve(resp)
+    } else {
+      deferred.resolve(resp.data.results[0])
+    }
+  }).catch(err => {
+    deferred.reject(err)
+  })
+
+  return deferred.promise
+}
 function getCenter (country) {
   var lat = 40.4167578
   var long = -3.7059379
@@ -49,6 +74,7 @@ function getMarkers (establishments) {
 }
 
 export default {
+  getCoordinates,
   getCenter,
   getMarkers
 }
