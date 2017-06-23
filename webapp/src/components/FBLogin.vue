@@ -101,7 +101,7 @@ export default {
         console.log('login response')
         console.log(response)
         vm.statusChangeCallback(response)
-      }, {scope: 'publish_actions'})
+      }, {scope: 'email,public_profile,user_birthday,user_friends,user_location'})
       /*eslint-enable */
     },
     logout () {
