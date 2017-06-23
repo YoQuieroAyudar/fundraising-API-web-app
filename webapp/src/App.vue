@@ -125,6 +125,10 @@
                     <map-page></map-page>
                   </div>
 
+                  <div v-if="$store.getters.getCurrentPage == 'admin-page'">
+                    <admin-page></admin-page>
+                  </div>
+
                   <div v-if="$store.getters.getCurrentPage == 'supportive-pos'">
                     <supportive-pos-page></supportive-pos-page>
                   </div>
@@ -190,6 +194,7 @@ import SupportivePOS from './components/SupportivePOS.vue'
 import GoTo from './components/GoTo.vue'
 import Transactions from './components/Transactions.vue'
 import FBLogin from './components/FBLogin.vue'
+import Admin from './components/Admin.vue'
 
 import * as urls from './api_variables'
 import axios from 'axios'
@@ -1190,7 +1195,8 @@ export default {
     'supportive-pos-page': SupportivePOS,
     'go-to-box': GoTo,
     'transactions-page': Transactions,
-    'fb-login': FBLogin
+    'fb-login': FBLogin,
+    'admin-page': Admin
   }
 }
 
