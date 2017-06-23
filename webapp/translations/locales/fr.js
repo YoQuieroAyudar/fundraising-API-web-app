@@ -125,7 +125,7 @@ const localizations = {
   'YQuieroAyudar': 'JeVaisAider',
   'Share': 'Partager',
   'Search by name or description': 'Rechercher par nom ou description',
-  'Supportive Establishments': 'Etablissement solidaire',
+  'Supportive Establishments': 'Etablissements solidaires',
   'Please confirm your email now to access your account!': 'Veuillez confirmer votre courrier électronique maintenant pour accéder à votre compte',
   'Date': 'Date',
   'Amount': 'Montant',

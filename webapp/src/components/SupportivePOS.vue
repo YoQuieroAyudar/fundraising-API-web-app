@@ -4,10 +4,10 @@
       <button :class="$i18n.locale() == 'ar' ? 'btn btn-success btn-xs pull-left' : 'btn btn-success btn-xs pull-right'" type='button' @click="$store.commit('setShowShare', true)">{{$t('Share')}}</button>
     </div>
 
-    <h1 class="page-top-title">{{ $t('Supportive Establishments') }}</h1>
+    <h4 class="page-top-title">{{ $t('Supportive Establishments') }}</h4>
 
     <g-map-window></g-map-window>
-    
+
   </div>
 
 </template>

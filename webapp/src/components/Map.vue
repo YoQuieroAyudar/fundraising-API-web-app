@@ -1,7 +1,14 @@
 <template>
   <div>
 
-    <gmap-map :center="center" :zoom="10" style="width: 100%; height: 405px">
+    <div class="input-group">
+      <input type="text" class="form-control" name="search-asso" :placeholder="$t('Search by name or description')" v-model:value="search">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" @click="searchEstablishment" name="button"> <i class="fa fa-search fa-fw" aria-hidden="true"></i> </button>
+      </span>
+    </div>
+
+    <gmap-map :center="center" @center_changed="updateCenter" :zoom="10" style="width: 100%; height: 405px">
       <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen" :content="infoContent" @closeclick="infoWinOpen=false"></gmap-info-window>
 
         <gmap-marker :key="i" v-for="(m,i) in markers" :position="m.position" :clickable="true" @click="toggleInfoWindow(m,i)"></gmap-marker>
@@ -70,10 +77,32 @@ export default {
           lng: 8.549867
         },
         infoText: 'Marker 3'
-      }]
+      }],
+      search: '',
+      searchTimout: 0
     }
   },
   methods: {
+    searchEstablishment (e) {
+      console.log('searchEstablishment')
+      var vm = this
+      var address = this.search
+      clearTimeout(this.searchTimout)
+      this.searchTimout = setTimeout(function () {
+        GM.getCoordinates(address).then(resp => {
+          console.log('getCoordinates response')
+          console.log(resp)
+          if (resp.geometry !== undefined) {
+            console.log('location')
+            console.log(resp.geometry.location)
+            vm.center = resp.geometry.location
+          }
+        }, err => {
+          console.log('error')
+          console.log(err)
+        })
+      }, 1000)
+    },
     toggleInfoWindow: function (marker, idx) {
       this.infoWindowPos = marker.position
       this.infoContent = marker.infoText
@@ -84,6 +113,14 @@ export default {
       } else { // if different marker set infowindow to open and reset current marker index
         this.infoWinOpen = true
         this.currentMidx = idx
+      }
+    },
+    updateCenter (newCenter) {
+      console.log('updateCenter')
+      console.log(newCenter)
+      this.center = {
+        lat: newCenter.lat(),
+        lng: newCenter.lng()
       }
     }
   },
