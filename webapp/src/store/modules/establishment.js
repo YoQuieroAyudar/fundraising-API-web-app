@@ -44,7 +44,7 @@ const getters = {
     var end = new Date(state.Establishment.end_subscription)
     var now = new Date()
     var days = Math.floor((end - now) / (3600000 * 24))
-    return days
+    return typeof days === 'number' ? days : parseInt(days)
   }
 }
 
