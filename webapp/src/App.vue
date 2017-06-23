@@ -263,13 +263,28 @@ export default {
     })
 
     this.$events.listen('initializeFBEvent', eventData => {
-      console.log('FACEBOOK LOGIN mounted')
+      console.log('initializeFBEvent')
       let vm = this
+      var FBAPPID = ''
+      var domainName = window.location.hostname
+      switch (domainName) {
+        case 'web.jevaisaider.org':
+          console.log('using jva id')
+          FBAPPID = ''
+          break
+        case 'web.microhuchasolidaria.org':
+          console.log('using mhs id')
+          FBAPPID = '219601041795109'
+          break
+        default:
+          console.log('using default id')
+          FBAPPID = '219601041795109'
+      }
       window.fbAsyncInit = () => {
         console.log('FACEBOOK LOGIN fbAsyncInit')
         /*eslint-disable */
         window.FB.init({
-          appId: '219601041795109',
+          appId: FBAPPID,
           cookie: true,
           xfbml: true,
           version: 'v2.9'
@@ -286,7 +301,12 @@ export default {
     this.$events.listen('getFBProfileEvent', eventData => {
       console.log('FACEBOOK LOGIN getProfile()')
       /*eslint-disable */
-      window.FB.api('/me', eventData)
+      window.FB.api('/me', function (response) {
+        console.log('getProfile response')
+        console.log(response)
+        // vm.$set(vm, 'profile', response)
+        vm.$store.commit('setFBProfile', response)
+      })
       /*eslint-enable */
     })
 
@@ -319,12 +339,21 @@ export default {
       console.log('statusChangeCallback')
       console.log(response)
       if (response.status === 'connected') {
+        vm.$events.emit('socialLoginEvent', {
+          type: 'facebook',
+          token: response.authResponse.accessToken
+        })
+        vm.$store.commit('setFBAuthorized', true)
         vm.authorized = true
         vm.$events.imit('getFBProfileEvent', response)
       } else if (response.status === 'not_authorized') {
         vm.authorized = false
+        vm.$store.commit('setFBAuthorized', false)
+        localStorage.removeItem('socialLoginToken')
       } else {
         vm.authorized = false
+        vm.$store.commit('setFBAuthorized', false)
+        localStorage.removeItem('socialLoginToken')
       }
     })
 

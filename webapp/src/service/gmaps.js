@@ -4,7 +4,7 @@ var GMKEY = 'AIzaSyB16sGmIekuGIvYOfNoW9T44377IU2d2Es'
 var GMBASE_URL = 'https://maps.googleapis.com/maps/api/geocode/json'
 function getCoordinates (address) {
   address = address.replace(' ', '+')
-  var url = GMBASE_URL + '?address=' + decodeURIComponent(address) + '&key=' + GMKEY
+  var url = GMBASE_URL + '?address=' + encodeURIComponent(address) + '&key=' + GMKEY
   var deferred = Q.defer()
   axios({
     method: 'GET',

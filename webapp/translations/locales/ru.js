@@ -132,7 +132,10 @@ const localizations = {
   'Social Login': '',
   'Logout from facebook': '',
   'Login with facebook': '',
-  'Login with your Social Account': ''
+  'Login with your Social Account': '',
+  'Add Supportive Establishment': '',
+  'Are you sure to logout and register new establishment?': '',
+  'Cancel': ''
 }
 
 export default localizations
