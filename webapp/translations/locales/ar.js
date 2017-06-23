@@ -133,7 +133,10 @@ const localizations = {
   'Social Login': 'الدخول مغ مواقع التواصل',
   'Logout from facebook': 'الخروج من فيسبوك',
   'Login with facebook': 'الدخول مع فيسبوك',
-  'Login with your Social Account': 'الدخول مغ مواقع التواصل'
+  'Login with your Social Account': 'الدخول مغ مواقع التواصل',
+  'Add Supportive Establishment': 'إضافة مؤسسة داعمة جديدة',
+  'Are you sure to logout and register new establishment?': 'هل أنت متأكد من الخروج وتسجيل مؤسسة جديدة؟',
+  'Cancel': 'إلغاء'
 }
 
 export default localizations
