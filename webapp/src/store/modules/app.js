@@ -24,10 +24,14 @@ const state = {
   api_db: 'mhs',
   showSocialLogin: false,
   FBAuthorized: false,
-  FBProfile: {}
+  FBProfile: {},
+  readyFB: false
 }
 
 const getters = {
+  getReadyFB (state) {
+    return state.readyFB
+  },
   getFBProfile (state) {
     return state.FBProfile
   },
@@ -97,6 +101,9 @@ const getters = {
 }
 
 const mutations = {
+  setReadyFB (state, context) {
+    state.readyFB = Boolean(context)
+  },
   setFBProfile (state, context) {
     if (context.name === undefined && context.id === undefined) {
       return
