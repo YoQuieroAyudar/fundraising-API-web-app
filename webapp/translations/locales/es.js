@@ -143,11 +143,17 @@ const localizations = {
   'Add': '',
   'Update': '',
   'All Associations': '',
+  'Add New Association': '',
+  'Update Associations.': '',
   'Association name': '',
   'description': '',
   'Logo URL': '',
+  'Twitter Username': '',
   'IBAN': '',
-  'BIC': ''
+  'BIC': '',
+  'Association registration failed, please try again': '',
+  'Association registration successful': '',
+  'Register': ''
 }
 
 export default localizations

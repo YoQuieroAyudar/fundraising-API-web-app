@@ -25,6 +25,7 @@
         <!-- <button class="btn btn-default" @click="goToTranactions" >{{ $t('Transactions') }}</button> -->
         <button class="btn btn-default" @click="goToSolidarityAccount"> {{ $t('Solidarity Account') }} </button>
         <button class="btn btn-default" @click="gotToSupportivePOSMap" >{{ $t('Supportive Establishments') }}</button>
+        <button v-if="$store.getters.getUserType === 'ADMIN'" class="btn btn-default" @click="goToAdminPage">{{ $t('Admin') }}</button>
       </div>
       <p v-if="$store.getters.getBalance">
         {{ $t('Total Donations') }}: <span class="">{{$store.getters.getBalance}} &euro;</span>
@@ -111,6 +112,11 @@ export default {
     gotToSupportivePOSMap (e) {
       e.preventDefault()
       this.$events.emit('goToPageEvent', 'supportive-pos')
+      this.$store.commit('resetMessages')
+    },
+    goToAdminPage (e) {
+      e.preventDefault()
+      this.$events.emit('goToPageEvent', 'admin-page')
       this.$store.commit('resetMessages')
     },
     gotToQRCode (e) {
