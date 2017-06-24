@@ -136,7 +136,19 @@ const localizations = {
   'Login with your Social Account': '',
   'Add Supportive Establishment': '',
   'Are you sure to logout and register new establishment?': '',
-  'Cancel': ''
+  'Cancel': '',
+  'Admin': '',
+  'Admin Dashboard': '',
+  'Dashboard': '',
+  'All': '',
+  'Add': '',
+  'Update': '',
+  'All Associations': '',
+  'Association name': '',
+  'description': '',
+  'Logo URL': '',
+  'IBAN': '',
+  'BIC': ''
 }
 
 export default localizations
