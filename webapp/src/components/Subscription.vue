@@ -125,7 +125,7 @@ export default {
     lastDuration: function (val, oldVal) {
       console.log('new: %s, old: %s', val, oldVal)
       var waitingForSubscriptionSuccess = localStorage.getItem('waitingForSubscriptionSuccess')
-      if (!Boolean(waitingForSubscriptionSuccess)) {
+      if (Boolean(waitingForSubscriptionSuccess) === false) {
         return
       }
       if (oldVal !== 0 && oldVal !== val) {
