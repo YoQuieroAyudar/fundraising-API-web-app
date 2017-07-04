@@ -89,13 +89,9 @@ h5 {
 <script>
 import * as urls from '../api_variables'
 import GoTo from './GoTo.vue'
+import jwtDecode from 'jwt-decode'
 
 import axios from 'axios'
-// var jwtToken = localStorage.getItem('user_token')
-
-// const http = axios.create({
-//   headers: { 'Authorization': 'Bearer ' + localStorage.getItem('user_token') }
-// })
 
 export default {
   data () {
@@ -121,10 +117,34 @@ export default {
       remainingDays: 30,
       feesData: {},
       Establishment: {},
-      secureUrl: '#'
+      secureUrl: '#',
+      lastDuration: 0
+    }
+  },
+  watch: {
+    lastDuration: function (val, oldVal) {
+      console.log('new: %s, old: %s', val, oldVal)
+      var waitingForSubscriptionSuccess = localStorage.getItem('waitingForSubscriptionSuccess')
+      if (!Boolean(waitingForSubscriptionSuccess)) {
+        return
+      }
+      if (oldVal !== 0 && oldVal !== val) {
+        // it's not the first time setting
+        // and it's not the old value
+        // so emit the subscription success
+        var lastSubscriptionData = JSON.parse(localStorage.getItem('lastSubscriptionData'))
+        if (lastSubscriptionData.end !== undefined) {
+          this.$events.emit('pageChangedEvent', '/subscription/success/url-' + lastSubscriptionData.url + '/' + lastSubscriptionData.months + 'month' + '?user=' + lastSubscriptionData.user.email)
+          localStorage.removeItem('lastSubscriptionData')
+        }
+      }
     }
   },
   computed: {
+    getLastDuration () {
+      this.lastDuration = this.$store.getters.getPosSubscriptionEnd
+      return this.lastDuration
+    },
     getSubscriptionEnd () {
       console.log('getSubscriptionEnd')
       return parseInt(this.$store.getters.getPosSubscriptionEnd)
@@ -237,6 +257,8 @@ export default {
             return
           }
           localStorage.setItem('lastSubscriptionDays', this.$store.getters.getBalance)
+          var decoded = jwtDecode(localStorage.getItem('user_token'))
+          localStorage.setItem('lastSubscriptionData', JSON.stringify({end: this.$store.getters.getSubscriptionEnd, months: this.months, url: document.location.hostname, user: decoded}))
           // vm.secureUrl = resp.data.verification_url
           vm.$events.emit('showGoToModalEvent', {
             url: resp.data.verification_url,
@@ -244,10 +266,24 @@ export default {
             title: '3DS Transaction',
             buttonText: 'Continue'
           })
-          // var win = window.open(resp.data.verification_url)
-          // if (window.focus) {
-          //   win.focus()
-          // }
+
+          // TODO: setup queue stack that saves pending transactions.
+          // 1. save the amount, date and url of the transaction and the current Subscription duration
+          var est = this.getEstablishment()
+          var dt = new Date()
+          var transactionData = {
+            amount: this.amount,
+            months: this.months,
+            Establishment: est,
+            date: dt,
+            redirectUrl: this.secureUrl
+          }
+
+          console.log('transactionData')
+          console.log(transactionData)
+
+          localStorage.setItem('waitingForSubscriptionSuccess', true)
+
           vm.$store.commit('setLoading', false)
           vm.$store.commit('setSuccess', 'Started secure transaction please complete process in the new window after you click continue')
           return
