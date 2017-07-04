@@ -23,7 +23,7 @@
       {{ $t('Remember me') }} <input name="remember_me" v-model="rememberMe" @click="setRememberMe" :checked="rememberMe" aria-describedby="password-addon1" type="checkbox" :value="rememberMe" />
     </form>
 
-    <video-frame></video-frame>
+    <video-frame v-if="$store.getters.getShowVideo"></video-frame>
 
   </div>
 </template>
@@ -106,7 +106,7 @@ export default {
       e.preventDefault()
       this.$store.commit('resetMessages')
       // this.$store.commit('setCurrentPage', 'signup')
-      this.$events.emit('goToPageEvent', 'signup')
+      this.$events.emit('goToPageEvent', 'signupPOS')
       this.$store.commit('setCurrentState', '')
     },
     updateEmail (e) {
