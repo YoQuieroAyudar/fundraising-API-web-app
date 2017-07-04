@@ -539,6 +539,10 @@ export default {
       this.$events.emit('pageChangedEvent', pageName)
     })
 
+    this.$events.listen('subscriptionSuccessEvent', (months) => {
+      this.$events.emit('pageChangedEvent', '/subscription/success/url-' + document.location.hostname + '/' + months + 'month')
+    })
+
     ga(collect => {
       // when hash changes
       this.$events.listen('pageChangedEvent', (name) => {
