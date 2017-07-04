@@ -69,7 +69,7 @@
               </div>
             </div>
 
-            <div class=''>
+            <div class='page-wrapper'>
               <div class='login-area' v-if="$store.getters.getCurrentState == 'login' || $store.getters.getCurrentState == ''">
                 <div  v-if="$store.getters.getCurrentPage == 'login' || $store.getters.getCurrentPage == ''">
                   <login-form></login-form>
@@ -426,6 +426,12 @@ export default {
       }, 500)
     }
 
+    if (allPars.height !== undefined) {
+      this.setCurrentHeight(allPars.height)
+    }
+    if (allPars.width !== undefined) {
+      this.setCurrentWidth(allPars.width)
+    }
     var singupAsPOS = allPars['pos-signup'] // Boolean(this.getQueryParams('pos-signup'))
     console.log('SIGNUP POST VALUE:', singupAsPOS)
     var singupAsUser = allPars['user-signup'] // Boolean(this.getQueryParams('user-signup'))
@@ -754,6 +760,18 @@ export default {
     }
   },
   methods: {
+    setCurrentHeight (value) {
+      var element = document.getElementById('wrapper')
+      value = (parseInt(value) < 450) ? 450 : value
+      console.log('setting height to ' + value)
+      element.style.height = parseInt(value) + 'px'
+    },
+    setCurrentWidth (value) {
+      var element = document.getElementById('wrapper')
+      value = (parseInt(value) < 300) ? 300 : value
+      console.log('setting width to ' + value)
+      element.style.width = parseInt(value) + 'px'
+    },
     getApiByCurrentDomainName () {
       console.log('getApiByCurrentDomainName')
       var currentDomainName = location.hostname
@@ -1323,5 +1341,8 @@ a {
 }
 .mobile-full-page .notloading {
   height: 570px;
+}
+.page-wrapper {
+  overflow-x: scroll;
 }
 </style>
