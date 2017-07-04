@@ -32,7 +32,7 @@
         {{ $t('Remember me') }} <input name="remember_me" v-model="rememberMe" @click="setRememberMe" :checked="rememberMe" aria-describedby="password-addon1" type="checkbox" :value="rememberMe" />
       </form>
 
-      <video-frame></video-frame>
+      <video-frame v-if="$store.getters.getShowVideo"></video-frame>
 
     </div>
 

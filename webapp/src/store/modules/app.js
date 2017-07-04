@@ -1,7 +1,7 @@
 import * as urls from '../../api_variables'
 
 const state = {
-  Version: '1.1.0',
+  Version: '1.1.1',
   CurrentState: '',
   CurrentPage: '',
   PreviousPage: '',
@@ -25,10 +25,14 @@ const state = {
   showSocialLogin: false,
   FBAuthorized: false,
   FBProfile: {},
-  readyFB: false
+  readyFB: false,
+  showLoginVideo: true
 }
 
 const getters = {
+  getShowVideo (state) {
+    return state.showLoginVideo
+  },
   getReadyFB (state) {
     return state.readyFB
   },
@@ -101,6 +105,9 @@ const getters = {
 }
 
 const mutations = {
+  setShowVideo (state, context) {
+    state.showLoginVideo = Boolean(context)
+  },
   setReadyFB (state, context) {
     state.readyFB = Boolean(context)
   },

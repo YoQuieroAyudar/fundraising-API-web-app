@@ -762,13 +762,20 @@ export default {
   methods: {
     setCurrentHeight (value) {
       var element = document.getElementById('wrapper')
-      value = (parseInt(value) < 450) ? 450 : value
+      if (parseInt(value) < 370) {
+        value = 370
+        this.$store.commit('setShowVideo', false)
+      } else if (parseInt(value) < 500) {
+        this.$store.commit('setShowVideo', false)
+      } else {
+        this.$store.commit('setShowVideo', true)
+      }
       console.log('setting height to ' + value)
       element.style.height = parseInt(value) + 'px'
     },
     setCurrentWidth (value) {
       var element = document.getElementById('wrapper')
-      value = (parseInt(value) < 300) ? 300 : value
+      value = parseInt(value) < 300 ? 300 : value
       console.log('setting width to ' + value)
       element.style.width = parseInt(value) + 'px'
     },
@@ -1343,6 +1350,5 @@ a {
   height: 570px;
 }
 .page-wrapper {
-  overflow-x: scroll;
 }
 </style>
