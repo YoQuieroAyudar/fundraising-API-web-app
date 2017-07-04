@@ -1104,13 +1104,13 @@ export default {
     },
     setHelpUrl (lang) {
       var url = 'https://github.com/YoQuieroAyudar/fundraising-API-web-app/wiki/'
-      var url2 = 'https://guide.jevaisaider.org'
+
       if (lang === 'ar') {
         return url + 'مساعدة'
       } else if (lang === 'fr') {
-        return url2 // + 'Aide'
+        return 'https://guide.jevaisaider.org' // + 'Aide'
       } else if (lang === 'es') {
-        return url2 // + 'Ayuda'
+        return 'https://guia.microhuchasolidaria.org' // + 'Ayuda'
       } else {
         return url + 'Help'
       }
