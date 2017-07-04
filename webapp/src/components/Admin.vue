@@ -36,7 +36,7 @@
         <div id="add-assoc" class="tab-pane fade">
           <p>{{$t('Add New Association')}}</p>
 
-          <form class="form">
+          <form class="form" id="add-asso-form">
 
             <ul class="list-group">
 
@@ -229,7 +229,9 @@ export default {
         console.log('Association registration response')
         console.log(resp)
         if (resp.status === 200) {
+          document.getElementById('add-asso-form').reset()
           vm.$store.commit('setSuccess', 'Association registration successful')
+          this.$events.emit('goToPageEvent', 'admin')
         }
       }).catch(err => {
         console.log('Association registration error')
