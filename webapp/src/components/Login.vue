@@ -6,9 +6,7 @@
 
     <h1 class="page-top-title"><span v-if="$store.getters.getLoginAsUser">{{$t('Login as User')}}</span><span v-else>{{$t('Login as Establishment')}}</span></h1>
     <div class="user-login" v-if="$store.getters.getLoginAsUser">
-      <div>
-        <button class="btn btn-primary btn-xs" @click="$store.commit('setShowSocialLogin', true)" type="button" name="button"><i class="fa fa-facebook fa-fw"></i> {{$t('Login with your Social Account')}}</button>
-      </div>
+
       <form class="form">
         <div dir="ltr" class="input-group">
           <span class="input-group-addon" :title="$t('Country')" id="country-addon1"> {{$t('Donation Destination')}}</span>
@@ -28,7 +26,11 @@
 
         {{ $t("If you don't have an account yet") }} <a class="" @click="goToSignupPage" > {{ $t('Sign up here') }}</a>
 
-        <button class="btn btn-primary btn-block login-btn" @click="loginUser" > <i class="fa fa-paper-plane" aria-hidden="true"></i> {{ $t('Login') }}</button>
+        <p class = "tpbutton btn-toolbar text-center">
+          <button class="btn navbar-btn btn-primary login-btn" @click="loginUser" > <i class="fa fa-paper-plane" aria-hidden="true"></i> {{ $t('Login') }}</button>
+          <button class="btn navbar-btn btn-primary login-btn" @click="$store.commit('setShowSocialLogin', true)" type="button" name="button"><i class="fa fa-external-link fa-fw"></i> {{$t('Social Login')}}</button>
+        </p>
+
         {{ $t('Remember me') }} <input name="remember_me" v-model="rememberMe" @click="setRememberMe" :checked="rememberMe" aria-describedby="password-addon1" type="checkbox" :value="rememberMe" />
       </form>
 
@@ -71,6 +73,7 @@ a {
 .login-btn {
   margin-top: .1em;
   margin-bottom: .2em;
+  width: 48%;
 }
 .fb-login-button {
 }
