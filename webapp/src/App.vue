@@ -1275,7 +1275,7 @@ h5 {
   padding-right: .4em;
 }
 .mobile-full-page .content {
-  height: 580px;
+  height: 90%;
 }
 .desktop-max .content {
   height: 90%;
