@@ -28,10 +28,10 @@
       "type": "image/png"
     }
   ],
-  "name": "I Want To Help",
+  "name": "IWantToHelp",
   "short_name": "IWantToHelp",
   "start_url": "/index.html",
-  "description": "Web interface for Micro Hucha Solidaria's Rest API",
+  "description": "Donations with charity JeVaisAider",
   "theme_color": "#2196f3",
   "background_color": "#2196f3",
   "splash_pages": null

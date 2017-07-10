@@ -23,7 +23,7 @@ module.exports = merge(baseWebpackConfig, {
   devtool: '#cheap-module-eval-source-map',
   plugins: [
     new CopyWebpackPlugin([
-      { from: 'src/manifest.json', to: 'manifest.json' },
+      { from: 'src/manifest.json', to: 'manifest/manifest.json' },
       // { from: 'src/service-worker.js', to: 'sw.js' },
       { from: 'src/assets/launcher-icon.png', to: 'logos/launcher-icon.png' },
       { from: 'src/assets/launcher-icon-96.png', to: 'logos/launcher-icon-96.png' },
