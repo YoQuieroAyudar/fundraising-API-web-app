@@ -12,20 +12,20 @@ REMOTE_REPO=https://github.com/$REPO_USER/$REPO_DIR.git
 echo "syncing JVA in "$JVA
 cd $JVA
 cd $REPO_DIR
-git pull
+git checkout -- . && git pull
 cp -r jva-logos/* logos
-cp -r jva-manifest/* manifest
+cp jva-manifest/manifest.json manifest/
 
 echo "syncing MHS in "$MHS
 cd $MHS
 cd $REPO_DIR
-git pull
+git checkout -- . && git pull
 cp -r mhs-logos/* logos
-cp -r mhs-manifest/* manifest
+cp mhs-manifest/manifest.json manifest/
 
 echo "syncing IWTH in "$IWTH
 cd $IWTH
 cd $REPO_DIR
-git pull
+git checkout -- . && git pull
 cp -r iwth-logos/* logos
-cp -r iwth-manifest/* manifest
+cp iwth-manifest/manifest.json manifest/
